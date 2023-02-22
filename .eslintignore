@@ -1,0 +1,5 @@
+/**/*.d.ts
+*.next-env.js
+*.config.js
+package.json
+.eslintrc.js
