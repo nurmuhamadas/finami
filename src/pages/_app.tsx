@@ -27,6 +27,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="Financial management for family"
         />
         <meta property="twitter:image" content="/static/vercel.svg" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        ></meta>
       </Head>
       <Component {...pageProps} />
     </Fragment>

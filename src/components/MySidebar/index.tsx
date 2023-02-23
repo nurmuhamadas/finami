@@ -22,14 +22,14 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
         Finami
       </Sidebar.Logo>
       <Sidebar.Items>
-        <Sidebar.ItemGroup className="text-red-700">
+        <Sidebar.ItemGroup>
           {menus.map(({ text, Icon, url }) => {
             const isMenuActive = url === pathname
 
             const WrappedIcon = () => (
               <span
                 className={cn({
-                  'font-bold text-activeMenu': isMenuActive,
+                  'font-bold text-white': isMenuActive,
                   'font-light text-gray-500': !isMenuActive,
                 })}
               >
@@ -38,10 +38,18 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
             )
 
             return (
-              <Sidebar.Item key={url} href={url} icon={WrappedIcon}>
+              <Sidebar.Item
+                key={url}
+                href={url}
+                icon={WrappedIcon}
+                className={cn('py-3', {
+                  'bg-finamiBlue pl-4 hover:bg-finamiBlue': isMenuActive,
+                  'bg-inherit': !isMenuActive,
+                })}
+              >
                 <span
                   className={cn({
-                    'font-bold text-activeMenu': isMenuActive,
+                    'font-bold text-white': isMenuActive,
                     'font-light text-gray-500': !isMenuActive,
                   })}
                 >

@@ -6,7 +6,7 @@ import { type AppLayoutProps } from './types'
 
 const AppLayout = ({ children, title, description }: AppLayoutProps) => {
   return (
-    <div className="relative flex h-screen w-full ">
+    <div className="relative flex h-screen w-full">
       {/* Bottom Navbar */}
       <BottomNav menus={bottomMenu} wrapperClassName="lg:hidden" />
 

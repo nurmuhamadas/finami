@@ -6,32 +6,33 @@ import {
   AiOutlineWallet,
 } from 'react-icons/ai'
 
+import { PAGES_URL } from './pages'
 import { type MenuType } from './types'
 
 export const bottomMenu: MenuType[] = [
   {
     Icon: AiOutlineDashboard,
-    text: 'Dashboard',
-    url: '/app/dashboard',
+    text: 'Overview',
+    url: PAGES_URL.overview,
   },
   {
     Icon: AiOutlineWallet,
     text: 'Wallets',
-    url: '/app/wallets',
+    url: PAGES_URL.wallets,
   },
   {
     Icon: AiOutlineTransaction,
     text: 'Transactions',
-    url: '/app/transactions',
+    url: PAGES_URL.transactions,
   },
   {
     Icon: AiOutlineCalendar,
     text: 'Plannings',
-    url: '/app/plannings',
+    url: PAGES_URL.plannings,
   },
   {
     Icon: AiOutlineUser,
     text: 'Account',
-    url: '/app/account',
+    url: PAGES_URL.account,
   },
 ]
