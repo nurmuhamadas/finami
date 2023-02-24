@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     './node_modules/flowbite-react/**/*.js',
+    './node_modules/react-tailwindcss-select/dist/index.esm.js',
     './src/pages/**/*.{js,ts,jsx,tsx}',
     './src/components/**/*.{js,ts,jsx,tsx}',
     './src/app/**/*.{js,ts,jsx,tsx}',
@@ -11,8 +12,11 @@ module.exports = {
     extend: {
       colors: {
         finamiBlue: '#6453DD',
+        finamiBlueSecondary: '#968BE1',
         finamiRed: '#DC4545',
+        finamiRedSecondary: '#E58585',
         finamiGreen: '#00926F',
+        finamiGreenSecondary: '#00BB5D',
       },
     },
     fontFamily: {

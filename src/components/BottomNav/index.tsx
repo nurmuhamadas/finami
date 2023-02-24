@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import cn from 'classnames'
@@ -10,7 +11,7 @@ const BottomNav = ({ menus, wrapperClassName }: BottomNavProps) => {
   return (
     <div
       className={cn(
-        'fixed bottom-0 left-0 z-50 w-full rounded-t-3xl border-t-2 bg-white',
+        'fixed bottom-0 left-0 z-40 w-full rounded-t-3xl border-t-2 bg-white',
         wrapperClassName,
       )}
     >
@@ -19,32 +20,33 @@ const BottomNav = ({ menus, wrapperClassName }: BottomNavProps) => {
           const isMenuActive = url === pathname
 
           return (
-            <li
-              key={url}
-              className={cn('h-full w-1/5 pb-2 pt-4', {
-                'rounded-t-3xl bg-finamiBlue': isMenuActive,
-              })}
-            >
-              <div className="flex flex-col items-center ">
-                <div>
-                  <Icon
-                    size={24}
-                    className={cn({
-                      '  text-white': isMenuActive,
+            <Link href={url} legacyBehavior key={url}>
+              <li
+                className={cn('h-full w-1/5 pb-2 pt-4', {
+                  'rounded-t-3xl bg-finamiBlue': isMenuActive,
+                })}
+              >
+                <div className="flex flex-col items-center ">
+                  <div>
+                    <Icon
+                      size={24}
+                      className={cn({
+                        '  text-white': isMenuActive,
+                        'text-gray-400': !isMenuActive,
+                      })}
+                    />
+                  </div>
+                  <span
+                    className={cn('text-[10px]', {
+                      'text-white': isMenuActive,
                       'text-gray-400': !isMenuActive,
                     })}
-                  />
+                  >
+                    {text}
+                  </span>
                 </div>
-                <span
-                  className={cn('text-[10px]', {
-                    'text-white': isMenuActive,
-                    'text-gray-400': !isMenuActive,
-                  })}
-                >
-                  {text}
-                </span>
-              </div>
-            </li>
+              </li>
+            </Link>
           )
         })}
       </ul>

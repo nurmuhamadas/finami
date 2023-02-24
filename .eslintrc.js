@@ -40,6 +40,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     'prefer-arrow-callback': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
     'eslint-comments/no-use': ['error', { allow: [] }],
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [

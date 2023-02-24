@@ -37,7 +37,7 @@ const Dashboard = () => {
       <div className="flex w-full flex-col">
         <div className="mb-8 grid grid-cols-1 gap-y-4 md:grid-cols-2 md:gap-x-4 xl:grid-cols-3 xl:gap-y-0">
           {/* Balance card */}
-          <OverviewCard cardClassName="bg-gradient-to-r from-[#968BE1] to-finamiBlue">
+          <OverviewCard cardClassName="bg-gradient-to-r from-finamiBlueSecondary to-finamiBlue">
             <div className="flex flex-col space-y-4">
               <h3 className="block text-white">Balance</h3>
               <div className="mb-3 flex items-center space-x-4">
@@ -51,7 +51,7 @@ const Dashboard = () => {
           </OverviewCard>
 
           {/* Income card */}
-          <OverviewCard cardClassName="bg-gradient-to-r from-[#00BB5D] to-finamiGreen">
+          <OverviewCard cardClassName="bg-gradient-to-r from-finamiGreenSecondary to-finamiGreen">
             <div className="flex flex-col space-y-4">
               <h3 className="block text-white">Income</h3>
               <div className="mb-3 flex items-center space-x-4">
@@ -65,7 +65,7 @@ const Dashboard = () => {
           </OverviewCard>
 
           {/* Expense card */}
-          <OverviewCard cardClassName="bg-gradient-to-r from-[#E58585] to-finamiRed">
+          <OverviewCard cardClassName="bg-gradient-to-r from-finamiRedSecondary to-finamiRed">
             <div className="flex flex-col space-y-4">
               <h3 className="block text-white">Expense</h3>
               <div className="mb-3 flex items-center space-x-4">
@@ -165,7 +165,7 @@ const Dashboard = () => {
                     <span>This Month</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="mr-2 block h-4 w-4 bg-[#968BE1]"></div>
+                    <div className="mr-2 block h-4 w-4 bg-finamiBlueSecondary"></div>
                     <span>Last Month</span>
                   </div>
                 </div>
@@ -220,7 +220,7 @@ const Dashboard = () => {
                     <span>Planning</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="mr-2 block h-4 w-4 bg-[#968BE1]"></div>
+                    <div className="mr-2 block h-4 w-4 bg-finamiBlueSecondary"></div>
                     <span>Expense</span>
                   </div>
                 </div>

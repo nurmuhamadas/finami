@@ -17,7 +17,7 @@ const OverviewCard = ({
   return (
     <div
       className={cn('flex w-full flex-col items-center', wrapperClassName, {
-        'space-y-2': !!title && (!!actionText || !!actionUrl),
+        'space-y-2': !!title || (!!actionText && !!actionUrl),
       })}
     >
       <div
