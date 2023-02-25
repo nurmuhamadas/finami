@@ -15,3 +15,11 @@ export type DateFormatTypes =
   | 'dd/mm/yyyy'
   | 'dd MM yyyy'
   | 'MM, dd yyyy'
+
+export type TransactionDataType = {
+  id: string
+  name: string
+  date: string
+  amount: number
+  transactionType: TransactionTypesType | 'other'
+}

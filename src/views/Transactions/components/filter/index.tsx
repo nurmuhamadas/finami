@@ -19,6 +19,8 @@ const FilterTransactions = ({
   loading,
   hide = {},
   wrapperClassName,
+  startComponent,
+  endComponent,
 }: FilterTransactionsProps) => {
   const [isShowFilter, setIsShowFilter] = useState(false)
   const [values, setValues] = useState<FilterTransactionValueType>({})
@@ -56,15 +58,19 @@ const FilterTransactions = ({
 
   return (
     <div className={cn(wrapperClassName, 'block')}>
-      <div className="flex justify-end py-2">
-        <MyButton
-          colorType="primary"
-          onClick={() => {
-            setIsShowFilter(!isShowFilter)
-          }}
-        >
-          <AiFillFilter />
-        </MyButton>
+      <div className="flex justify-between items-center flex-wrap py-2 space-2">
+        <div className="flex flex-wrap py-2 space-2">{startComponent}</div>
+        <div className="flex justify-end flex-wrap py-2 space-2">
+          <MyButton
+            colorType="primary"
+            onClick={() => {
+              setIsShowFilter(!isShowFilter)
+            }}
+          >
+            <AiFillFilter />
+          </MyButton>
+          {endComponent}
+        </div>
       </div>
       <div
         className={cn('grid sm:grid-cols-2 md:grid-cols-3 gap-3', {

@@ -4,14 +4,24 @@ import { formatCurrency, formatDate } from 'utils/helpers/formatter'
 
 import { type TransactionListItemProps } from './types'
 
-const TransactionListItem = ({ data, className }: TransactionListItemProps) => {
+const TransactionListItem = ({
+  data,
+  className,
+  onClick,
+}: TransactionListItemProps) => {
   const isTransactionIn = data.transactionType === 'in'
   const isTransactionOut = data.transactionType === 'out'
 
   return (
     <li
       key={data.id}
-      className={cn('flex items-center justify-between space-x-4', className)}
+      role={onClick ? 'button' : 'list'}
+      className={cn(
+        'flex items-center justify-between space-x-4',
+        { 'hover:bg-gray-100 p-3 rounded-lg': !!onClick },
+        className,
+      )}
+      onClick={onClick ? () => onClick(data) : undefined}
     >
       <div className="flex flex-col space-y-1">
         <span className="text-sm">{data.name}</span>

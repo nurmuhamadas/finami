@@ -1,3 +1,5 @@
+import { ReactElement } from 'react'
+
 export type FilterTransactionValueType = {
   user_id?: string
   wallet_id?: string
@@ -14,4 +16,6 @@ export type FilterTransactionsProps = {
     date?: boolean
   }
   wrapperClassName?: string
+  startComponent?: ReactElement
+  endComponent?: ReactElement
 }

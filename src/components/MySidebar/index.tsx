@@ -43,7 +43,8 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
                 href={url}
                 icon={WrappedIcon}
                 className={cn('py-3', {
-                  'bg-finamiBlue pl-4 hover:bg-finamiBlue': isMenuActive,
+                  'bg-finamiBlue pl-4 hover:!bg-finamiBlue hover:cursor-default':
+                    isMenuActive,
                   'bg-inherit': !isMenuActive,
                 })}
               >
