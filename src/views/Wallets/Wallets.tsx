@@ -32,18 +32,23 @@ const WalletsPage = () => {
   return (
     <AppLayout title="Wallets" description="Manage your family wallets">
       <div className="flex flex-col space-y-8">
-        <OverviewCard cardClassName="bg-gradient-to-r from-finamiBlueSecondary to-finamiBlue">
-          <div className="flex flex-col space-y-4">
-            <h3 className="block text-white">Balance</h3>
-            <div className=" mb-3 flex items-center space-x-4">
-              <p className="text-3xl font-bold text-white">Rp120,000</p>
-              <span className="text-white">+20%</span>
+        <div className="flex flex-col ">
+          <OverviewCard
+            cardClassName="bg-gradient-to-r from-finamiBlueSecondary to-finamiBlue"
+            wrapperClassName="md:max-w-md"
+          >
+            <div className="flex flex-col space-y-4">
+              <h3 className="block text-white">Balance</h3>
+              <div className=" mb-3 flex items-center space-x-4">
+                <p className="text-3xl font-bold text-white">Rp120,000</p>
+                <span className="text-white">+20%</span>
+              </div>
+              <span className="text-sm text-white">
+                Compared to last month (Rp100,000)
+              </span>
             </div>
-            <span className="text-sm text-white">
-              Compared to last month (Rp100,000)
-            </span>
-          </div>
-        </OverviewCard>
+          </OverviewCard>
+        </div>
 
         <div className="flex justify-end">
           <MyButton
@@ -56,34 +61,34 @@ const WalletsPage = () => {
           </MyButton>
         </div>
 
-        <OverviewCard title="My Wallets">
-          <WalletsCard
-            data={[
-              {
-                id: '1',
-                name: 'Wallet 1',
-                balance: 2000000,
-                user_id: '',
-              },
-              {
-                id: '2',
-                name: 'Wallet 2',
-                balance: 1220000,
-                user_id: '',
-              },
-            ]}
-            onDeleteClick={(_data) => {
-              setSelectedWallet(_data)
-              setIsOpenDeleteModal(true)
-            }}
-            onEditClick={(_data) => {
-              setSelectedWallet(_data)
-              setIsModalOpen(true)
-            }}
-          />
-        </OverviewCard>
+        <div className="grid gap-8 xl:grid-cols-2">
+          <OverviewCard title="My Wallets">
+            <WalletsCard
+              data={[
+                {
+                  id: '1',
+                  name: 'Wallet 1',
+                  balance: 2000000,
+                  user_id: '',
+                },
+                {
+                  id: '2',
+                  name: 'Wallet 2',
+                  balance: 1220000,
+                  user_id: '',
+                },
+              ]}
+              onDeleteClick={(_data) => {
+                setSelectedWallet(_data)
+                setIsOpenDeleteModal(true)
+              }}
+              onEditClick={(_data) => {
+                setSelectedWallet(_data)
+                setIsModalOpen(true)
+              }}
+            />
+          </OverviewCard>
 
-        <div className="flex flex-col space-y-8">
           <OverviewCard title="Child 1 wallets">
             <WalletsCard
               data={[
