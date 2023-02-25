@@ -7,9 +7,12 @@ const MyButton = ({ colorType, children, ...props }: MyButtonProps) => {
   return (
     <Button
       className={cn({
-        'bg-finamiBlue focus:bg-finamiBlueSecondary': colorType === 'primary',
-        'bg-finamiRed focus:bg-finamiRedSecondary': colorType === 'danger',
-        'bg-finamiGreen focus:bg-finamiGreenSecondary': colorType === 'success',
+        'bg-finamiBlue focus:bg-finamiBlueSecondary hover:bg-finamiBlueSecondary':
+          colorType === 'primary',
+        'bg-finamiRed focus:bg-finamiRedSecondary hover:bg-finamiRedSecondary':
+          colorType === 'danger',
+        'bg-finamiGreen focus:bg-finamiGreenSecondary hover:bg-finamiGreenSecondary':
+          colorType === 'success',
       })}
       {...props}
     >

@@ -6,3 +6,7 @@ body {
   min-width: 360px;
   color: #333;
 }
+
+.rotate-x-90 {
+  transform: rotateX(90deg);
+}
