@@ -71,7 +71,7 @@ const PlanningsPage = () => {
             />
           </div>
           <div className="flex justify-end items-center">
-            <Link href={PAGES_URL.plannings_new} legacyBehavior>
+            <Link href={PAGES_URL.plannings_new} passHref>
               <MyButton colorType="primary">
                 <AiOutlinePlus />
               </MyButton>
@@ -80,7 +80,7 @@ const PlanningsPage = () => {
         </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link href={PAGES_URL.plannings_analytics} legacyBehavior>
+            <Link href={PAGES_URL.plannings_analytics} passHref>
               <MyButton colorType="primary">View Analytic</MyButton>
             </Link>
           </div>

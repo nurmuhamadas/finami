@@ -20,8 +20,9 @@ const BottomNav = ({ menus, wrapperClassName }: BottomNavProps) => {
           const isMenuActive = url === pathname
 
           return (
-            <Link href={url} legacyBehavior key={url}>
+            <Link href={url} passHref key={url}>
               <li
+                role="link"
                 className={cn('h-full w-1/5 pb-2 pt-4', {
                   'rounded-t-3xl bg-finamiBlue': isMenuActive,
                 })}

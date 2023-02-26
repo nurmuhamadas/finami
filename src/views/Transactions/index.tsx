@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 
+import Link from 'next/link'
+
 import dayjs from 'dayjs'
 
 import AppLayout from 'components/AppLayout'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import TransactionListItem from 'components/TransactionListItem'
+import { PAGES_URL } from 'utils/constants/pages'
 import { type TransactionDataType } from 'utils/constants/types'
 import { formatCurrency } from 'utils/helpers/formatter'
 import {
@@ -66,9 +69,11 @@ const TransactionsPage = () => {
           onChange={setFilter}
           startComponent={
             <div className="flex items-center space-x-2">
-              <MyButton colorType="primary">
-                <AiOutlinePlus />
-              </MyButton>
+              <Link href={PAGES_URL.transactions_new} passHref>
+                <MyButton colorType="primary">
+                  <AiOutlinePlus />
+                </MyButton>
+              </Link>
               <MyButton
                 color="light"
                 className="!text-gray-500 hover:!bg-finamiBlue hover:!text-white !text-sm"

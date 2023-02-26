@@ -14,3 +14,9 @@ body {
 .planning-card-btn > div {
   padding: 0.5rem;
 }
+
+.finamiInput input:focus,
+.finamiInput textarea:focus {
+  border-color: #6453dd;
+  box-shadow: #6453dd 0 0 0 1px;
+}
