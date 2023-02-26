@@ -74,21 +74,25 @@ const TransactionsPage = () => {
                   <AiOutlinePlus />
                 </MyButton>
               </Link>
+            </div>
+          }
+        />
+
+        <div className="grid max-w-4xl gap-8">
+          <div className="flex items-center space-x-3 justify-between">
+            <p className="font-semibold">
+              Period: {dayjs(filter.date[0]).format('DD MMM YYYY')} -{' '}
+              {dayjs(filter.date[1]).format('DD MMM YYYY')}
+            </p>
+            <Link href={PAGES_URL.transactions_analytics} passHref>
               <MyButton
                 color="light"
                 className="!text-gray-500 hover:!bg-finamiBlue hover:!text-white !text-sm"
               >
                 <span className="text-sm">View Report</span>
               </MyButton>
-            </div>
-          }
-        />
-
-        <div className="grid max-w-4xl gap-8">
-          <p className="font-semibold">
-            Period: {dayjs(filter.date[0]).format('DD MMM YYYY')} -{' '}
-            {dayjs(filter.date[1]).format('DD MMM YYYY')}
-          </p>
+            </Link>
+          </div>
           <OverviewCard
             Header={
               <div className="flex ">

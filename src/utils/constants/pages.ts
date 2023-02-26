@@ -2,6 +2,7 @@ export const PAGES_URL = {
   overview: '/app/dashboard',
   transactions: '/app/transactions',
   transactions_new: '/app/transactions/new',
+  transactions_analytics: '/app/transactions/analytics',
   wallets: '/app/wallets',
   plannings: '/app/plannings',
   plannings_new: '/app/plannings/new',
