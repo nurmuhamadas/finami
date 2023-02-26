@@ -23,3 +23,12 @@ export type TransactionDataType = {
   amount: number
   transactionType: TransactionTypesType | 'other'
 }
+
+export type PlanningDataType = {
+  id: string
+  planning: number
+  expense: number
+  category_name: string
+  user_id: string
+  user_name: string
+}

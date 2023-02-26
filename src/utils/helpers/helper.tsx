@@ -1,8 +1,13 @@
 import dayjs from 'dayjs'
 
-import { type TransactionDataType } from 'utils/constants/types'
+import {
+  type PlanningDataType,
+  type TransactionDataType,
+} from 'utils/constants/types'
 
-export const groupTransactionByDate = (data: TransactionDataType[]) => {
+export const groupTransactionByDate = (
+  data: TransactionDataType[],
+): TransactionDataType[][] => {
   const _data: TransactionDataType[][] = []
 
   data.forEach((d) => {
@@ -30,4 +35,21 @@ export const calcTotalTransaction = (data: TransactionDataType[]) => {
     out: outFlow,
     total: inFlow - outFlow,
   }
+}
+
+export const groupPlanningsByUser = (
+  data: PlanningDataType[],
+): PlanningDataType[][] => {
+  const _data: PlanningDataType[][] = []
+
+  data.forEach((d) => {
+    const i = _data.findIndex((p) => p[0].user_id === d.user_id)
+    if (i < 0) {
+      _data.push([d])
+    } else {
+      _data[i].push(d)
+    }
+  })
+
+  return _data
 }

@@ -10,6 +10,8 @@ const MyDatePicker = ({
   showShorcut = false,
   showFooter = false,
   disabled = false,
+  displayFormat = 'DD-MM-YYYY',
+  disabledDates,
 }: MyDatePickerProps) => {
   const [value, setValue] = useState<DateRangeType>()
 
@@ -36,8 +38,9 @@ const MyDatePicker = ({
       showShortcuts={showShorcut}
       primaryColor="violet"
       placeholder="Select date"
-      displayFormat="DD-MM-YYYY"
+      displayFormat={displayFormat}
       inputClassName="py-[8px]"
+      disabledDates={disabledDates}
     />
   )
 }

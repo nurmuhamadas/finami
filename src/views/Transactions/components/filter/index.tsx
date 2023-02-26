@@ -115,14 +115,15 @@ const FilterTransactions = ({
             disabled={loading}
             onChange={(d) => {
               const [s, e] = d as Date[]
-
-              setValues({
+              const v = {
                 ...values,
                 date: [
                   dayjs(s).startOf('day').toISOString(),
                   dayjs(e).endOf('day').toISOString(),
                 ],
-              })
+              }
+              setValues(v)
+              onChange(v)
             }}
             range
             showShorcut

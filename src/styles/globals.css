@@ -10,3 +10,7 @@ body {
 .rotate-x-90 {
   transform: rotateX(90deg);
 }
+
+.planning-card-btn > div {
+  padding: 0.5rem;
+}

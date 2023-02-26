@@ -50,8 +50,10 @@ const dummyData: TransactionDataType[] = [
 ]
 
 const TransactionsPage = () => {
-  const [filter, setFilter] = useState<FilterTransactionValueType>({})
-  console.log(filter)
+  const [filter, setFilter] = useState<FilterTransactionValueType>({
+    date: [dayjs().startOf('month'), dayjs().endOf('month')],
+  })
+
   const totalFlow = calcTotalTransaction(dummyData)
 
   return (
@@ -78,6 +80,10 @@ const TransactionsPage = () => {
         />
 
         <div className="grid max-w-4xl gap-8">
+          <p className="font-semibold">
+            Period: {dayjs(filter.date[0]).format('DD MMM YYYY')} -{' '}
+            {dayjs(filter.date[1]).format('DD MMM YYYY')}
+          </p>
           <OverviewCard
             Header={
               <div className="flex ">
