@@ -11,3 +11,13 @@ export const PAGES_URL = {
   account: '/app/account',
   setting: '/app/account/setting',
 }
+
+export const QUERY_URL = {
+  transactions_analytics: {
+    start_date: 'sd',
+    end_date: 'ed',
+    wallet: 'w',
+    category: 'c',
+    user: 'u',
+  },
+}

@@ -23,6 +23,7 @@ export interface WalletDataResponse {
   name: string
   user_id: string
   user_name: string
+  user_fullname: string
   balance: number
   is_owner: boolean
   created_at: Date
@@ -49,6 +50,7 @@ export interface TransactionDataResponse {
   image_url: string
   user_id: string
   user_name: string
+  user_fullname: string
   category_id: string
   category_name: string
   wallet_id: string
@@ -61,15 +63,15 @@ export interface TransactionDataResponse {
 export interface GetTransactionsQuery {
   child_id?: string
   transaction_type?: TransactionTypesType
-  start_date: Date
-  end_date: Date
+  start_date?: Date
+  end_date?: Date
   category_id?: string
   wallet_id?: string
   search_key?: string
   limit?: number
   offset?: number
-  sort_by: SorterTransactionType
-  order_by: OrderTransactionType
+  sort_by?: SorterTransactionType
+  order_by?: OrderTransactionType
 }
 export interface CreateTransactionPayload {
   amount: number
@@ -99,6 +101,7 @@ export interface PlanningDataResponse {
   category_name: string
   user_id: string
   user_name: string
+  user_fullname: string
   wallet_id: string
   wallet_name: string
   month: Date
@@ -136,6 +139,7 @@ export interface CategoryDataResponse {
   group: CategoryGroupsType
   user_id: string
   user_name: string
+  user_fullname: string
   is_owner: boolean
   created_at: Date
   updated_at: Date

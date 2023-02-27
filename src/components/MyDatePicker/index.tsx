@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 import { type DateRangeType } from 'react-tailwindcss-datepicker/dist/types'
 
@@ -12,6 +12,7 @@ const MyDatePicker = ({
   disabled = false,
   displayFormat = 'DD-MM-YYYY',
   disabledDates,
+  initialValue,
 }: MyDatePickerProps) => {
   const [value, setValue] = useState<DateRangeType>()
 
@@ -26,6 +27,12 @@ const MyDatePicker = ({
       onChange(start)
     }
   }
+
+  useEffect(() => {
+    if (initialValue) {
+      setValue(initialValue)
+    }
+  }, [])
 
   return (
     <Datepicker

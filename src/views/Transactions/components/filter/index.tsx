@@ -1,13 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiFillFilter } from 'react-icons/ai'
 import Select from 'react-tailwindcss-select'
+import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Label } from 'flowbite-react'
 
+import useGetCategories from 'data/api/Categories/useGetCategories'
+import useGetUsers from 'data/api/Users/useGetUsers'
+import useGetWallets from 'data/api/Wallets/useGetWallets'
+import {
+  type CategoryDataResponse,
+  type UserDataResponse,
+  type WalletDataResponse,
+} from 'data/types'
+
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
+import { mapDataToSelectOptions } from 'utils/constants/common'
+import { dayjsToDate } from 'utils/helpers/formatter'
 
 import {
   type FilterTransactionsProps,
@@ -21,29 +33,36 @@ const FilterTransactions = ({
   wrapperClassName,
   startComponent,
   endComponent,
+  initialValues,
 }: FilterTransactionsProps) => {
+  let initial = true
   const [isShowFilter, setIsShowFilter] = useState(false)
   const [values, setValues] = useState<FilterTransactionValueType>({})
   const [optionsState, setOptionsState] = useState({
-    user_id: undefined,
+    child_id: undefined,
     wallet_id: undefined,
+    category_id: undefined,
   })
 
-  // TODO: change from API
-  const optUser = [
-    { value: 'user-1', label: 'User 1' },
-    { value: 'user-2', label: 'User 2' },
-    { value: 'user-3', label: 'User 3' },
-  ]
+  const optCategory = mapDataToSelectOptions<CategoryDataResponse>(
+    useGetCategories(),
+    'id',
+    'name',
+  )
 
-  // TODO: change from API
-  const optWallet = [
-    { value: 'wallet-1', label: 'Wallet 1' },
-    { value: 'wallet-2', label: 'Wallet 2' },
-    { value: 'wallet-3', label: 'Wallet 3' },
-  ]
+  const optUser = mapDataToSelectOptions<UserDataResponse>(
+    useGetUsers(),
+    'id',
+    'fullname',
+  )
 
-  const handleChange = (e: any, name: 'user_id' | 'wallet_id') => {
+  const optWallet = mapDataToSelectOptions<WalletDataResponse>(
+    useGetWallets(),
+    'id',
+    'name',
+  )
+
+  const handleChange = (e: Option, name: keyof FilterTransactionValueType) => {
     const _value = {
       ...values,
       [name]: e ? e.value : undefined,
@@ -55,6 +74,13 @@ const FilterTransactions = ({
       [name]: e,
     })
   }
+
+  useEffect(() => {
+    if (initialValues && initial) {
+      setValues(initialValues)
+    }
+    initial = false
+  }, [initialValues])
 
   return (
     <div className={cn(wrapperClassName, 'block')}>
@@ -77,6 +103,46 @@ const FilterTransactions = ({
           hidden: !isShowFilter,
         })}
       >
+        <div className={cn({ hidden: hide.date })}>
+          <div className="mb-1 block">
+            <Label value="Date" />
+          </div>
+          <MyDatePicker
+            disabled={loading}
+            initialValue={{
+              startDate: initialValues.startDate,
+              endDate: initialValues.endDate,
+            }}
+            onChange={(d) => {
+              const [s, e] = d as Date[]
+              const v: FilterTransactionValueType = {
+                ...values,
+                startDate: dayjsToDate(dayjs(s).startOf('day')),
+                endDate: dayjsToDate(dayjs(e).endOf('day')),
+              }
+              setValues(v)
+              onChange(v)
+            }}
+            range
+            showShorcut
+          />
+        </div>
+        <div className={cn({ hidden: hide.category })}>
+          <div className="mb-1 block">
+            <Label value="Category" />
+          </div>
+          <Select
+            isClearable
+            isSearchable
+            isDisabled={loading}
+            primaryColor="violet"
+            value={optionsState.category_id}
+            onChange={(e) => {
+              handleChange(e as Option, 'category_id')
+            }}
+            options={optCategory}
+          />
+        </div>
         <div className={cn({ hidden: hide.user })}>
           <div className="mb-1 block">
             <Label value="User" />
@@ -85,9 +151,9 @@ const FilterTransactions = ({
             isClearable
             isDisabled={loading}
             primaryColor="violet"
-            value={optionsState.user_id}
+            value={optionsState.child_id}
             onChange={(e) => {
-              handleChange(e, 'user_id')
+              handleChange(e as Option, 'child_id')
             }}
             options={optUser}
           />
@@ -102,31 +168,9 @@ const FilterTransactions = ({
             primaryColor="violet"
             value={optionsState.wallet_id}
             onChange={(e) => {
-              handleChange(e, 'wallet_id')
+              handleChange(e as Option, 'wallet_id')
             }}
             options={optWallet}
-          />
-        </div>
-        <div className={cn({ hidden: hide.date })}>
-          <div className="mb-1 block">
-            <Label value="Date" />
-          </div>
-          <MyDatePicker
-            disabled={loading}
-            onChange={(d) => {
-              const [s, e] = d as Date[]
-              const v = {
-                ...values,
-                date: [
-                  dayjs(s).startOf('day').toISOString(),
-                  dayjs(e).endOf('day').toISOString(),
-                ],
-              }
-              setValues(v)
-              onChange(v)
-            }}
-            range
-            showShorcut
           />
         </div>
       </div>

@@ -42,6 +42,7 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/naming-convention': 'off',
     'eslint-comments/no-use': ['error', { allow: [] }],
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [

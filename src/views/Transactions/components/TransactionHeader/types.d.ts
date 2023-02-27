@@ -1,5 +1,6 @@
+import { TransactionDataResponse } from 'data/types'
 import { TransactionDataType } from 'utils/constants/types'
 
 export type TransactionHeaderProps = {
-  data: TransactionDataType[]
+  total: number
 }

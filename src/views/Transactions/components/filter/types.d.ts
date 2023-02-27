@@ -1,9 +1,11 @@
 import { ReactElement } from 'react'
 
 export type FilterTransactionValueType = {
-  user_id?: string
+  child_id?: string
   wallet_id?: string
-  date?: sting | string[]
+  category_id?: string
+  startDate?: Date
+  endDate?: Date
 }
 
 export type FilterTransactionsProps = {
@@ -13,9 +15,11 @@ export type FilterTransactionsProps = {
   hide?: {
     wallet?: boolean
     user?: boolean
+    category?: boolean
     date?: boolean
   }
   wrapperClassName?: string
   startComponent?: ReactElement
   endComponent?: ReactElement
+  initialValues?: FilterTransactionValueType
 }

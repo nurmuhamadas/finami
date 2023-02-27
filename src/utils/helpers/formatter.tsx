@@ -1,3 +1,5 @@
+import { type Dayjs } from 'dayjs'
+
 import { type DateFormatTypes } from 'utils/constants/types'
 
 export function parseNumber(v: number, toFixed = 0) {
@@ -52,4 +54,8 @@ export const formatDate = (
     .replace('yyyy', y.toString())
 
   return _date
+}
+
+export const dayjsToDate = (date: Dayjs): Date => {
+  return new Date(date.format('YYYY-MM-DD'))
 }

@@ -20,6 +20,7 @@ export type TransactionDataType = {
   id: string
   name: string
   date: string
+  description: string
   amount: number
   transactionType: TransactionTypesType | 'other'
 }

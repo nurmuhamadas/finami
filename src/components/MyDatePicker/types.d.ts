@@ -8,4 +8,5 @@ export type MyDatePickerProps = {
   disabled?: boolean
   disabledDates?: DateRangeType[]
   displayFormat?: string
+  initialValue?: DateRangeType
 }

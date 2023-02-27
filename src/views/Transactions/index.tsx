@@ -2,62 +2,42 @@ import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import dayjs from 'dayjs'
+
+import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 
 import AppLayout from 'components/AppLayout'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import TransactionListItem from 'components/TransactionListItem'
-import { PAGES_URL } from 'utils/constants/pages'
-import { type TransactionDataType } from 'utils/constants/types'
-import { formatCurrency } from 'utils/helpers/formatter'
-import {
-  calcTotalTransaction,
-  groupTransactionByDate,
-} from 'utils/helpers/helper'
+import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
+import { dayjsToDate, formatCurrency } from 'utils/helpers/formatter'
+import { groupTransactionByDate } from 'utils/helpers/helper'
 
 import FilterTransactions from './components/filter'
 import { type FilterTransactionValueType } from './components/filter/types'
 import TransactionHeader from './components/TransactionHeader'
 
-const dummyData: TransactionDataType[] = [
-  {
-    id: 'trx-1',
-    name: 'Transaction In',
-    amount: 10000,
-    transactionType: 'in',
-    date: '21 February 2023',
-  },
-  {
-    id: 'trx-2',
-    name: 'Transaction Out',
-    amount: 12000,
-    transactionType: 'out',
-    date: '21 February 2023',
-  },
-  {
-    id: 'trx-3',
-    name: 'Transaction In 2',
-    amount: 20000,
-    transactionType: 'in',
-    date: '15 February 2023',
-  },
-  {
-    id: 'trx-4',
-    name: 'Transaction Out 2',
-    amount: 2000,
-    transactionType: 'in',
-    date: '12 February 2023',
-  },
-]
+const { transactions_analytics: ta } = QUERY_URL
 
 const TransactionsPage = () => {
+  const router = useRouter()
+
   const [filter, setFilter] = useState<FilterTransactionValueType>({
-    date: [dayjs().startOf('month'), dayjs().endOf('month')],
+    startDate: dayjsToDate(dayjs().startOf('month')),
+    endDate: dayjsToDate(dayjs().endOf('month')),
   })
 
-  const totalFlow = calcTotalTransaction(dummyData)
+  const orgData = useGetTransactions({
+    ...filter,
+    start_date: filter.startDate,
+    end_date: filter.endDate,
+  })
+  console.log(orgData)
+  const { inAmount, outAmount, totalAmount, data } =
+    groupTransactionByDate(orgData)
 
   return (
     <AppLayout
@@ -66,6 +46,7 @@ const TransactionsPage = () => {
     >
       <div className="flex flex-col space-y-8">
         <FilterTransactions
+          initialValues={filter}
           onChange={setFilter}
           startComponent={
             <div className="flex items-center space-x-2">
@@ -81,10 +62,22 @@ const TransactionsPage = () => {
         <div className="grid max-w-4xl gap-8">
           <div className="flex items-center space-x-3 justify-between">
             <p className="font-semibold">
-              Period: {dayjs(filter.date[0]).format('DD MMM YYYY')} -{' '}
-              {dayjs(filter.date[1]).format('DD MMM YYYY')}
+              Period: {dayjs(filter.startDate).format('DD MMM YYYY')} -{' '}
+              {dayjs(filter.endDate).format('DD MMM YYYY')}
             </p>
-            <Link href={PAGES_URL.transactions_analytics} passHref>
+            <Link
+              href={{
+                pathname: PAGES_URL.transactions_analytics,
+                query: {
+                  [ta.start_date]: filter.startDate.toISOString(),
+                  [ta.end_date]: filter.endDate.toISOString(),
+                  [ta.category]: filter.category_id,
+                  [ta.user]: filter.child_id,
+                  [ta.wallet]: filter.wallet_id,
+                },
+              }}
+              passHref
+            >
               <MyButton
                 color="light"
                 className="!text-gray-500 hover:!bg-finamiBlue hover:!text-white !text-sm"
@@ -104,29 +97,29 @@ const TransactionsPage = () => {
               <li className="flex justify-between items-center">
                 <span className="">Inflow</span>
                 <span className=" text-finamiGreen font-semibold">
-                  + Rp. {formatCurrency(totalFlow.in)}
+                  + Rp. {formatCurrency(inAmount)}
                 </span>
               </li>
               <li className="flex justify-between items-center">
                 <span className="">Outflow</span>
                 <span className="text-finamiRed font-semibold">
-                  - Rp. {formatCurrency(totalFlow.out)}
+                  - Rp. {formatCurrency(outAmount)}
                 </span>
               </li>
               <li className="border-b-2 " />
               <li className="flex justify-between items-center">
                 <span className="font-semibold">Total</span>
                 <span className="font-semibold">
-                  {totalFlow.total < 0 ? '-' : ''} Rp.{' '}
-                  {formatCurrency(Math.abs(totalFlow.total))}
+                  {totalAmount < 0 ? '-' : ''} Rp.{' '}
+                  {formatCurrency(Math.abs(totalAmount))}
                 </span>
               </li>
             </ul>
           </OverviewCard>
 
-          {groupTransactionByDate(dummyData).map((_data) => {
+          {data.map((_data) => {
             const f = 'DD-MM-YYYY'
-            const _d = _data[0].date
+            const _d = _data.date
             let title = ''
             const _today = dayjs().format(f)
 
@@ -135,23 +128,28 @@ const TransactionsPage = () => {
             } else if (dayjs(_d).add(1, 'day').format(f) === _today) {
               title = 'Yesterday'
             } else {
-              title = dayjs(_data[0].date).format('DD MMM YYYY')
+              title = dayjs(_d).format('dddd, DD MMM YYYY')
             }
 
             return (
               <OverviewCard
-                key={_data.toString()}
+                key={JSON.stringify(_data)}
                 title={title}
-                Header={<TransactionHeader data={_data} />}
+                Header={<TransactionHeader total={_data.totalAmount} />}
               >
-                <ul className="flex flex-col space-y-4">
-                  {_data.map((d) => (
+                <ul className="flex flex-col space-y-4 w-full">
+                  {_data.data.map((d) => (
                     <TransactionListItem
                       key={d.id}
                       data={d}
-                      onClick={(_d) => {
-                        console.log(_d)
+                      onClick={async (_d) => {
+                        await router.push(
+                          `${PAGES_URL.transactions}/${d.id}`,
+                          undefined,
+                        )
                       }}
+                      showDescription
+                      showUser
                     />
                   ))}
                 </ul>
