@@ -15,11 +15,11 @@ const NewTransactionPage = () => {
   }
 
   return (
-    <AppLayout title="Create New Transactions">
+    <AppLayout>
       <div className="flex flex-col space-y-8 max-w-5xl">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link href={PAGES_URL.transactions} passHref>
+            <Link href={PAGES_URL.transactions.url} passHref>
               <MyButton color="light">
                 <AiOutlineArrowLeft />
               </MyButton>

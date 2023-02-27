@@ -35,22 +35,18 @@ const TransactionsPage = () => {
     start_date: filter.startDate,
     end_date: filter.endDate,
   })
-  console.log(orgData)
   const { inAmount, outAmount, totalAmount, data } =
     groupTransactionByDate(orgData)
 
   return (
-    <AppLayout
-      title="Transactions"
-      description="Record inflow and outflow of your family finance here"
-    >
+    <AppLayout description="Record inflow and outflow of your family finance here">
       <div className="flex flex-col space-y-8">
         <FilterTransactions
           initialValues={filter}
           onChange={setFilter}
           startComponent={
             <div className="flex items-center space-x-2">
-              <Link href={PAGES_URL.transactions_new} passHref>
+              <Link href={PAGES_URL.transactions_new.url} passHref>
                 <MyButton colorType="primary">
                   <AiOutlinePlus />
                 </MyButton>
@@ -67,7 +63,7 @@ const TransactionsPage = () => {
             </p>
             <Link
               href={{
-                pathname: PAGES_URL.transactions_analytics,
+                pathname: PAGES_URL.transactions_analytics.url,
                 query: {
                   [ta.start_date]: filter.startDate.toISOString(),
                   [ta.end_date]: filter.endDate.toISOString(),
@@ -144,7 +140,7 @@ const TransactionsPage = () => {
                       data={d}
                       onClick={async (_d) => {
                         await router.push(
-                          `${PAGES_URL.transactions}/${d.id}`,
+                          `${PAGES_URL.transactions.url}/${d.id}`,
                           undefined,
                         )
                       }}

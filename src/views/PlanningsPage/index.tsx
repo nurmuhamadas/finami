@@ -50,10 +50,7 @@ const plannings = [
 
 const PlanningsPage = () => {
   return (
-    <AppLayout
-      title="Plannings"
-      description="Don't let your money flow with no purpose. Plan it!"
-    >
+    <AppLayout description="Don't let your money flow with no purpose. Plan it!">
       <div className="flex w-full flex-col space-y-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -71,7 +68,7 @@ const PlanningsPage = () => {
             />
           </div>
           <div className="flex justify-end items-center">
-            <Link href={PAGES_URL.plannings_new} passHref>
+            <Link href={PAGES_URL.plannings_new.url} passHref>
               <MyButton colorType="primary">
                 <AiOutlinePlus />
               </MyButton>
@@ -80,7 +77,7 @@ const PlanningsPage = () => {
         </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link href={PAGES_URL.plannings_analytics} passHref>
+            <Link href={PAGES_URL.plannings_analytics.url} passHref>
               <MyButton colorType="primary">View Analytic</MyButton>
             </Link>
           </div>

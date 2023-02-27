@@ -17,17 +17,18 @@ const BottomNav = ({ menus, wrapperClassName }: BottomNavProps) => {
     >
       <ul className="flex h-full w-full justify-between">
         {menus.map(({ url, Icon, text }) => {
-          const isMenuActive = url === pathname
+          const isMenuActive = pathname.startsWith(url)
 
           return (
-            <Link href={url} passHref key={url}>
-              <li
-                role="link"
-                className={cn('h-full w-1/5 pb-2 pt-4', {
-                  'rounded-t-3xl bg-finamiBlue': isMenuActive,
-                })}
-              >
-                <div className="flex flex-col items-center ">
+            <li
+              key={url}
+              role="link"
+              className={cn('h-full w-1/5', {
+                'rounded-t-3xl bg-finamiBlue': isMenuActive,
+              })}
+            >
+              <Link href={url} legacyBehavior>
+                <a className="flex flex-col items-center h-full pb-2 pt-4">
                   <div>
                     <Icon
                       size={24}
@@ -45,9 +46,9 @@ const BottomNav = ({ menus, wrapperClassName }: BottomNavProps) => {
                   >
                     {text}
                   </span>
-                </div>
-              </li>
-            </Link>
+                </a>
+              </Link>
+            </li>
           )
         })}
       </ul>

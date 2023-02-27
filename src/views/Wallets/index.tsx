@@ -30,7 +30,7 @@ const WalletsPage = () => {
   }
 
   return (
-    <AppLayout title="Wallets" description="Manage your family wallets">
+    <AppLayout description="Manage your family wallets">
       <div className="flex flex-col space-y-8">
         <div className="flex flex-col ">
           <OverviewCard

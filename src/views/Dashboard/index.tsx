@@ -30,10 +30,7 @@ const Dashboard = () => {
   }
 
   return (
-    <AppLayout
-      title="Dashboard"
-      description="Manage overview for your transaction"
-    >
+    <AppLayout description="Manage overview for your transaction">
       <div className="flex w-full flex-col">
         <div className="mb-8 grid grid-cols-1 gap-y-4 md:grid-cols-2 md:gap-x-4 xl:grid-cols-3 xl:gap-y-0">
           {/* Balance card */}
@@ -84,7 +81,7 @@ const Dashboard = () => {
           <OverviewCard
             title="All Wallets"
             actionText="See all"
-            actionUrl={PAGES_URL.wallets}
+            actionUrl={PAGES_URL.wallets.url}
             wrapperClassName="mb-8"
           >
             <ul className="flex flex-col">
@@ -117,7 +114,7 @@ const Dashboard = () => {
           <OverviewCard
             title="Recent Transactions"
             actionText="See all"
-            actionUrl={PAGES_URL.transactions}
+            actionUrl={PAGES_URL.transactions.url}
           >
             <ul className="flex flex-col space-y-4">
               <TransactionListItem
@@ -154,7 +151,7 @@ const Dashboard = () => {
           <OverviewCard
             title="Spending Report"
             actionText="View Detail"
-            actionUrl={PAGES_URL.analytics}
+            actionUrl={PAGES_URL.analytics.url}
             wrapperClassName="mb-8"
           >
             <div className="flex flex-col">
@@ -209,7 +206,7 @@ const Dashboard = () => {
           <OverviewCard
             title="Budget Analytic"
             actionText="View Detail"
-            actionUrl={PAGES_URL.analytics}
+            actionUrl={PAGES_URL.analytics.url}
             wrapperClassName="mb-8"
           >
             <div className="flex flex-col">

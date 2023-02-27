@@ -3,13 +3,17 @@ import { Fragment } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
+import { getPageTitle } from 'utils/helpers/pages'
+
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const pageTitle = getPageTitle()
+
   return (
     <Fragment>
       <Head>
-        <title>Finami - </title>
+        <title>Finami - {pageTitle}</title>
         <meta name="title" content="Finami" />
         <link rel="shortcut icon" href="/static/favicon.ico" />
         <meta name="description" content="Financial management for family" />

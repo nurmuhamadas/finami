@@ -13,26 +13,26 @@ export const bottomMenu: MenuType[] = [
   {
     Icon: AiOutlineDashboard,
     text: 'Overview',
-    url: PAGES_URL.overview,
+    url: PAGES_URL.overview.url,
   },
   {
     Icon: AiOutlineWallet,
     text: 'Wallets',
-    url: PAGES_URL.wallets,
+    url: PAGES_URL.wallets.url,
   },
   {
     Icon: AiOutlineTransaction,
     text: 'Transactions',
-    url: PAGES_URL.transactions,
+    url: PAGES_URL.transactions.url,
   },
   {
     Icon: AiOutlineCalendar,
     text: 'Plannings',
-    url: PAGES_URL.plannings,
+    url: PAGES_URL.plannings.url,
   },
   {
     Icon: AiOutlineUser,
     text: 'Account',
-    url: PAGES_URL.account,
+    url: PAGES_URL.account.url,
   },
 ]

@@ -41,7 +41,6 @@ export default function useGetTransactions(
         dayjs(d.date).isSame(start_date, 'day') ||
         dayjs(d.date).isAfter(start_date, 'day'),
     )
-    console.log(_data)
   }
   if (end_date) {
     _data = _data.filter(

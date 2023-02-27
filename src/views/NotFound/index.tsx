@@ -27,7 +27,7 @@ const NotFoundPage = () => {
           <br className="sm:block hidden" /> suggest you Back to Homepage.
         </p>
         <div className="flex justify-center">
-          <Link href={isLoggedIn ? PAGES_URL.overview : '/'}>
+          <Link href={isLoggedIn ? PAGES_URL.overview.url : '/'}>
             <MyButton colorType="primary">Back to Homepage</MyButton>
           </Link>
         </div>

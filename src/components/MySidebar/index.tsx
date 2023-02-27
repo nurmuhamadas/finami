@@ -24,7 +24,7 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {menus.map(({ text, Icon, url }) => {
-            const isMenuActive = url === pathname
+            const isMenuActive = pathname.startsWith(url)
 
             const WrappedIcon = () => (
               <span
