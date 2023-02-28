@@ -28,5 +28,6 @@ export const QUERY_URL = {
     wallet: 'w',
     category: 'c',
     user: 'u',
+    transactionType: 't',
   },
 }

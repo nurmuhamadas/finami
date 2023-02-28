@@ -13,6 +13,7 @@ const OverviewCard = ({
   actionUrl,
   wrapperClassName,
   cardClassName,
+  onCardClick,
 }: OverviewCardProps) => {
   return (
     <div
@@ -37,7 +38,11 @@ const OverviewCard = ({
         </Link>
       </div>
 
-      <Card className={cn('w-full shadow-sm', cardClassName)}>
+      <Card
+        role={onCardClick ? 'button' : undefined}
+        onClick={onCardClick}
+        className={cn('w-full shadow-sm', cardClassName)}
+      >
         {Boolean(Header) && <div className="border-b-2 pb-3">{Header}</div>}
         {children}
       </Card>

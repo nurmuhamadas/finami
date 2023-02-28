@@ -11,9 +11,11 @@ const TransactionListItem = ({
   showDate,
   showDescription,
   showUser,
+  disableAmountFormatting,
 }: TransactionListItemProps) => {
   const isTransactionIn = data.transaction_type === 'in'
   const isTransactionOut = data.transaction_type === 'out'
+  const inOutSign = isTransactionIn ? '+' : '-'
 
   return (
     <li
@@ -37,14 +39,19 @@ const TransactionListItem = ({
           <span className="fonsem">{data.category_name}</span>
           <span
             className={cn('text-sm font-semibold', {
-              'text-finamiGreen': isTransactionIn,
-              'text-finamiRed': isTransactionOut,
+              'text-finamiGreen': !disableAmountFormatting && isTransactionIn,
+              'text-finamiRed': !disableAmountFormatting && isTransactionOut,
             })}
           >
-            {isTransactionIn ? '+' : '-'} Rp. {formatCurrency(data.amount)}
+            {!disableAmountFormatting ? inOutSign : ''} Rp.{' '}
+            {formatCurrency(data.amount)}
           </span>
         </div>
-        <div className="flex items-center space-x-2 justify-between">
+        <div
+          className={cn('flex items-center justify-between', {
+            'space-x-2': showUser && showDate,
+          })}
+        >
           <span
             className={cn('text-sm text-gray-500', {
               hidden: !showUser,

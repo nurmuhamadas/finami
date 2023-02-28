@@ -8,4 +8,5 @@ export type TransactionListItemProps = {
   showDate?: boolean
   showDescription?: boolean
   showUser?: boolean
+  disableAmountFormatting?: boolean
 }

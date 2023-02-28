@@ -1,8 +1,35 @@
 import dayjs from 'dayjs'
 
-import { type GetTransactionsQuery } from 'data/types'
+import {
+  type GetTransactionsQuery,
+  type OrderTransactionType,
+  type SorterTransactionType,
+  type TransactionDataResponse,
+} from 'data/types'
 
 import { dummyTransactionsData } from 'utils/constants/dummyData'
+
+const sortTransaction = (
+  data: TransactionDataResponse[],
+  sortBy: SorterTransactionType,
+  orderBy: OrderTransactionType,
+) => {
+  if (sortBy === 'amount') {
+    return data.sort((a, b) => {
+      if (orderBy === 'asc') return a.amount - b.amount
+      else return b.amount - a.amount
+    })
+  }
+
+  if (sortBy === 'date') {
+    return data.sort((a, b) => {
+      if (orderBy === 'asc') return a.date > b.date ? 1 : -1
+      else return a.date < b.date ? 1 : -1
+    })
+  }
+
+  return data
+}
 
 export default function useGetTransactions(
   {
@@ -13,12 +40,17 @@ export default function useGetTransactions(
     search_key,
     start_date,
     end_date,
+    limit,
+    offset,
+    sort_by,
+    order_by,
   }: GetTransactionsQuery = {
     sort_by: 'date',
     order_by: 'desc',
   },
 ) {
   let _data = [...dummyTransactionsData]
+  const _offset = limit ? limit + (offset || 0) : undefined
 
   if (child_id) {
     _data = _data.filter((d) => d.user_id === child_id)
@@ -50,5 +82,5 @@ export default function useGetTransactions(
     )
   }
 
-  return _data
+  return sortTransaction(_data, sort_by, order_by)?.slice(offset, _offset)
 }

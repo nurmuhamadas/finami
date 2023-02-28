@@ -1,13 +1,32 @@
 import { Chart } from 'react-google-charts'
 
+import { useRouter } from 'next/router'
+
 import { Alert } from 'flowbite-react'
+
+import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 
 import AppLayout from 'components/AppLayout'
 import OverviewCard from 'components/OverviewCard'
 import TransactionListItem from 'components/TransactionListItem'
-import { PAGES_URL } from 'utils/constants/pages'
+import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
+
+import { chartOptions2 } from './consts'
 
 const Dashboard = () => {
+  const router = useRouter()
+
+  const recentTrxData = useGetTransactions({
+    limit: 5,
+    sort_by: 'date',
+    order_by: 'desc',
+  })
+  const topSpendData = useGetTransactions({
+    transaction_type: 'out',
+    limit: 5,
+    sort_by: 'amount',
+    order_by: 'desc',
+  })
   const data = [
     ['', 'Last Month', 'This Month', ''],
     [' ', 0, 20000, 0], // this month
@@ -19,22 +38,17 @@ const Dashboard = () => {
     [' ', 1202000, 0, 0], // expense
   ]
 
-  const options = {
-    colors: ['#968BE1', '#6453DD', 'white'],
-    legend: { position: 'none' },
-  }
-
-  const options2 = {
-    colors: ['#968BE1', '#6453DD', 'white'],
-    legend: { position: 'none' },
-  }
-
   return (
     <AppLayout description="Manage overview for your transaction">
       <div className="flex w-full flex-col">
         <div className="mb-8 grid grid-cols-1 gap-y-4 md:grid-cols-2 md:gap-x-4 xl:grid-cols-3 xl:gap-y-0">
           {/* Balance card */}
-          <OverviewCard cardClassName="bg-gradient-to-r from-finamiBlueSecondary to-finamiBlue">
+          <OverviewCard
+            cardClassName="bg-gradient-to-r from-finamiBlueSecondary to-finamiBlue"
+            onCardClick={async () => {
+              await router.push(PAGES_URL.wallets.url)
+            }}
+          >
             <div className="flex flex-col space-y-4">
               <h3 className="block text-white">Balance</h3>
               <div className="mb-3 flex items-center space-x-4">
@@ -115,35 +129,20 @@ const Dashboard = () => {
             title="Recent Transactions"
             actionText="See all"
             actionUrl={PAGES_URL.transactions.url}
+            cardClassName="planning-card-btn"
           >
-            <ul className="flex flex-col space-y-4">
-              <TransactionListItem
-                data={{
-                  id: 'trx-1',
-                  name: 'Transaction In',
-                  amount: 12000,
-                  transactionType: 'in',
-                  date: '21 Januari 2023',
-                }}
-              />
-              <TransactionListItem
-                data={{
-                  id: 'trx-2',
-                  name: 'Transaction Out',
-                  amount: 22000,
-                  transactionType: 'out',
-                  date: '21 Januari 2023',
-                }}
-              />
-              <TransactionListItem
-                data={{
-                  id: 'trx-3',
-                  name: 'Transaction In',
-                  amount: 112000,
-                  transactionType: 'in',
-                  date: '21 Januari 2023',
-                }}
-              />
+            <ul className="flex flex-col">
+              {recentTrxData?.map((d) => (
+                <TransactionListItem
+                  key={JSON.stringify(d)}
+                  data={d}
+                  showDate
+                  showUser
+                  onClick={async () => {
+                    await router.push(`${PAGES_URL.transactions.url}/${d.id}`)
+                  }}
+                />
+              ))}
             </ul>
           </OverviewCard>
 
@@ -151,7 +150,7 @@ const Dashboard = () => {
           <OverviewCard
             title="Spending Report"
             actionText="View Detail"
-            actionUrl={PAGES_URL.analytics.url}
+            actionUrl={`${PAGES_URL.transactions_analytics.url}?${QUERY_URL.transactions_analytics.transactionType}=out`}
             wrapperClassName="mb-8"
           >
             <div className="flex flex-col">
@@ -172,32 +171,26 @@ const Dashboard = () => {
                   height="300px"
                   data={data}
                   options={{
-                    ...options,
+                    ...chartOptions2,
                   }}
                 />
               </div>
               <h4 className="text-lg font-semibold text-gray-700">
                 Top Spending
               </h4>
-              <ul className="mt-6 flex flex-col space-y-4">
-                <TransactionListItem
-                  data={{
-                    id: 'trx-1',
-                    name: 'Transaction Out',
-                    amount: 12000,
-                    transactionType: 'other',
-                    date: '21 Januari 2023',
-                  }}
-                />
-                <TransactionListItem
-                  data={{
-                    id: 'trx-2',
-                    name: 'Transaction Out',
-                    amount: 22000,
-                    transactionType: 'other',
-                    date: '21 Januari 2023',
-                  }}
-                />
+              <ul className="mt-6 flex flex-col">
+                {topSpendData?.map((d) => (
+                  <TransactionListItem
+                    key={JSON.stringify(d)}
+                    data={d}
+                    disableAmountFormatting
+                    showDate
+                    showUser
+                    onClick={async () => {
+                      await router.push(`${PAGES_URL.transactions.url}/${d.id}`)
+                    }}
+                  />
+                ))}
               </ul>
             </div>
           </OverviewCard>
@@ -206,7 +199,7 @@ const Dashboard = () => {
           <OverviewCard
             title="Budget Analytic"
             actionText="View Detail"
-            actionUrl={PAGES_URL.analytics.url}
+            actionUrl={PAGES_URL.plannings_analytics.url}
             wrapperClassName="mb-8"
           >
             <div className="flex flex-col">
@@ -227,7 +220,7 @@ const Dashboard = () => {
                   height="300px"
                   data={data2}
                   options={{
-                    ...options2,
+                    ...chartOptions2,
                   }}
                 />
               </div>
