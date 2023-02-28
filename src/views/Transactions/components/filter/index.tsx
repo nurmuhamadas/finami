@@ -78,6 +78,17 @@ const FilterTransactions = ({
   useEffect(() => {
     if (initialValues && initial) {
       setValues(initialValues)
+
+      const _ca = optCategory?.find(
+        (d) => d.value === initialValues.category_id,
+      )
+      const _c = optUser?.find((d) => d.value === initialValues.child_id)
+      const _w = optWallet?.find((d) => d.value === initialValues.wallet_id)
+      setOptionsState({
+        category_id: _ca,
+        child_id: _c,
+        wallet_id: _w,
+      })
     }
     initial = false
   }, [initialValues])

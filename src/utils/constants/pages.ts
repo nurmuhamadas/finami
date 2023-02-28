@@ -5,6 +5,10 @@ export const PAGES_URL = {
     url: '/app/transactions/new',
     title: 'Create New Transaction',
   },
+  transactions_detail: {
+    url: '/app/transactions/transaction',
+    title: 'Detail Transaction',
+  },
   transactions_analytics: {
     url: '/app/transactions/analytics',
     title: 'Transaction Analytics',
@@ -23,11 +27,11 @@ export const PAGES_URL = {
 
 export const QUERY_URL = {
   transactions_analytics: {
-    start_date: 'sd',
-    end_date: 'ed',
-    wallet: 'w',
-    category: 'c',
-    user: 'u',
-    transactionType: 't',
+    startDate: 'sd',
+    endDate: 'ed',
+    wallet_id: 'w',
+    category_id: 'c',
+    user_id: 'u',
+    transaction_type: 't',
   },
 }

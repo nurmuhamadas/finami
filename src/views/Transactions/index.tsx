@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 
 import Link from 'next/link'
@@ -24,6 +24,7 @@ const { transactions_analytics: ta } = QUERY_URL
 
 const TransactionsPage = () => {
   const router = useRouter()
+  const orgQuery = router.query as Record<string, string>
 
   const [filter, setFilter] = useState<FilterTransactionValueType>({
     startDate: dayjsToDate(dayjs().startOf('month')),
@@ -38,6 +39,33 @@ const TransactionsPage = () => {
   const { inAmount, outAmount, totalAmount, data } =
     groupTransactionByDate(orgData)
 
+  const query = useMemo(() => {
+    const _f: Record<string, string> = {}
+    if (filter?.startDate) _f[ta.startDate] = filter?.startDate?.toISOString()
+    if (filter?.endDate) _f[ta.endDate] = filter?.endDate?.toISOString()
+    if (filter?.category_id) _f[ta.category_id] = filter?.category_id
+    if (filter?.child_id) _f[ta.user_id] = filter?.child_id
+    if (filter?.wallet_id) _f[ta.wallet_id] = filter?.wallet_id
+    return _f
+  }, [filter])
+
+  useEffect(() => {
+    if (orgQuery) {
+      setFilter({
+        ...filter,
+        startDate: orgQuery?.[ta.startDate]
+          ? new Date(orgQuery?.[ta.startDate])
+          : filter.startDate,
+        endDate: orgQuery?.[ta.endDate]
+          ? new Date(orgQuery?.[ta.endDate])
+          : filter.endDate,
+        category_id: orgQuery?.[ta.category_id],
+        wallet_id: orgQuery?.[ta.wallet_id],
+        child_id: orgQuery?.[ta.user_id],
+      })
+    }
+  }, [orgQuery])
+
   return (
     <AppLayout description="Record inflow and outflow of your family finance here">
       <div className="flex flex-col space-y-8">
@@ -46,11 +74,17 @@ const TransactionsPage = () => {
           onChange={setFilter}
           startComponent={
             <div className="flex items-center space-x-2">
-              <Link href={PAGES_URL.transactions_new.url} passHref>
-                <MyButton colorType="primary">
-                  <AiOutlinePlus />
-                </MyButton>
-              </Link>
+              <MyButton
+                onClick={async () => {
+                  await router.push(
+                    { pathname: PAGES_URL.transactions_new.url, query },
+                    PAGES_URL.transactions_new.url,
+                  )
+                }}
+                colorType="primary"
+              >
+                <AiOutlinePlus />
+              </MyButton>
             </div>
           }
         />
@@ -64,13 +98,7 @@ const TransactionsPage = () => {
             <Link
               href={{
                 pathname: PAGES_URL.transactions_analytics.url,
-                query: {
-                  [ta.start_date]: filter.startDate.toISOString(),
-                  [ta.end_date]: filter.endDate.toISOString(),
-                  [ta.category]: filter.category_id,
-                  [ta.user]: filter.child_id,
-                  [ta.wallet]: filter.wallet_id,
-                },
+                query,
               }}
               passHref
             >
