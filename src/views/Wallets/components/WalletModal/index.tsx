@@ -1,28 +1,34 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-tailwindcss-select'
+import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Label, Modal, TextInput } from 'flowbite-react'
 
+import useGetUsers from 'data/api/Users/useGetUsers'
+
 import MyButton from 'components/MyButton'
 import MyModal from 'components/MyModal'
+import { mapDataToSelectOptions } from 'utils/helpers/helper'
 
 import { registerWalletSchema } from './schema'
-import { type WalletDataType, type WalletModalProps } from './types'
+import { type WalletFormData, type WalletModalProps } from './types'
 
 const WalletModal = ({
   isOpen,
   initialData,
   onClose,
   onSave,
+  isEditData,
 }: WalletModalProps) => {
   const {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<WalletDataType>({
+  } = useForm<WalletFormData>({
     resolver: yupResolver(registerWalletSchema),
     defaultValues: {
       name: initialData?.name || null,
@@ -34,17 +40,30 @@ const WalletModal = ({
 
   const isNew = !initialData
 
+  const users = useGetUsers()
+  const userOpt = mapDataToSelectOptions(users, 'id', 'fullname')
+
   useEffect(() => {
     if (initialData) {
       setValue('name', initialData.name)
       setValue('balance', initialData.balance)
       setValue('user_id', initialData.user_id)
-      // TODO: setSelectedUserId()
+
+      const _selecteduser = userOpt.find((d) => d.value === initialData.user_id)
+      setSelectedUserId(_selecteduser)
     }
   }, [initialData])
 
   return (
-    <MyModal show={isOpen} onClose={onClose} className="h-screen">
+    <MyModal
+      show={isOpen}
+      onClose={() => {
+        onClose()
+        reset()
+        setSelectedUserId(undefined)
+      }}
+      className="h-screen"
+    >
       <Modal.Header>{isNew ? 'Add New' : 'Edit'} Wallet</Modal.Header>
       <Modal.Body>
         <form
@@ -95,20 +114,17 @@ const WalletModal = ({
               isClearable
               primaryColor="violet"
               value={selectedUserId}
-              onChange={(e: any) => {
+              onChange={(e: Option | Option[]) => {
                 if (e) {
-                  setValue('user_id', e.value)
+                  setValue('user_id', (e as Option).value)
                   setSelectedUserId(e)
                 } else {
                   setValue('user_id', '')
                   setSelectedUserId(undefined)
                 }
               }}
-              options={[
-                { value: 'fox-1234561234567890', label: '🦊 Fox' },
-                { value: 'Butterfly', label: '🦋 Butterfly' },
-                { value: 'Honeybee', label: '🐝 Honeybee' },
-              ]}
+              options={userOpt}
+              isDisabled={isEditData}
             />
             <p className="text-finamiRed">{errors.user_id?.message}</p>
           </div>

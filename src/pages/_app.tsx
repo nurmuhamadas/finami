@@ -9,11 +9,15 @@ import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const pageTitle = getPageTitle()
+  let title = 'Finami'
+  if (pageTitle) {
+    title += ` - ${pageTitle}`
+  }
 
   return (
     <Fragment>
       <Head>
-        <title>Finami - {pageTitle}</title>
+        <title>{title}</title>
         <meta name="title" content="Finami" />
         <link rel="shortcut icon" href="/static/favicon.ico" />
         <meta name="description" content="Financial management for family" />

@@ -1,7 +1,10 @@
-import { WalletDataType } from '../WalletModal/types'
+import { type WalletDataResponse } from 'data/types'
 
 export type WalletsCardProps = {
-  data: (WalletDataType & { id: string })[]
-  onDeleteClick: (wallet: WalletDataType) => void
-  onEditClick: (wallet: WalletDataType) => void
+  wallets: {
+    total: number
+    data: WalletDataResponse[]
+  }
+  onDeleteClick: (wallet: WalletDataResponse) => void
+  onEditClick: (wallet: WalletDataResponse) => void
 }

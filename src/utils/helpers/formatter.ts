@@ -59,3 +59,9 @@ export const formatDate = (
 export const dayjsToDate = (date: Dayjs): Date => {
   return new Date(date.format('YYYY-MM-DD'))
 }
+
+export const formatCurrencySign = (amount: number, sign = 'Rp. ') => {
+  const _isPositive = amount >= 0
+
+  return `${_isPositive ? '' : '-'}${sign} ${formatCurrency(amount)}`
+}

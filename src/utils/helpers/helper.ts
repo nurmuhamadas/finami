@@ -1,6 +1,11 @@
+import { type Option } from 'react-tailwindcss-select/dist/components/type'
+
 import dayjs from 'dayjs'
 
-import { type TransactionDataResponse } from 'data/types'
+import {
+  type TransactionDataResponse,
+  type WalletDataResponse,
+} from 'data/types'
 
 import { type PlanningDataType } from 'utils/constants/types'
 
@@ -94,4 +99,62 @@ export const groupPlanningsByUser = (
   })
 
   return _data
+}
+interface GroupWalletsByUserId {
+  total: number
+  data: Array<{
+    total: number
+    user_id: string
+    user_name: string
+    user_fullname: string
+    is_owner: boolean
+    data: WalletDataResponse[]
+  }>
+}
+
+export const groupWalletsByUser = (
+  data: WalletDataResponse[],
+): GroupWalletsByUserId => {
+  const _data: GroupWalletsByUserId = {
+    total: 0,
+    data: [],
+  }
+
+  data.forEach((d) => {
+    const i = _data.data.findIndex((p) => p.user_id === d.user_id)
+
+    // Calculate Main Total
+    _data.total += d.balance
+
+    if (i < 0) {
+      _data.data.push({
+        total: d.balance,
+        user_id: d.user_id,
+        user_name: d.user_name,
+        user_fullname: d.user_fullname,
+        is_owner: d.is_owner,
+        data: [d],
+      })
+    } else {
+      const _d = _data.data[i]
+      _data.data[i] = {
+        ..._d,
+        total: _d.total + d.balance,
+        data: [..._d.data, d],
+      }
+    }
+  })
+
+  return _data
+}
+
+export function mapDataToSelectOptions<T>(
+  data: T[],
+  valueSelector: keyof T,
+  labelSelector: keyof T,
+): Option[] {
+  return data.map((d) => ({
+    label: d[labelSelector] as string,
+    value: d[valueSelector] as string,
+  }))
 }

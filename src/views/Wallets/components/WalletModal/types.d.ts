@@ -1,12 +1,11 @@
-export type WalletDataType = {
-  name: string
-  balance: number | null
-  user_id: string
-}
+import { CreateWalletPayload, UpdateWalletPayload } from 'data/types'
+
+export type WalletFormData = CreateWalletPayload
 
 export type WalletModalProps = {
   isOpen: boolean
-  initialData?: WalletDataType | null
+  isEditData?: boolean
+  initialData?: WalletFormData
   onClose: () => void
-  onSave: (data: WalletDataType) => void
+  onSave: (data: WalletFormData) => void
 }

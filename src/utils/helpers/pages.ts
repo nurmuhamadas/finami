@@ -8,7 +8,7 @@ export const getPageTitle = () => {
 
   Object.entries(PAGES_URL).forEach(([_, val]) => {
     if (router?.pathname === val.url) {
-      title += `${val.title}`
+      title = `${val.title}`
     }
   })
 
