@@ -97,7 +97,8 @@ const FilterTransactions = ({
     <div className={cn(wrapperClassName, 'block')}>
       <div className="flex justify-between items-center flex-wrap py-2 space-2">
         <div className="flex flex-wrap py-2 space-2">{startComponent}</div>
-        <div className="flex justify-end flex-wrap py-2 space-2">
+        <div className="flex justify-end flex-wrap py-2 items-center space-x-2">
+          {endComponent}
           <MyButton
             colorType="primary"
             onClick={() => {
@@ -106,7 +107,6 @@ const FilterTransactions = ({
           >
             <AiFillFilter />
           </MyButton>
-          {endComponent}
         </div>
       </div>
       <div

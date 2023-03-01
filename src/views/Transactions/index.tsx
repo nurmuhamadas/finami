@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import dayjs from 'dayjs'
+import { TextInput } from 'flowbite-react'
 
 import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 
@@ -14,7 +15,7 @@ import OverviewCard from 'components/OverviewCard'
 import TransactionListItem from 'components/TransactionListItem'
 import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
 import { dayjsToDate, formatCurrency } from 'utils/helpers/formatter'
-import { groupTransactionByDate } from 'utils/helpers/helper'
+import { debounce, groupTransactionByDate } from 'utils/helpers/helper'
 
 import FilterTransactions from './components/filter'
 import { type FilterTransactionValueType } from './components/filter/types'
@@ -30,11 +31,13 @@ const TransactionsPage = () => {
     startDate: dayjsToDate(dayjs().startOf('month')),
     endDate: dayjsToDate(dayjs().endOf('month')),
   })
+  const [searchKey, setSearchKey] = useState(undefined)
 
   const orgData = useGetTransactions({
     ...filter,
     start_date: filter.startDate,
     end_date: filter.endDate,
+    search_key: searchKey,
   })
   const { inAmount, outAmount, totalAmount, data } =
     groupTransactionByDate(orgData)
@@ -85,6 +88,19 @@ const TransactionsPage = () => {
               >
                 <AiOutlinePlus />
               </MyButton>
+              <TextInput
+                id="searchkey"
+                placeholder="Search..."
+                className="finamiInput w-80"
+                rightIcon={AiOutlineSearch}
+                onChange={debounce((e) => {
+                  if (e) {
+                    setSearchKey(e.target.value)
+                  } else {
+                    setSearchKey(undefined)
+                  }
+                })}
+              />
             </div>
           }
         />
