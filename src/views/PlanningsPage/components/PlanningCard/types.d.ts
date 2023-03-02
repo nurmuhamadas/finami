@@ -1,6 +1,7 @@
-import { PlanningDataType } from 'utils/constants/types'
+import { PlanningDataResponse } from 'data/types'
 
 export type PlanningCardProps = {
-  data: PlanningDataType
-  onClick?: (data: PlanningDataType) => void
+  planning: PlanningDataResponse
+  expense: number
+  onClick?: (data: PlanningDataResponse) => void
 }

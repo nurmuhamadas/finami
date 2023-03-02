@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 import { type DateRangeType } from 'react-tailwindcss-datepicker/dist/types'
 
+import cn from 'classnames'
+
 import { type MyDatePickerProps } from './types'
 
 const MyDatePicker = ({
@@ -13,6 +15,8 @@ const MyDatePicker = ({
   displayFormat = 'DD-MM-YYYY',
   disabledDates,
   initialValue,
+  inputClassName,
+  containerClassName,
 }: MyDatePickerProps) => {
   const [value, setValue] = useState<DateRangeType>()
 
@@ -46,8 +50,9 @@ const MyDatePicker = ({
       primaryColor="violet"
       placeholder="Select date"
       displayFormat={displayFormat}
-      inputClassName="py-[8px]"
+      inputClassName={cn('py-[8px]', inputClassName)}
       disabledDates={disabledDates}
+      containerClassName={cn(containerClassName)}
     />
   )
 }

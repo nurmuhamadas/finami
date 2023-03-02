@@ -115,6 +115,8 @@ export interface GetPlanningsQuery {
   start_month?: Date
   end_month?: Date
   wallet_id?: string
+  category_id?: string
+  search_key?: string
 }
 export interface CreatePlanningPayload {
   name: string

@@ -3,11 +3,10 @@ import { type Option } from 'react-tailwindcss-select/dist/components/type'
 import dayjs from 'dayjs'
 
 import {
+  type PlanningDataResponse,
   type TransactionDataResponse,
   type WalletDataResponse,
 } from 'data/types'
-
-import { type PlanningDataType } from 'utils/constants/types'
 
 import { getStartEndDateOfWeeks } from './dates'
 
@@ -200,9 +199,9 @@ export const calcTotalTransaction = (data: TransactionDataResponse[]) => {
 }
 
 export const groupPlanningsByUser = (
-  data: PlanningDataType[],
-): PlanningDataType[][] => {
-  const _data: PlanningDataType[][] = []
+  data: PlanningDataResponse[],
+): PlanningDataResponse[][] => {
+  const _data: PlanningDataResponse[][] = []
 
   data.forEach((d) => {
     const i = _data.findIndex((p) => p[0].user_id === d.user_id)

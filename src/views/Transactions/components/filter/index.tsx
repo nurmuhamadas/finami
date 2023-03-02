@@ -125,14 +125,16 @@ const FilterTransactions = ({
               endDate: initialValues.endDate,
             }}
             onChange={(d) => {
-              const [s, e] = d as Date[]
-              const v: FilterTransactionValueType = {
-                ...values,
-                startDate: dayjsToDate(dayjs(s).startOf(s ? 'day' : 'month')),
-                endDate: dayjsToDate(dayjs(e).endOf(e ? 'day' : 'month')),
+              if (!hide.date) {
+                const [s, e] = d as Date[]
+                const v: FilterTransactionValueType = {
+                  ...values,
+                  startDate: dayjsToDate(dayjs(s).startOf(s ? 'day' : 'month')),
+                  endDate: dayjsToDate(dayjs(e).endOf(e ? 'day' : 'month')),
+                }
+                setValues(v)
+                onChange(v)
               }
-              setValues(v)
-              onChange(v)
             }}
             range
             showShorcut
@@ -149,7 +151,9 @@ const FilterTransactions = ({
             primaryColor="violet"
             value={optionsState.category_id}
             onChange={(e) => {
-              handleChange(e as Option, 'category_id')
+              if (!hide.category) {
+                handleChange(e as Option, 'category_id')
+              }
             }}
             options={optCategory}
           />
@@ -164,7 +168,9 @@ const FilterTransactions = ({
             primaryColor="violet"
             value={optionsState.child_id}
             onChange={(e) => {
-              handleChange(e as Option, 'child_id')
+              if (!hide.user) {
+                handleChange(e as Option, 'child_id')
+              }
             }}
             options={optUser}
           />
@@ -179,7 +185,9 @@ const FilterTransactions = ({
             primaryColor="violet"
             value={optionsState.wallet_id}
             onChange={(e) => {
-              handleChange(e as Option, 'wallet_id')
+              if (!hide.wallet) {
+                handleChange(e as Option, 'wallet_id')
+              }
             }}
             options={optWallet}
           />

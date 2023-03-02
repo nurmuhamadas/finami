@@ -35,4 +35,12 @@ export const QUERY_URL = {
     transaction_type: 't',
     search_key: 'q',
   },
+  plannings: {
+    startMonth: 'sm',
+    endMonth: 'em',
+    wallet_id: 'w',
+    category_id: 'c',
+    user_id: 'u',
+    search_key: 'q',
+  },
 }
