@@ -1,8 +1,8 @@
 import * as yup from 'yup'
 
-export const registerTransactionSchema = yup.object({
+export const registerPlanningSchema = yup.object({
+  name: yup.string().required('Please fill planning name!'),
   amount: yup.number().nullable().default(0).required('Please fill amount!'),
-  description: yup.string().required('Please fill description!'),
   wallet_id: yup
     .string()
     .length(20, 'Invalid Wallet')
@@ -11,5 +11,5 @@ export const registerTransactionSchema = yup.object({
     .string()
     .length(20, 'Invalid Category')
     .required('Please select category!'),
-  date: yup.date().required('Please select date!'),
+  month: yup.date().required('Please select month!'),
 })

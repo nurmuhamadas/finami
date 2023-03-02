@@ -28,8 +28,8 @@ const PlanningsPage = () => {
   const orgQuery = router.query as Record<string, string>
 
   const [filter, setFilter] = useState<GetPlanningsQuery>({
-    start_month: dayjs().toDate(),
-    end_month: dayjs().toDate(),
+    start_month: dayjs(orgQuery?.[pq.month]).toDate(),
+    end_month: dayjs(orgQuery?.[pq.month]).toDate(),
   })
   const data = useGetPlannings(filter)
   const transactions = useGetTransactions({
@@ -41,9 +41,7 @@ const PlanningsPage = () => {
 
   const query = useMemo(() => {
     const _f: Record<string, string> = {}
-    if (filter?.start_month)
-      _f[pq.startMonth] = filter?.start_month?.toISOString()
-    if (filter?.end_month) _f[pq.endMonth] = filter?.end_month?.toISOString()
+    if (filter?.end_month) _f[pq.month] = filter?.end_month?.toISOString()
     if (filter?.category_id) _f[pq.category_id] = filter?.category_id
     if (filter?.child_id) _f[pq.user_id] = filter?.child_id
     if (filter?.wallet_id) _f[pq.wallet_id] = filter?.wallet_id
@@ -58,15 +56,16 @@ const PlanningsPage = () => {
         category_id: orgQuery?.[pq.category_id],
         child_id: orgQuery?.[pq.user_id],
         wallet_id: orgQuery?.[pq.wallet_id],
-        start_month: orgQuery?.[pq.startMonth]
-          ? new Date(orgQuery?.[pq.startMonth])
-          : filter.start_month,
-        end_month: orgQuery?.[pq.endMonth]
-          ? new Date(orgQuery?.[pq.endMonth])
-          : filter.end_month,
+        start_month: dayjs(orgQuery?.[pq.month]).isValid()
+          ? dayjs(orgQuery?.[pq.month]).toDate()
+          : dayjs().toDate(),
+        end_month: dayjs(orgQuery?.[pq.month]).isValid()
+          ? dayjs(orgQuery?.[pq.month]).toDate()
+          : dayjs().toDate(),
       })
     }
   }, [orgQuery])
+  console.log(filter)
 
   return (
     <AppLayout description="Don't let your money flow with no purpose. Plan it!">
@@ -144,7 +143,13 @@ const PlanningsPage = () => {
         />
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link href={PAGES_URL.plannings_analytics.url} passHref>
+            <Link
+              href={{
+                pathname: PAGES_URL.plannings_analytics.url,
+                query,
+              }}
+              passHref
+            >
               <MyButton colorType="primary">View Analytic</MyButton>
             </Link>
           </div>

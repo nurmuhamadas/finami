@@ -36,8 +36,7 @@ export const QUERY_URL = {
     search_key: 'q',
   },
   plannings: {
-    startMonth: 'sm',
-    endMonth: 'em',
+    month: 'm',
     wallet_id: 'w',
     category_id: 'c',
     user_id: 'u',

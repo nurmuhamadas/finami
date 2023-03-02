@@ -19,6 +19,7 @@ const MyDatePicker = ({
   containerClassName,
 }: MyDatePickerProps) => {
   const [value, setValue] = useState<DateRangeType>()
+  let init = true
 
   const handleChange = (v: DateRangeType) => {
     const start = v?.startDate ? new Date(v.startDate) : undefined
@@ -33,10 +34,11 @@ const MyDatePicker = ({
   }
 
   useEffect(() => {
-    if (initialValue) {
+    if (initialValue && init) {
       setValue(initialValue)
+      init = false
     }
-  }, [])
+  }, [initialValue])
 
   return (
     <Datepicker
