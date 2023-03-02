@@ -374,7 +374,7 @@ export const dummyPlanningsData: PlanningDataResponse[] = [
     user_fullname: dummyCategoriesData[3].user_fullname,
     wallet_id: dummyWalletssData[2].id,
     wallet_name: dummyWalletssData[2].name,
-    is_owner: true,
+    is_owner: false,
     created_at: new Date('2023-03-14'),
     updated_at: new Date('2023-03-14'),
     deleted_at: undefined,
