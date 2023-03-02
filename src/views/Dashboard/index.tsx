@@ -150,7 +150,7 @@ const Dashboard = () => {
           <OverviewCard
             title="Spending Report"
             actionText="View Detail"
-            actionUrl={`${PAGES_URL.transactions_analytics.url}?${QUERY_URL.transactions_analytics.transactionType}=out`}
+            actionUrl={`${PAGES_URL.transactions_analytics.url}?${QUERY_URL.transactions_analytics.transaction_type}=out`}
             wrapperClassName="mb-8"
           >
             <div className="flex flex-col">

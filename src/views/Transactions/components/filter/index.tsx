@@ -128,8 +128,8 @@ const FilterTransactions = ({
               const [s, e] = d as Date[]
               const v: FilterTransactionValueType = {
                 ...values,
-                startDate: dayjsToDate(dayjs(s).startOf('day')),
-                endDate: dayjsToDate(dayjs(e).endOf('day')),
+                startDate: dayjsToDate(dayjs(s).startOf(s ? 'day' : 'month')),
+                endDate: dayjsToDate(dayjs(e).endOf(e ? 'day' : 'month')),
               }
               setValues(v)
               onChange(v)

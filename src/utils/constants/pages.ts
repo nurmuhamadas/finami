@@ -33,5 +33,6 @@ export const QUERY_URL = {
     category_id: 'c',
     user_id: 'u',
     transaction_type: 't',
+    search_key: 'q',
   },
 }

@@ -8,7 +8,12 @@ const ChartLegends = ({
   labelClassName,
 }: ChartLegendsProps) => {
   return (
-    <div className={cn('mb-6 flex items-center space-x-6', wrapperClassName)}>
+    <div
+      className={cn(
+        'mb-6 flex items-center gap-x-6 flex-wrap gap-y-2',
+        wrapperClassName,
+      )}
+    >
       {legends.map((d) => {
         return (
           <div key={d.label} className="flex items-center">

@@ -8,5 +8,6 @@ export type OverviewCardProps = {
   children: ReactElement
   wrapperClassName?: string
   cardClassName?: string
+  loading?: boolean
   onCardClick?: () => void
 }

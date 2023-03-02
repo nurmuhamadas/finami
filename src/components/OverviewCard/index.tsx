@@ -1,7 +1,9 @@
+import { Fragment } from 'react'
+
 import Link from 'next/link'
 
 import cn from 'classnames'
-import { Card } from 'flowbite-react'
+import { Card, Spinner } from 'flowbite-react'
 
 import { type OverviewCardProps } from './types'
 
@@ -14,6 +16,7 @@ const OverviewCard = ({
   wrapperClassName,
   cardClassName,
   onCardClick,
+  loading = false,
 }: OverviewCardProps) => {
   return (
     <div
@@ -43,8 +46,16 @@ const OverviewCard = ({
         onClick={onCardClick}
         className={cn('w-full shadow-sm', cardClassName)}
       >
-        {Boolean(Header) && <div className="border-b-2 pb-3">{Header}</div>}
-        {children}
+        {!loading ? (
+          <Fragment>
+            {Boolean(Header) && <div className="border-b-2 pb-3">{Header}</div>}
+            {children}
+          </Fragment>
+        ) : (
+          <div className="w-full flex justify-center items-center h-10">
+            <Spinner color="purple" size="lg" />
+          </div>
+        )}
       </Card>
     </div>
   )

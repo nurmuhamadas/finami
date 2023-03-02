@@ -16,11 +16,68 @@ body {
 }
 
 .finamiInput input:focus {
-  border-color: white;
-  box-shadow: white 0 0 0 1px;
+  border-color: #6453dd;
+  box-shadow: #6453dd 0 0 0 1px;
 }
 
 .finamiInput textarea:focus {
   border-color: #6453dd;
   box-shadow: #6453dd 0 0 0 1px;
+}
+
+.bg-DBB1BC {
+  background-color: #dbb1bc;
+}
+.bg-D3C4E3 {
+  background-color: #d3c4e3;
+}
+.bg-89DAFF {
+  background-color: #89daff;
+}
+.bg-58504A {
+  background-color: #58504a;
+}
+.bg-F87575 {
+  background-color: #f87575;
+}
+.bg-FFA9A3 {
+  background-color: #ffa9a3;
+}
+.bg-B9E6FF {
+  background-color: #b9e6ff;
+}
+.bg-2B061E {
+  background-color: #2b061e;
+}
+.bg-F5CCE8 {
+  background-color: #f5cce8;
+}
+.bg-EC9DED {
+  background-color: #ec9ded;
+}
+.bg-FABC2A {
+  background-color: #fabc2a;
+}
+.bg-45062E {
+  background-color: #45062e;
+}
+.bg-6E0E0A {
+  background-color: #6e0e0a;
+}
+.bg-511C29 {
+  background-color: #511c29;
+}
+
+/* Scrollbar */
+.finamiBlueScollX::-webkit-scrollbar {
+  height: 4px;
+}
+/* Handle */
+.finamiBlueScollX::-webkit-scrollbar-thumb {
+  background: #6453dd;
+}
+
+/* Handle on hover */
+.finamiBlueScollX::-webkit-scrollbar-thumb:hover {
+  background: #968be1;
 }
