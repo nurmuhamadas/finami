@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Chart } from 'react-google-charts'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -13,7 +14,6 @@ import { type GetTransactionsQuery } from 'data/types'
 import AppLayout from 'components/AppLayout'
 import ChartLegends from 'components/ChartLegends'
 import MyButton from 'components/MyButton'
-import MyModal from 'components/MyModal'
 import OverviewCard from 'components/OverviewCard'
 import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
 import { formatDataToBarChart } from 'utils/helpers/chart'
@@ -23,7 +23,12 @@ import {
 } from 'utils/helpers/helper'
 
 import CardHeader from './components/CardHeader'
+import { type ModalType } from './components/ModalAnalytic/types'
 import { chartColors, chartOptions, chartOptions2 } from './consts'
+
+const ModalAnalytic = dynamic(
+  async () => await import('./components/ModalAnalytic'),
+)
 
 const { transactions_analytics: ta } = QUERY_URL
 
@@ -32,7 +37,7 @@ const TransactionAnalyticsPage = () => {
   const query = router.query as Record<string, string>
 
   const [filter, setFilter] = useState<GetTransactionsQuery>({})
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState<ModalType>(undefined)
 
   const orgData = useGetTransactions(filter)
   const dataByWeeks = useMemo(
@@ -49,9 +54,9 @@ const TransactionAnalyticsPage = () => {
       // Data By Weeks
       const _d = dataByWeeks.data.map((d) => ({
         ...d,
-        xLabel: `${dayjs(d.dateRange[0]).format('DD-MM')}-${dayjs(
+        xLabel: `${dayjs(d.dateRange[0]).format('DD MMM')} - ${dayjs(
           d.dateRange[1],
-        ).format('DD-MM')}`,
+        ).format('DD MMM')}`,
       }))
       const chartData1 = formatDataToBarChart(_d, {
         legendLabels: ['Income', 'Expense'],
@@ -129,10 +134,10 @@ const TransactionAnalyticsPage = () => {
             Header={
               <CardHeader
                 onButtonClick={() => {
-                  setIsModalOpen(true)
+                  setIsModalOpen('summary')
                 }}
                 amount={dataByWeeks.totalAmount}
-                label="Income"
+                label="Net Income"
               />
             }
             loading={chartData1?.length <= 0}
@@ -148,7 +153,7 @@ const TransactionAnalyticsPage = () => {
                   />
                   <Chart
                     chartType="Bar"
-                    width={`${75 * chartData1?.length}px`}
+                    width={`${100 * chartData1?.length}px`}
                     height="300px"
                     data={chartData1 || ['', '', '']}
                     options={chartOptions}
@@ -166,7 +171,7 @@ const TransactionAnalyticsPage = () => {
               Header={
                 <CardHeader
                   onButtonClick={() => {
-                    setIsModalOpen(true)
+                    setIsModalOpen('income')
                   }}
                   amount={dataByWeeks.inAmount}
                   label="Income"
@@ -202,7 +207,7 @@ const TransactionAnalyticsPage = () => {
               Header={
                 <CardHeader
                   onButtonClick={() => {
-                    setIsModalOpen(true)
+                    setIsModalOpen('expense')
                   }}
                   amount={dataByWeeks.outAmount}
                   label="Expense"
@@ -233,14 +238,17 @@ const TransactionAnalyticsPage = () => {
           </div>
         </div>
 
-        <MyModal
+        <ModalAnalytic
+          show={!!isModalOpen}
           onClose={() => {
-            setIsModalOpen(false)
+            setIsModalOpen(undefined)
           }}
-          show={isModalOpen}
-        >
-          <div></div>
-        </MyModal>
+          title={`${(isModalOpen as string)?.[0]?.toUpperCase()}${(
+            isModalOpen as string
+          )?.slice(1)}`}
+          modalType={isModalOpen}
+          data={isModalOpen === 'summary' ? chartData1 : dataByCategory}
+        />
       </div>
     </AppLayout>
   )

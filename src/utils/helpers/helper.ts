@@ -120,7 +120,7 @@ export const groupTransactionByWeek = (
   return _data
 }
 
-interface GroupTransactionByCategoryResult {
+export interface GroupTransactionByCategoryResult {
   inAmount: number
   outAmount: number
   totalAmount: number

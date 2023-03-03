@@ -69,15 +69,20 @@ body {
 }
 
 /* Scrollbar */
+.finamiBlueScollY::-webkit-scrollbar {
+  width: 4px;
+}
 .finamiBlueScollX::-webkit-scrollbar {
   height: 4px;
 }
 /* Handle */
-.finamiBlueScollX::-webkit-scrollbar-thumb {
+.finamiBlueScollX::-webkit-scrollbar-thumb,
+.finamiBlueScollY::-webkit-scrollbar-thumb {
   background: #6453dd;
 }
 
 /* Handle on hover */
-.finamiBlueScollX::-webkit-scrollbar-thumb:hover {
+.finamiBlueScollX::-webkit-scrollbar-thumb:hover,
+.finamiBlueScollY::-webkit-scrollbar-thumb:hover {
   background: #968be1;
 }

@@ -1,4 +1,4 @@
-type ChartDataType = Array<Array<string | number>>
+export type ChartDataType = Array<Array<string | number>>
 
 interface Options<T> {
   xAxisLabel: string
