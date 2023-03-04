@@ -4,6 +4,7 @@ export type MenuType = {
   Icon: IconType
   text: string
   url: string
+  child?: MenuType[]
 }
 
 export type TransactionTypesType = 'in' | 'out'

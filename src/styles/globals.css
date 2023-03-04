@@ -25,6 +25,10 @@ body {
   box-shadow: #6453dd 0 0 0 1px;
 }
 
+.finamiCollapse {
+  color: rgb(107 114 128);
+}
+
 .bg-DBB1BC {
   background-color: #dbb1bc;
 }
