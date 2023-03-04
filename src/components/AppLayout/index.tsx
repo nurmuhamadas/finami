@@ -23,7 +23,7 @@ const AppLayout = ({ children, title, description }: AppLayoutProps) => {
       </div>
       <div className="h-screen w-full overflow-auto bg-gray-100 lg:ml-80 relative">
         <div className="w-full sticky py-4 px-4 sm:px-8 z-10 left-0 top-0 bg-white flex justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-x-2">
             <Avatar
               img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
               rounded={true}

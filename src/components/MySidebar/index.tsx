@@ -1,13 +1,11 @@
 import { type IconType } from 'react-icons'
-import { AiOutlineEdit } from 'react-icons/ai'
 
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import cn from 'classnames'
-import { Avatar, Sidebar } from 'flowbite-react'
+import { Sidebar } from 'flowbite-react'
 
-import MyButton from 'components/MyButton'
+import MyAvatar from 'components/MyAvatar'
 import { PAGES_URL } from 'utils/constants/pages'
 import { type MenuType } from 'utils/constants/types'
 
@@ -98,24 +96,7 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           <Sidebar.Items className="flex flex-col">
-            <div className="flex flex-col w-full space-y-2 items-center">
-              <Avatar
-                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                rounded={true}
-                size={128}
-              />
-              <span className="text-center">Nur Muhamad Ash Shdiqi</span>
-              <Link href={PAGES_URL.account_profile.url} passHref>
-                <MyButton color="light" className="w-max">
-                  <div className="w-full flex items-center gap-x-4">
-                    <div className="flex items-center">
-                      <AiOutlineEdit size={20} />
-                    </div>
-                    <span className="">Edit profile</span>
-                  </div>
-                </MyButton>
-              </Link>
-            </div>
+            <MyAvatar showButton showName />
           </Sidebar.Items>
         </Sidebar.ItemGroup>
 

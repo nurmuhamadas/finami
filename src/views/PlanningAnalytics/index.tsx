@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import Chart from 'react-google-charts'
+import { Chart } from 'react-google-charts'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 import dynamic from 'next/dynamic'
