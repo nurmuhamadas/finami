@@ -50,6 +50,8 @@ const TransactionsPage = () => {
     if (filter?.child_id) _f[ta.user_id] = filter?.child_id
     if (filter?.wallet_id) _f[ta.wallet_id] = filter?.wallet_id
     if (filter?.wallet_id) _f[ta.wallet_id] = filter?.wallet_id
+    if (filter?.transaction_type)
+      _f[ta.transaction_type] = filter?.transaction_type
     if (searchKey) _f[ta.search_key] = searchKey
     return _f
   }, [filter])

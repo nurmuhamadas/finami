@@ -1,3 +1,4 @@
+import { TransactionTypesType } from 'data/types'
 import { ReactElement } from 'react'
 
 export type FilterTransactionValueType = {
@@ -6,6 +7,7 @@ export type FilterTransactionValueType = {
   category_id?: string
   startDate?: Date
   endDate?: Date
+  transaction_type?: TransactionTypesType
 }
 
 export type FilterTransactionsProps = {
@@ -17,6 +19,7 @@ export type FilterTransactionsProps = {
     user?: boolean
     category?: boolean
     date?: boolean
+    type?: boolean
   }
   wrapperClassName?: string
   startComponent?: ReactElement

@@ -1,4 +1,4 @@
-import { CreateTransactionPayload } from 'data/types'
+import { CreateTransactionPayload, TransactionDataResponse } from 'data/types'
 
 export type NewTransactionDataType = {
   category_id: string
@@ -10,7 +10,7 @@ export type NewTransactionDataType = {
 }
 
 export type TransactionFormProps = {
-  initialData?: CreateTransactionPayload
+  initialData?: TransactionDataResponse
   disableForm?: boolean
   onSubmit: (values: CreateTransactionPayload) => void
 }

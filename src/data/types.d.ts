@@ -1,4 +1,5 @@
-export type TransactionTypesType = 'in' | 'out'
+import { TransactionTypesType } from 'utils/constants/types'
+
 export type OrderTransactionType = 'asc' | 'desc'
 export type SorterTransactionType = 'amount' | 'date'
 export type CategoryGroupsType =
@@ -149,6 +150,7 @@ export interface CategoryDataResponse {
 }
 export interface GetCategoriesQuery {
   transaction_type?: TransactionTypesType
+  include_child?: boolean
 }
 export interface CreateCategoryPayload {
   name: string

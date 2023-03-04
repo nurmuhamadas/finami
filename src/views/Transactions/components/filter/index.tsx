@@ -18,6 +18,7 @@ import {
 
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
+import { TRANSACTION_TYPES_OPT } from 'utils/constants/common'
 import { dayjsToDate } from 'utils/helpers/formatter'
 import { mapDataToSelectOptions } from 'utils/helpers/helper'
 
@@ -42,10 +43,15 @@ const FilterTransactions = ({
     child_id: undefined,
     wallet_id: undefined,
     category_id: undefined,
+    transaction_type: undefined,
   })
 
+  const categories = useGetCategories({
+    transaction_type: values.transaction_type,
+    include_child: true,
+  })
   const optCategory = mapDataToSelectOptions<CategoryDataResponse>(
-    useGetCategories(),
+    categories,
     'id',
     'name',
   )
@@ -63,14 +69,21 @@ const FilterTransactions = ({
   )
 
   const handleChange = (e: Option, name: keyof FilterTransactionValueType) => {
+    let type = null
+    if (name === 'category_id') {
+      type = categories.find((d) => d.id === e?.value)?.transaction_type
+    }
+
     const _value = {
       ...values,
+      transaction_type: type || values.transaction_type,
       [name]: e ? e.value : undefined,
     }
     onChange(_value)
     setValues(_value)
     setOptionsState({
       ...optionsState,
+      transaction_type: type || optionsState.transaction_type,
       [name]: e,
     })
   }
@@ -84,10 +97,14 @@ const FilterTransactions = ({
       )
       const _c = optUser?.find((d) => d.value === initialValues.child_id)
       const _w = optWallet?.find((d) => d.value === initialValues.wallet_id)
+      const _t = TRANSACTION_TYPES_OPT?.find(
+        (d) => d.value === initialValues.transaction_type,
+      )
       setOptionsState({
         category_id: _ca,
         child_id: _c,
         wallet_id: _w,
+        transaction_type: _t,
       })
     }
     initial = false
@@ -138,6 +155,23 @@ const FilterTransactions = ({
             }}
             range
             showShorcut
+          />
+        </div>
+        <div className={cn({ hidden: hide.type })}>
+          <div className="mb-1 block">
+            <Label value="Transaction type" />
+          </div>
+          <Select
+            isClearable
+            isDisabled={loading}
+            primaryColor="violet"
+            value={optionsState.transaction_type}
+            onChange={(e) => {
+              if (!hide.wallet) {
+                handleChange(e as Option, 'transaction_type')
+              }
+            }}
+            options={TRANSACTION_TYPES_OPT}
           />
         </div>
         <div className={cn({ hidden: hide.category })}>

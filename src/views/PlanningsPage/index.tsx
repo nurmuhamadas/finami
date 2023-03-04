@@ -83,7 +83,7 @@ const PlanningsPage = () => {
               wallet_id: v.wallet_id,
             })
           }}
-          hide={{ date: true }}
+          hide={{ date: true, type: true }}
           startComponent={
             <div className="flex items-center space-x-2">
               <MyButton
