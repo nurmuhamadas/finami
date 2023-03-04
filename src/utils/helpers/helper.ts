@@ -214,6 +214,24 @@ export const groupPlanningsByUser = (
 
   return _data
 }
+
+export const groupCategoriesByUser = (
+  data: TransactionDataResponse[],
+): TransactionDataResponse[][] => {
+  const _data: TransactionDataResponse[][] = []
+
+  data.forEach((d) => {
+    const i = _data.findIndex((p) => p[0].user_id === d.user_id)
+    if (i < 0) {
+      _data.push([d])
+    } else {
+      _data[i].push(d)
+    }
+  })
+
+  return _data
+}
+
 interface GroupWalletsByUserId {
   total: number
   data: Array<{

@@ -65,7 +65,6 @@ const PlanningsPage = () => {
       })
     }
   }, [orgQuery])
-  console.log(filter)
 
   return (
     <AppLayout description="Don't let your money flow with no purpose. Plan it!">
@@ -150,7 +149,12 @@ const PlanningsPage = () => {
               }}
               passHref
             >
-              <MyButton colorType="primary">View Analytic</MyButton>
+              <MyButton
+                color="light"
+                className="!text-gray-500 hover:!bg-finamiBlue hover:!text-white !text-sm"
+              >
+                View Analytic
+              </MyButton>
             </Link>
           </div>
           <div className="flex justify-end items-center" />
@@ -169,7 +173,8 @@ const PlanningsPage = () => {
                       .filter(
                         (t) =>
                           t.user_id === d.user_id &&
-                          d.category_id === t.category_id,
+                          d.category_id === t.category_id &&
+                          t.transaction_type === 'out',
                       )
                       .map((d) => d.amount)
                       .reduce((a, b) => a + b, 0)

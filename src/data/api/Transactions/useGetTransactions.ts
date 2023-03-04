@@ -65,7 +65,9 @@ export default function useGetTransactions(
     _data = _data.filter((d) => d.category_id === category_id)
   }
   if (search_key) {
-    _data = _data.filter((d) => d.description.includes(search_key))
+    _data = _data.filter((d) =>
+      d.description?.toLowerCase().includes(search_key?.toLowerCase()),
+    )
   }
   if (start_date) {
     _data = _data.filter(

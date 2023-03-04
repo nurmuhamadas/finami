@@ -30,7 +30,9 @@ export default function useGetPlannings({
     _data = _data.filter((d) => !dayjs(d.month).isAfter(end_month, 'month'))
   }
   if (search_key) {
-    _data = _data.filter((d) => d.name.includes(search_key))
+    _data = _data.filter((d) =>
+      d.name?.toLowerCase().includes(search_key?.toLowerCase()),
+    )
   }
 
   return _data
