@@ -4,8 +4,6 @@ import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import dynamic from 'next/dynamic'
 
-import { Modal } from 'flowbite-react'
-
 import useGetUsers from 'data/api/Users/useGetUsers'
 import useGetWallets from 'data/api/Wallets/useGetWallets'
 import { type WalletDataResponse } from 'data/types'
@@ -19,11 +17,15 @@ import {
   mapDataToSelectOptions,
 } from 'utils/helpers/helper'
 
-import WalletModal from './components/WalletModal'
 import { type WalletFormData } from './components/WalletModal/types'
 import WalletsCard from './components/WalletsCard'
 
-const MyModal = dynamic(async () => await import('components/MyModal'))
+const DeleteModal = dynamic(
+  async () => await import('./components/ModalDelete'),
+)
+const WalletModal = dynamic(
+  async () => await import('./components/WalletModal'),
+)
 
 const WalletsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -139,29 +141,15 @@ const WalletsPage = () => {
           }}
         />
 
-        <MyModal
+        <DeleteModal
           show={isOpenDeleteModal}
           onClose={() => {
             setSelectedWallet(null)
             setIsOpenDeleteModal(false)
           }}
-          position="bottom-center"
-        >
-          <Modal.Header>Delete confirmation</Modal.Header>
-          <Modal.Body>
-            <p>
-              All transaction related to {selectedWallet?.name} wallet will be
-              deleted. Are you sure?
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <div className="flex w-full justify-end">
-              <MyButton colorType="danger" onClick={handleDelete}>
-                Delete
-              </MyButton>
-            </div>
-          </Modal.Footer>
-        </MyModal>
+          walletName={selectedWallet?.name}
+          onDelete={handleDelete}
+        />
       </div>
     </AppLayout>
   )

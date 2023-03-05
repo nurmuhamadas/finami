@@ -1,6 +1,6 @@
-export type MyAvatarProps = {
-  showName?: boolean
-  showButton?: boolean
-  buttonText?: string
-  onButtonClick?: () => void
+import { ImageProps } from 'next/image'
+
+export type MyAvatarProps = ImageProps & {
+  wrapperClassName?: string
+  size?: number
 }

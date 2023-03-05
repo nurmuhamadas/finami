@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import AppLayout from 'components/AppLayout'
-import MyAvatar from 'components/MyAvatar'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
+import ProfileAvatar from 'components/ProfileAvatar'
 import { accountMenu } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
 import { debounce } from 'utils/helpers/helper'
@@ -40,7 +40,7 @@ const AccountPage = () => {
           <OverviewCard>
             <ul className="">
               <li className="mt-8 justify-center flex mb-8">
-                <MyAvatar
+                <ProfileAvatar
                   showButton
                   showName
                   onButtonClick={async () => {

@@ -2,23 +2,34 @@ import React from 'react'
 
 import { Modal } from 'flowbite-react'
 
-const ModalDelete = () => {
+import MyButton from 'components/MyButton'
+import MyModal from 'components/MyModal'
+
+import { type ModalDeleteProps } from './types'
+
+const ModalDelete = ({
+  onDelete,
+  show,
+  onClose,
+  walletName,
+}: ModalDeleteProps) => {
   return (
-    <Modal
-      show={isOpenDeleteModal}
-      onClose={() => {
-        setSelectedWallet(null)
-        setIsOpenDeleteModal(false)
-      }}
-      className="h-screen"
-    >
+    <MyModal show={show} onClose={onClose} position="top-center">
       <Modal.Header>Delete confirmation</Modal.Header>
       <Modal.Body>
         <p>
-          All transaction related to this wallet will be deleted. Are you sure?
+          All transaction related to {walletName} wallet will be deleted. Are
+          you sure?
         </p>
       </Modal.Body>
-    </Modal>
+      <Modal.Footer>
+        <div className="flex w-full justify-end">
+          <MyButton colorType="danger" onClick={onDelete}>
+            Delete
+          </MyButton>
+        </div>
+      </Modal.Footer>
+    </MyModal>
   )
 }
 

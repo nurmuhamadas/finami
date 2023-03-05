@@ -49,7 +49,10 @@ const NewTransactionPage = () => {
           </div>
         </div>
         <NewTransactionForm
-          initialData={initialValues}
+          initialData={{
+            ...initialValues,
+            is_owner: false,
+          }}
           onSubmit={handleRegister}
         />
       </div>

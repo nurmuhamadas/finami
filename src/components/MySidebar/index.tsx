@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import cn from 'classnames'
 import { Sidebar } from 'flowbite-react'
 
-import MyAvatar from 'components/MyAvatar'
+import ProfileAvatar from 'components/ProfileAvatar'
 import { PAGES_URL } from 'utils/constants/pages'
 import { type MenuType } from 'utils/constants/types'
 
@@ -74,11 +74,13 @@ const renderMenuItem = ({
 }
 
 const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
-  const { pathname } = useRouter()
+  const { pathname, push } = useRouter()
   const mappedMenu = menus.map((m) => ({
     ...m,
     child: m.child?.filter((c) => c.url !== PAGES_URL.account_profile.url),
   }))
+
+  // TODO:
 
   return (
     <Sidebar
@@ -96,7 +98,14 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           <Sidebar.Items className="flex flex-col">
-            <MyAvatar showButton showName />
+            <ProfileAvatar
+              showButton
+              showName
+              buttonText="Edit profile"
+              onButtonClick={async () => {
+                await push(PAGES_URL.account_profile.url)
+              }}
+            />
           </Sidebar.Items>
         </Sidebar.ItemGroup>
 

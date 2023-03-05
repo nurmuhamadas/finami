@@ -11,9 +11,9 @@ import useGetUserById from 'data/api/Users/useGetUserById'
 import { type UpdateUserPayload } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
-import MyAvatar from 'components/MyAvatar'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
+import ProfileAvatar from 'components/ProfileAvatar'
 
 import { updateProfileSchema } from './schema'
 
@@ -51,7 +51,7 @@ const AccountProfilePage = () => {
   }, [data])
 
   return (
-    <AppLayout description="Record inflow and outflow of your family finance here">
+    <AppLayout>
       <div className="flex flex-col space-y-8 max-w-3xl">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -69,7 +69,7 @@ const AccountProfilePage = () => {
         <OverviewCard cardClassName="py-6">
           <div className="flex flex-col gap-4 items-center sm:items-start w-full mx-auto sm:flex-row">
             <div className="w-full sm:w-1/3">
-              <MyAvatar
+              <ProfileAvatar
                 showButton
                 onButtonClick={handleUpload}
                 buttonText="Change photo"

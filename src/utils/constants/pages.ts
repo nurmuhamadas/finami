@@ -26,7 +26,7 @@ export const PAGES_URL = {
 
   account: { url: '/app/account', title: 'My Account' },
   account_setting: { url: '/app/account/setting', title: 'Account Setting' },
-  account_profile: { url: '/app/account/profile', title: 'Profile' },
+  account_profile: { url: '/app/account/profile', title: 'Profile Setting' },
   account_member_setting: {
     url: '/app/account/member_setting',
     title: 'Member Setting',
