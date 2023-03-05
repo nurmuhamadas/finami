@@ -5,12 +5,12 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { useRouter } from 'next/router'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Label, TextInput } from 'flowbite-react'
 
 import useGetUserById from 'data/api/Users/useGetUserById'
 import { type UpdateUserPayload } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
+import FormInput from 'components/Forms/FormInput'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import ProfileAvatar from 'components/ProfileAvatar'
@@ -80,39 +80,27 @@ const AccountProfilePage = () => {
               className="flex flex-col gap-y-3 w-full sm:w-2/3"
               onSubmit={handleSubmit(handleRegister)}
             >
-              <div className="w-full flex flex-wrap gap-1">
-                <div className="w-full">
-                  <Label htmlFor="user_name" value="Username" />
-                </div>
-                <div className="w-full">
-                  <TextInput
-                    id="user_name"
-                    type="text"
-                    placeholder="Input"
-                    className="finamiInput"
-                    required
-                    disabled
-                    {...register('username')}
-                  />
-                  <p>{errors.fullname?.message}</p>
-                </div>
-              </div>
-              <div className="w-full flex flex-wrap gap-1">
-                <div className="w-full">
-                  <Label htmlFor="name" value="Name" />
-                </div>
-                <div className="w-full">
-                  <TextInput
-                    id="name"
-                    type="text"
-                    placeholder="Input"
-                    className="finamiInput"
-                    required
-                    {...register('fullname')}
-                  />
-                  <p>{errors.fullname?.message}</p>
-                </div>
-              </div>
+              <FormInput
+                label="Username"
+                id="user_name"
+                type="text"
+                placeholder="Input"
+                className="finamiInput"
+                required
+                disabled
+                {...register('username')}
+                errorMessage={errors.username?.message}
+              />
+              <FormInput
+                label="Name"
+                id="name"
+                type="text"
+                placeholder="Input"
+                className="finamiInput"
+                required
+                {...register('fullname')}
+                errorMessage={errors.fullname?.message}
+              />
               <div className="w-full flex flex-wrap gap-1 mt-4">
                 <MyButton
                   type="submit"

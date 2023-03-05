@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { AiFillFilter } from 'react-icons/ai'
-import Select from 'react-tailwindcss-select'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import cn from 'classnames'
@@ -16,6 +15,7 @@ import {
   type WalletDataResponse,
 } from 'data/types'
 
+import FormSelect from 'components/Forms/FormSelect'
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
 import { TRANSACTION_TYPES_OPT } from 'utils/constants/common'
@@ -157,75 +157,58 @@ const FilterTransactions = ({
             showShorcut
           />
         </div>
-        <div className={cn({ hidden: hide.type })}>
-          <div className="mb-1 block">
-            <Label value="Transaction type" />
-          </div>
-          <Select
-            isClearable
-            isDisabled={loading}
-            primaryColor="violet"
-            value={optionsState.transaction_type}
-            onChange={(e) => {
-              if (!hide.wallet) {
-                handleChange(e as Option, 'transaction_type')
-              }
-            }}
-            options={TRANSACTION_TYPES_OPT}
-          />
-        </div>
-        <div className={cn({ hidden: hide.category })}>
-          <div className="mb-1 block">
-            <Label value="Category" />
-          </div>
-          <Select
-            isClearable
-            isSearchable
-            isDisabled={loading}
-            primaryColor="violet"
-            value={optionsState.category_id}
-            onChange={(e) => {
-              if (!hide.category) {
-                handleChange(e as Option, 'category_id')
-              }
-            }}
-            options={optCategory}
-          />
-        </div>
-        <div className={cn({ hidden: hide.user })}>
-          <div className="mb-1 block">
-            <Label value="User" />
-          </div>
-          <Select
-            isClearable
-            isDisabled={loading}
-            primaryColor="violet"
-            value={optionsState.child_id}
-            onChange={(e) => {
-              if (!hide.user) {
-                handleChange(e as Option, 'child_id')
-              }
-            }}
-            options={optUser}
-          />
-        </div>
-        <div className={cn({ hidden: hide.wallet })}>
-          <div className="mb-1 block">
-            <Label value="Wallet" />
-          </div>
-          <Select
-            isClearable
-            isDisabled={loading}
-            primaryColor="violet"
-            value={optionsState.wallet_id}
-            onChange={(e) => {
-              if (!hide.wallet) {
-                handleChange(e as Option, 'wallet_id')
-              }
-            }}
-            options={optWallet}
-          />
-        </div>
+        <FormSelect
+          isClearable
+          isDisabled={loading}
+          wrapperClassName={cn({ hidden: hide.type })}
+          label="Transaction type"
+          value={optionsState.transaction_type}
+          options={TRANSACTION_TYPES_OPT}
+          onChange={(e) => {
+            if (!hide.wallet) {
+              handleChange(e as Option, 'transaction_type')
+            }
+          }}
+        />
+        <FormSelect
+          isClearable
+          isDisabled={loading}
+          wrapperClassName={cn({ hidden: hide.category })}
+          label="Category"
+          value={optionsState.category_id}
+          onChange={(e) => {
+            if (!hide.category) {
+              handleChange(e as Option, 'category_id')
+            }
+          }}
+          options={optCategory}
+        />
+        <FormSelect
+          isClearable
+          isDisabled={loading}
+          wrapperClassName={cn({ hidden: hide.user })}
+          label="User"
+          value={optionsState.child_id}
+          onChange={(e) => {
+            if (!hide.user) {
+              handleChange(e as Option, 'child_id')
+            }
+          }}
+          options={optUser}
+        />
+        <FormSelect
+          isClearable
+          isDisabled={loading}
+          wrapperClassName={cn({ hidden: hide.wallet })}
+          label="Wallet"
+          value={optionsState.wallet_id}
+          onChange={(e) => {
+            if (!hide.wallet) {
+              handleChange(e as Option, 'wallet_id')
+            }
+          }}
+          options={optWallet}
+        />
       </div>
     </div>
   )

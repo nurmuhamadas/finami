@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Label, Modal, TextInput } from 'flowbite-react'
+import { Modal } from 'flowbite-react'
 
 import { type CreateUserPayload } from 'data/types'
 
+import FormInput from 'components/Forms/FormInput'
 import MyButton from 'components/MyButton'
 import MyModal from 'components/MyModal'
 
@@ -49,99 +50,72 @@ const ModalRegisterMember = ({
           className="grid gap-4 md:grid-cols-2"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="username" value="Username" />
-            </div>
-            <TextInput
-              id="username"
-              placeholder="Input"
-              disabled={disableForm}
-              className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
-              {...register('username')}
-              onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('username', e.target.value)
-                } else {
-                  setValue('username', undefined)
-                }
-              }}
-            />
-            <p className="text-finamiRed text-sm mt-1">
-              {errors.username?.message}
-            </p>
-          </div>
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="email" value="Email" />
-              <span className="text-red-500">*</span>
-            </div>
-            <TextInput
-              id="email"
-              placeholder="example@mail.com"
-              disabled={disableForm}
-              type="email"
-              className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
-              {...register('email')}
-              onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('email', e.target.value)
-                } else {
-                  setValue('email', undefined)
-                }
-              }}
-            />
-            <p className="text-finamiRed text-sm mt-1">
-              {errors.email?.message}
-            </p>
-          </div>
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="fullname" value="Full Name" />
-              <span className="text-red-500">*</span>
-            </div>
-            <TextInput
-              id="fullname"
-              placeholder="Input"
-              disabled={disableForm}
-              className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
-              {...register('fullname')}
-              onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('fullname', e.target.value)
-                } else {
-                  setValue('fullname', undefined)
-                }
-              }}
-            />
-            <p className="text-finamiRed text-sm mt-1">
-              {errors.fullname?.message}
-            </p>
-          </div>
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="password" value="Password" />
-              <span className="text-red-500">*</span>
-            </div>
-            <TextInput
-              id="password"
-              placeholder="Input"
-              disabled={disableForm}
-              type="password"
-              className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
-              {...register('password')}
-              onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('password', e.target.value)
-                } else {
-                  setValue('password', undefined)
-                }
-              }}
-            />
-            <p className="text-finamiRed text-sm mt-1">
-              {errors.password?.message}
-            </p>
-          </div>
+          <FormInput
+            label="Username"
+            id="username"
+            placeholder="Input"
+            disabled={disableForm}
+            className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
+            {...register('username')}
+            onChange={(e) => {
+              if (e?.target?.value) {
+                setValue('username', e.target.value)
+              } else {
+                setValue('username', undefined)
+              }
+            }}
+            errorMessage={errors.username?.message}
+          />
+          <FormInput
+            label="Email"
+            id="email"
+            placeholder="example@mail.com"
+            disabled={disableForm}
+            type="email"
+            className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
+            {...register('email')}
+            onChange={(e) => {
+              if (e?.target?.value) {
+                setValue('email', e.target.value)
+              } else {
+                setValue('email', undefined)
+              }
+            }}
+            errorMessage={errors.email?.message}
+          />
+          <FormInput
+            label="Full Name"
+            id="fullname"
+            placeholder="Input"
+            disabled={disableForm}
+            className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
+            {...register('fullname')}
+            onChange={(e) => {
+              if (e?.target?.value) {
+                setValue('fullname', e.target.value)
+              } else {
+                setValue('fullname', undefined)
+              }
+            }}
+            errorMessage={errors.fullname?.message}
+          />
+          <FormInput
+            label="Password"
+            id="password"
+            placeholder="Input"
+            disabled={disableForm}
+            type="password"
+            className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
+            {...register('password')}
+            onChange={(e) => {
+              if (e?.target?.value) {
+                setValue('password', e.target.value)
+              } else {
+                setValue('password', undefined)
+              }
+            }}
+            errorMessage={errors.password?.message}
+          />
           <div className="md:col-span-2">
             <MyButton
               type="submit"

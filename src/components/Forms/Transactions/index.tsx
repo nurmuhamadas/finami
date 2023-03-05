@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Select from 'react-tailwindcss-select'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Label, Textarea, TextInput } from 'flowbite-react'
+import { Label, Textarea } from 'flowbite-react'
 
 import useGetCategories from 'data/api/Categories/useGetCategories'
 import useGetWallets from 'data/api/Wallets/useGetWallets'
@@ -13,6 +12,9 @@ import { type CreateTransactionPayload } from 'data/types'
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
 import { mapDataToSelectOptions } from 'utils/helpers/helper'
+
+import FormInput from '../FormInput'
+import FormSelect from '../FormSelect'
 
 import { registerTransactionSchema } from './schema'
 import { type TransactionFormProps } from './types'
@@ -75,80 +77,60 @@ const TransactionForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="grid gap-4 md:grid-cols-2"
     >
-      <div>
-        <div className="mb-2 block">
-          <Label htmlFor="wallet_id" value="Wallet" />
-        </div>
-        <Select
-          isSearchable
-          isClearable
-          isDisabled={disableForm}
-          primaryColor="violet"
-          placeholder="Select wallet..."
-          value={optionsValue.wallet_id}
-          onChange={(e: Option | Option[]) => {
-            if (e) {
-              setValue('wallet_id', (e as Option).value)
-              handleOptionChange(e as Option, 'wallet_id')
-            } else {
-              setValue('wallet_id', undefined)
-              handleOptionChange(undefined, 'wallet_id')
-            }
-          }}
-          options={optWallets}
-        />
-        <p className="text-finamiRed text-sm mt-1">
-          {errors.wallet_id?.message}
-        </p>
-      </div>
-      <div>
-        <div className="mb-2 block">
-          <Label htmlFor="amount" value="Transaction amount" />
-        </div>
-        <TextInput
-          id="amount"
-          placeholder="Input amount..."
-          required={true}
-          className="finamiInput"
-          type="number"
-          disabled={disableForm}
-          {...register('amount')}
-          onChange={(e) => {
-            if (e?.target?.value) {
-              setValue('amount', Number(e.target.value))
-            } else {
-              setValue('amount', 0)
-            }
-          }}
-        />
-        <p className="text-finamiRed text-sm mt-1">{errors.amount?.message}</p>
-      </div>
-      <div>
-        <div className="mb-2 block">
-          <Label htmlFor="category_id" value="Transaction category" />
-        </div>
-        <Select
-          isSearchable
-          isClearable
-          isDisabled={disableForm}
-          primaryColor="violet"
-          placeholder="Select category..."
-          value={optionsValue.category_id}
-          onChange={(e: Option | Option[]) => {
-            if (e) {
-              setValue('category_id', (e as Option).value)
-              handleOptionChange(e as Option, 'category_id')
-            } else {
-              setValue('category_id', undefined)
-              handleOptionChange(undefined, 'category_id')
-            }
-          }}
-          options={optcategories}
-        />
-        <p className="text-finamiRed text-sm mt-1">
-          {errors.category_id?.message}
-        </p>
-      </div>
+      <FormSelect
+        required
+        label="Wallet"
+        isDisabled={disableForm}
+        placeholder="Select wallet..."
+        value={optionsValue.wallet_id}
+        onChange={(e: Option | Option[]) => {
+          if (e) {
+            setValue('wallet_id', (e as Option).value)
+            handleOptionChange(e as Option, 'wallet_id')
+          } else {
+            setValue('wallet_id', undefined)
+            handleOptionChange(undefined, 'wallet_id')
+          }
+        }}
+        options={optWallets}
+        errorMessage={errors.wallet_id?.message}
+      />
+      <FormInput
+        id="amount"
+        label="Transaction amount"
+        required
+        placeholder="Input amount..."
+        className="finamiInput"
+        type="number"
+        disabled={disableForm}
+        {...register('amount')}
+        onChange={(e) => {
+          if (e?.target?.value) {
+            setValue('amount', Number(e.target.value))
+          } else {
+            setValue('amount', 0)
+          }
+        }}
+        errorMessage={errors.amount?.message}
+      />
+      <FormSelect
+        required
+        label="Transaction category"
+        isDisabled={disableForm}
+        placeholder="Select category..."
+        value={optionsValue.category_id}
+        onChange={(e: Option | Option[]) => {
+          if (e) {
+            setValue('category_id', (e as Option).value)
+            handleOptionChange(e as Option, 'category_id')
+          } else {
+            setValue('category_id', undefined)
+            handleOptionChange(undefined, 'category_id')
+          }
+        }}
+        options={optcategories}
+        errorMessage={errors.category_id?.message}
+      />
       <div>
         <div className="mb-2 block">
           <Label htmlFor="date" value="Transaction date" />

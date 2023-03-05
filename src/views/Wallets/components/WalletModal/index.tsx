@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Select from 'react-tailwindcss-select'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Label, Modal, TextInput } from 'flowbite-react'
+import { Modal } from 'flowbite-react'
 
 import useGetUsers from 'data/api/Users/useGetUsers'
 
+import FormInput from 'components/Forms/FormInput'
+import FormSelect from 'components/Forms/FormSelect'
 import MyButton from 'components/MyButton'
 import MyModal from 'components/MyModal'
 import { mapDataToSelectOptions } from 'utils/helpers/helper'
@@ -38,7 +39,7 @@ const WalletModal = ({
   })
   const [selectedUserId, setSelectedUserId] = useState(undefined)
 
-  const isNew = !initialData
+  const isNew = !initialData?.name
 
   const users = useGetUsers()
   const userOpt = mapDataToSelectOptions(users, 'id', 'fullname')
@@ -72,62 +73,48 @@ const WalletModal = ({
             onSave(data)
           })}
         >
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="name" value="Wallet name" />
-            </div>
-            <TextInput
-              id="name"
-              placeholder="Your name ..."
-              required={true}
-              {...register('name')}
-              defaultValue={initialData?.name || null}
-            />
-            <p className="text-finamiRed">{errors.name?.message}</p>
-          </div>
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="balance" value="Wallet balance" />
-            </div>
-            <TextInput
-              id="balance"
-              placeholder="Your name ..."
-              required={true}
-              type="number"
-              {...register('balance')}
-              onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('balance', Number(e.target.value))
-                } else {
-                  setValue('balance', 0)
-                }
-              }}
-            />
-            <p className="text-finamiRed">{errors.balance?.message}</p>
-          </div>
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="user_id" value="Wallet owner" />
-            </div>
-            <Select
-              isSearchable
-              isClearable
-              primaryColor="violet"
-              value={selectedUserId}
-              onChange={(e: Option | Option[]) => {
-                if (e) {
-                  setValue('user_id', (e as Option).value)
-                  setSelectedUserId(e)
-                } else {
-                  setValue('user_id', '')
-                  setSelectedUserId(undefined)
-                }
-              }}
-              options={userOpt}
-              isDisabled={isEditData}
-            />
-            <p className="text-finamiRed">{errors.user_id?.message}</p>
-          </div>
+          <FormInput
+            label="Wallet name"
+            id="name"
+            placeholder="Your name ..."
+            required={true}
+            {...register('name')}
+            defaultValue={initialData?.name || null}
+            errorMessage={errors.name?.message}
+          />
+          <FormInput
+            label="Wallet balance"
+            id="balance"
+            placeholder="Your name ..."
+            required={true}
+            type="number"
+            {...register('balance')}
+            onChange={(e) => {
+              if (e?.target?.value) {
+                setValue('balance', Number(e.target.value))
+              } else {
+                setValue('balance', 0)
+              }
+            }}
+            errorMessage={errors.balance?.message}
+          />
+          <FormSelect
+            required
+            label="Planning category"
+            value={selectedUserId}
+            onChange={(e: Option | Option[]) => {
+              if (e) {
+                setValue('user_id', (e as Option).value)
+                setSelectedUserId(e)
+              } else {
+                setValue('user_id', '')
+                setSelectedUserId(undefined)
+              }
+            }}
+            options={userOpt}
+            isDisabled={isEditData}
+            errorMessage={errors.user_id?.message}
+          />
           <div className="item-center flex justify-end">
             <MyButton colorType="primary" type="submit">
               Save

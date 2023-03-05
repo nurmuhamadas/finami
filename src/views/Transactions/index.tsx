@@ -95,7 +95,7 @@ const TransactionsPage = () => {
               <TextInput
                 id="searchkey"
                 placeholder="Search..."
-                className="finamiInput w-80"
+                className="finamiInput w-full sm:w-80"
                 rightIcon={AiOutlineSearch}
                 onChange={debounce((e) => {
                   if (e) {
@@ -110,7 +110,7 @@ const TransactionsPage = () => {
         />
 
         <div className="grid max-w-4xl gap-8">
-          <div className="flex items-center space-x-3 justify-between">
+          <div className="flex flex-wrap items-center gap-3 justify-between">
             <p className="font-semibold">
               Period: {dayjs(filter.startDate).format('DD MMM YYYY')} -{' '}
               {dayjs(filter.endDate).format('DD MMM YYYY')}
@@ -120,6 +120,7 @@ const TransactionsPage = () => {
                 pathname: PAGES_URL.transactions_analytics.url,
                 query,
               }}
+              className="ml-auto"
               passHref
             >
               <MyButton
