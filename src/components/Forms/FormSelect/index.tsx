@@ -23,7 +23,7 @@ const FormSelect = ({
       </div>
       <Select
         primaryColor="violet"
-        placeholder="Input"
+        placeholder="Select"
         value={value}
         onChange={onChange}
         {...props}

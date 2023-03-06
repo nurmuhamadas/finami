@@ -3,6 +3,7 @@ import { type Option } from 'react-tailwindcss-select/dist/components/type'
 import dayjs from 'dayjs'
 
 import {
+  type CategoryDataResponse,
   type PlanningDataResponse,
   type TransactionDataResponse,
   type WalletDataResponse,
@@ -302,4 +303,33 @@ export function debounce<Params extends any[]>(
       func(...args)
     }, timeout)
   }
+}
+
+interface GroupCategoriesByGroup {
+  group: string
+  data: CategoryDataResponse[]
+}
+
+export const groupCategoriesByGroup = (
+  data: CategoryDataResponse[],
+): GroupCategoriesByGroup[] => {
+  const _data: GroupCategoriesByGroup[] = []
+
+  data.forEach((d) => {
+    const i = _data.findIndex((c) => c.group === d.group)
+
+    if (i < 0) {
+      _data.push({
+        group: d.group,
+        data: [d],
+      })
+    } else {
+      _data[i] = {
+        group: d.group,
+        data: [..._data[i].data, d],
+      }
+    }
+  })
+
+  return _data
 }
