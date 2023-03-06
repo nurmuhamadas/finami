@@ -1,4 +1,7 @@
 export const PAGES_URL = {
+  login: { url: '/login', title: 'Login' },
+  signup: { url: '/signup', title: 'Signup' },
+
   overview: { url: '/app/dashboard', title: 'Overview' },
 
   transactions: { url: '/app/transactions', title: 'Transactions' },
@@ -40,7 +43,7 @@ export const PAGES_URL = {
     title: 'Categories Setting',
   },
   account_logout: { url: '/app/account/logout', title: 'Logout' },
-  account_about: { url: '/app/account/about', title: 'About Finami' },
+  account_about: { url: '/about', title: 'About Finami' },
 }
 
 export const QUERY_URL = {

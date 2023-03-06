@@ -6,6 +6,7 @@ import { type FormInputProps } from './types'
 const FormInput = ({
   id,
   label,
+  type,
   errorMessage,
   wrapperClassName,
   labelClassName,
@@ -23,6 +24,7 @@ const FormInput = ({
         id={id}
         required={required}
         className={cn('finamiInput', className)}
+        type={type || 'text'}
         {...props}
       />
       <p

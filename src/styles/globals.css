@@ -20,6 +20,14 @@ body {
   box-shadow: #6453dd 0 0 0 1px;
 }
 
+.finamiInput input[type='checkbox'] {
+  border-radius: 4px;
+  cursor: pointer;
+}
+.finamiInput input:checked {
+  background-color: #6453dd;
+}
+
 .finamiInput textarea:focus {
   border-color: #6453dd;
   box-shadow: #6453dd 0 0 0 1px;
