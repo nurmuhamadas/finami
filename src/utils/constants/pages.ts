@@ -19,6 +19,10 @@ export const PAGES_URL = {
 
   plannings: { url: '/app/plannings', title: 'Plannings' },
   plannings_new: { url: '/app/plannings/new', title: 'Create New Planning' },
+  plannings_detail: {
+    url: '/app/plannings/planning',
+    title: 'Detail Plannings',
+  },
   plannings_analytics: {
     url: '/app/plannings/analytics',
     title: 'Planning Analytics',

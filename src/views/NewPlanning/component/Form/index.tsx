@@ -84,6 +84,7 @@ const PlanningForm = ({
         required={true}
         className="finamiInput"
         disabled={disableForm}
+        defaultValue={initialData?.name || null}
         {...register('name')}
         onChange={(e) => {
           if (e?.target?.value) {
@@ -102,6 +103,7 @@ const PlanningForm = ({
         className="finamiInput"
         type="number"
         disabled={disableForm}
+        defaultValue={initialData?.amount || null}
         {...register('amount')}
         onChange={(e) => {
           if (e?.target?.value) {
@@ -171,7 +173,7 @@ const PlanningForm = ({
         options={optcategories}
         errorMessage={errors.category_id?.message}
       />
-      <div className="md:col-span-2 flex w-full justify-center">
+      <div className="md:col-span-2 flex w-full justify-center mt-8">
         <MyButton
           type="submit"
           colorType="primary"

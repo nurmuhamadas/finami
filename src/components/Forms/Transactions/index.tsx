@@ -103,6 +103,7 @@ const TransactionForm = ({
         className="finamiInput"
         type="number"
         disabled={disableForm}
+        defaultValue={initialData?.amount || null}
         {...register('amount')}
         onChange={(e) => {
           if (e?.target?.value) {

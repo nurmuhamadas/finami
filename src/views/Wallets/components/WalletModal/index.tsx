@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Modal } from 'flowbite-react'
 
 import useGetUsers from 'data/api/Users/useGetUsers'
 
@@ -64,9 +63,9 @@ const WalletModal = ({
         setSelectedUserId(undefined)
       }}
       className="h-screen"
+      header={`${isNew ? 'Add New' : 'Edit'} Wallet`}
     >
-      <Modal.Header>{isNew ? 'Add New' : 'Edit'} Wallet</Modal.Header>
-      <Modal.Body>
+      {isOpen && (
         <form
           className="space-y-6"
           onSubmit={handleSubmit((data) => {
@@ -88,6 +87,7 @@ const WalletModal = ({
             placeholder="Your name ..."
             required={true}
             type="number"
+            defaultValue={initialData?.balance || null}
             {...register('balance')}
             onChange={(e) => {
               if (e?.target?.value) {
@@ -121,7 +121,7 @@ const WalletModal = ({
             </MyButton>
           </div>
         </form>
-      </Modal.Body>
+      )}
     </MyModal>
   )
 }

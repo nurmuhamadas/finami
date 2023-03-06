@@ -1,22 +1,33 @@
 import { useState } from 'react'
 import { AiOutlineDelete, AiOutlineFile, AiOutlinePlus } from 'react-icons/ai'
 
+import dynamic from 'next/dynamic'
+
 import useGetUsers from 'data/api/Users/useGetUsers'
-import { type CreateUserPayload } from 'data/types'
+import { type CreateUserPayload, type UserDataResponse } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 
-import ModalRegisterMember from './components/ModalRegisterMember'
+const MyModal = dynamic(async () => await import('components/MyModal'))
+const ModalRegisterMember = dynamic(
+  async () => await import('./components/ModalRegisterMember'),
+)
 
 const AccountMemberSetting = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<UserDataResponse>(undefined)
 
   const data = useGetUsers()?.filter((d) => !!d.parent_id)
 
   const handleRegister = (values: CreateUserPayload) => {
     console.log(values)
+  }
+
+  const handleDelete = () => {
+    console.log(selectedUser)
   }
 
   return (
@@ -44,9 +55,6 @@ const AccountMemberSetting = () => {
               <li
                 key={d.id}
                 className="flex flex-col py-4 gap-4 justify-between sm:flex-row"
-                onClick={() => {
-                  setIsModalOpen(true)
-                }}
               >
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 mb-1 w-full sm:w-[400px] truncate">
@@ -60,7 +68,8 @@ const AccountMemberSetting = () => {
                   <MyButton
                     colorType="danger"
                     onClick={() => {
-                      setIsModalOpen(true)
+                      setSelectedUser(d)
+                      setIsDeleteOpen(true)
                     }}
                   >
                     <AiOutlineDelete size={16} />
@@ -87,6 +96,27 @@ const AccountMemberSetting = () => {
           }}
           onSubmit={handleRegister}
         />
+
+        <MyModal
+          show={isDeleteOpen}
+          onClose={() => {
+            setIsDeleteOpen(false)
+          }}
+          position="top-center"
+          header="Delete confirmation"
+          footer={
+            <div className="flex w-full justify-end">
+              <MyButton colorType="danger" onClick={handleDelete}>
+                Delete
+              </MyButton>
+            </div>
+          }
+        >
+          <p>
+            All related data to the {selectedUser?.fullname} user will be
+            deleted. Are you sure?
+          </p>
+        </MyModal>
       </div>
     </AppLayout>
   )

@@ -20,9 +20,7 @@ import {
 import { type WalletFormData } from './components/WalletModal/types'
 import WalletsCard from './components/WalletsCard'
 
-const DeleteModal = dynamic(
-  async () => await import('./components/ModalDelete'),
-)
+const MyModal = dynamic(async () => await import('components/MyModal'))
 const WalletModal = dynamic(
   async () => await import('./components/WalletModal'),
 )
@@ -141,15 +139,27 @@ const WalletsPage = () => {
           }}
         />
 
-        <DeleteModal
+        <MyModal
           show={isOpenDeleteModal}
           onClose={() => {
             setSelectedWallet(null)
             setIsOpenDeleteModal(false)
           }}
-          walletName={selectedWallet?.name}
-          onDelete={handleDelete}
-        />
+          position="top-center"
+          header="Delete confirmation"
+          footer={
+            <div className="flex w-full justify-end">
+              <MyButton colorType="danger" onClick={handleDelete}>
+                Delete
+              </MyButton>
+            </div>
+          }
+        >
+          <p>
+            All transaction related to {selectedWallet?.name} wallet will be
+            deleted. Are you sure?
+          </p>
+        </MyModal>
       </div>
     </AppLayout>
   )

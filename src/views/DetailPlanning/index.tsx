@@ -22,7 +22,10 @@ const NewPlanningPage = () => {
   }
 
   return (
-    <AppLayout description="Don't let your money flow with no purpose. Plan it!">
+    <AppLayout
+      title="Detail Planning"
+      description="Don't let your money flow with no purpose. Plan it!"
+    >
       <div className="flex w-full flex-col space-y-8 max-w-4xl">
         <div className="flex justify-between items-center">
           <div className="flex items-center">

@@ -46,14 +46,13 @@ const WalletsCard = ({
                 <AiOutlineEdit className="text-gray-600" />
               </MyButton>
               <MyButton
-                outline
                 onClick={() => {
                   onDeleteClick(d)
                 }}
-                color="failure"
+                colorType="danger"
                 className="group"
               >
-                <AiOutlineDelete className="text-finamiRed group-hover:text-white" />
+                <AiOutlineDelete />
               </MyButton>
             </div>
           </div>

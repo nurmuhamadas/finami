@@ -1,5 +1,3 @@
-import { Modal } from 'flowbite-react'
-
 import { type TransactionDataResponse } from 'data/types'
 
 import MyModal from 'components/MyModal'
@@ -18,12 +16,15 @@ const ModalAnalytic = ({
   onClose,
 }: ModalAnalyticProps) => {
   return (
-    <MyModal onClose={onClose} show={show}>
-      <Modal.Header>
+    <MyModal
+      onClose={onClose}
+      show={show}
+      header={
         <div className="w-full flex items-center justify-between">
           <span className="text-lg font-semibold">{title}</span>
         </div>
-      </Modal.Header>
+      }
+    >
       <div className="w-full px-8 py-4 h-[70vh] overflow-y-auto finamiBlueScollY">
         <ul className="flex flex-col divide-y-2">
           {['expense', 'income'].includes(modalType) &&

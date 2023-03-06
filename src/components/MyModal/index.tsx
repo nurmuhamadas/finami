@@ -5,7 +5,16 @@ import { Modal } from 'flowbite-react'
 
 import { type MyModalProps } from './types'
 
-const MyModal = ({ children, className, ...props }: MyModalProps) => {
+const MyModal = ({
+  children,
+  bodyClassName,
+  header,
+  headerClassName,
+  footer,
+  footerClassName,
+  className,
+  ...props
+}: MyModalProps) => {
   const [isBrowser, setIsBrowser] = useState(false)
 
   useEffect(() => {
@@ -14,7 +23,15 @@ const MyModal = ({ children, className, ...props }: MyModalProps) => {
 
   return isBrowser ? (
     <Modal className={cn('h-screen', className)} {...props}>
-      {children}
+      {!!header && (
+        <Modal.Header className={cn(headerClassName)}>{header}</Modal.Header>
+      )}
+      {!!children && (
+        <Modal.Body className={cn(bodyClassName)}>{children}</Modal.Body>
+      )}
+      {!!footer && (
+        <Modal.Body className={cn(footerClassName)}>{footer}</Modal.Body>
+      )}
     </Modal>
   ) : null
 }
