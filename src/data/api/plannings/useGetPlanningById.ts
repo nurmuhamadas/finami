@@ -1,11 +1,23 @@
-import { dummyPlanningsData } from 'utils/constants/dummyData'
+import { useQuery, type UseQueryOptions } from 'react-query'
 
-interface UseGetPlanningByIdProps {
-  id: string
-}
+import { type AxiosError } from 'axios'
+import ApiCall from 'services/ApiCall'
 
-export default function useGetPlanningById({ id }: UseGetPlanningByIdProps) {
-  const _data = [...dummyPlanningsData]
+import { type ErrorResponse, type PlanningDataResponse } from 'data/types'
 
-  return _data.filter((d) => d.id === id)?.[0]
+export default function useGetPlanningById(
+  id: string,
+  options: UseQueryOptions<
+    Promise<PlanningDataResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) {
+  const queryKey = ['GetPlanningById', id, options]
+  const query = useQuery(
+    queryKey,
+    async () => await ApiCall.Plannings.getPlanningById(id),
+    options as any,
+  )
+
+  return query
 }

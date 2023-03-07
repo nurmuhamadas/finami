@@ -1,16 +1,27 @@
-import { type GetCategoriesQuery } from 'data/types'
+import { useQuery, type UseQueryOptions } from 'react-query'
 
-import { dummyCategoriesData } from 'utils/constants/dummyData'
+import { type AxiosError } from 'axios'
+import ApiCall from 'services/ApiCall'
 
-export default function useGetCategories({
-  transaction_type,
-  include_child = false,
-}: GetCategoriesQuery = {}) {
-  let data = dummyCategoriesData
+import {
+  type CategoryDataResponse,
+  type ErrorResponse,
+  type GetCategoriesQuery,
+} from 'data/types'
 
-  if (transaction_type) {
-    data = data.filter((d) => d.transaction_type === transaction_type)
-  }
+export default function useGetCategories(
+  queryData: GetCategoriesQuery = {},
+  options: UseQueryOptions<
+    Promise<CategoryDataResponse[]>,
+    AxiosError<ErrorResponse>
+  >,
+) {
+  const queryKey = ['GetCategories', queryData, options]
+  const query = useQuery(
+    queryKey,
+    async () => await ApiCall.Categories.getCategories(queryData),
+    options as any,
+  )
 
-  return data.filter((d) => (!include_child ? d.is_owner : true))
+  return query
 }

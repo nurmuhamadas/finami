@@ -210,3 +210,63 @@ export interface UpdateSettingPayload {
   currency_id: string
   date_format: DateFormatType
 }
+
+// AUTH
+export interface LoginPayload {
+  username: string
+  password: string
+}
+
+export interface RefreshTokenPayload {
+  refreshToken: string
+}
+
+export interface LogoutPayload {
+  refreshToken: string
+}
+
+export interface PostSuccessResponse {
+  status: string
+  data: {
+    id: string
+  }
+}
+
+export interface PutSuccessResponse {
+  status: string
+  data: {
+    id: string
+  }
+}
+
+export interface DeleteSuccessResponse {
+  status: string
+  data: {
+    id: string
+  }
+}
+
+export interface ErrorResponse {
+  status: string
+  code: number
+  message: string
+}
+
+export interface LoginSuccessResponse {
+  status: string
+  data: {
+    accessToken: string
+    refreshToken: string
+  }
+}
+
+export interface RefreshTokenSuccessResponse {
+  status: string
+  data: {
+    refreshToken: string
+  }
+}
+
+export interface LogoutSuccessResponse {
+  status: string
+}

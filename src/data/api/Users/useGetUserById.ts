@@ -1,9 +1,23 @@
-import { dummyUsersData } from 'utils/constants/dummyData'
+import { useQuery, type UseQueryOptions } from 'react-query'
 
-interface UseGetUserByIdProps {
-  id: string
-}
+import { type AxiosError } from 'axios'
+import ApiCall from 'services/ApiCall'
 
-export default function useGetUserById({ id }: UseGetUserByIdProps) {
-  return dummyUsersData.filter((d) => d.id === id)?.[0]
+import { type ErrorResponse, type UserDataResponse } from 'data/types'
+
+export default function useGetUserById(
+  id: string,
+  options: UseQueryOptions<
+    Promise<UserDataResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) {
+  const queryKey = ['GetUserById', id, options]
+  const query = useQuery(
+    queryKey,
+    async () => await ApiCall.Users.getUserById(id),
+    options as any,
+  )
+
+  return query
 }

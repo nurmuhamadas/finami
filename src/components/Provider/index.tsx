@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode, useEffect, useState } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { useRouter } from 'next/router'
 
@@ -9,6 +10,15 @@ import { ONLY_PUBLIC_PAGE, PAGES_URL } from 'utils/constants/pages'
 interface ProviderProps {
   children: ReactNode
 }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+})
 
 const ProviderContainer = ({ children }: ProviderProps) => {
   const { user, isVerifying } = useAuth()
@@ -40,9 +50,11 @@ const ProviderContainer = ({ children }: ProviderProps) => {
 
 const Provider = ({ children }: ProviderProps): JSX.Element => {
   return (
-    <AuthProvider>
-      <ProviderContainer>{children}</ProviderContainer>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ProviderContainer>{children}</ProviderContainer>
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
 

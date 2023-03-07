@@ -364,3 +364,26 @@ export const saveAuthToLocal = ({
   localStorage.setItem(LOCAL_STORAGE.refreshTokenKey, encryptText(refreshToken))
   localStorage.setItem(LOCAL_STORAGE.userKey, encryptText(JSON.stringify(user)))
 }
+
+export const getAuthFromLocal = () => {
+  const accessToken = localStorage.getItem(LOCAL_STORAGE.accessTokenKey)
+  const refreshToken = localStorage.getItem(LOCAL_STORAGE.refreshTokenKey)
+  const user = localStorage.getItem(LOCAL_STORAGE.userKey)
+
+  return {
+    accessToken: accessToken ? decryptText(accessToken) : undefined,
+    refreshToken: refreshToken ? decryptText(refreshToken) : undefined,
+    user: user ? decryptText(user) : undefined,
+  }
+}
+
+export function urlQueryGenerator<T>(url: string, query: T): string {
+  let _url = `${url}?`
+  if (query) {
+    Object.entries(query)?.forEach(([key, val]) => {
+      if (val) _url += `${key}=${val as string}`
+    })
+  }
+
+  return _url
+}

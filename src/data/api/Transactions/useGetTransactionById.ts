@@ -1,7 +1,23 @@
-import { dummyTransactionsData } from 'utils/constants/dummyData'
+import { useQuery, type UseQueryOptions } from 'react-query'
 
-export default function useGetTransactionById({ id }: { id: string }) {
-  const _data = [...dummyTransactionsData]
+import { type AxiosError } from 'axios'
+import ApiCall from 'services/ApiCall'
 
-  return _data.filter((d) => d.id === id)?.[0]
+import { type ErrorResponse, type TransactionDataResponse } from 'data/types'
+
+export default function useGetTransactionById(
+  id: string,
+  options: UseQueryOptions<
+    Promise<TransactionDataResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) {
+  const queryKey = ['GetTransactionById', id, options]
+  const query = useQuery(
+    queryKey,
+    async () => await ApiCall.Transactions.getTransactionById(id),
+    options as any,
+  )
+
+  return query
 }

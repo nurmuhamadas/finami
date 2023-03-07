@@ -3,18 +3,19 @@ import { useQuery, type UseQueryOptions } from 'react-query'
 import { type AxiosError } from 'axios'
 import ApiCall from 'services/ApiCall'
 
-import { type ErrorResponse, type UserDataResponse } from 'data/types'
+import { type CategoryDataResponse, type ErrorResponse } from 'data/types'
 
-export default function useGetUsers(
+export default function useGetCategoryById(
+  id: string,
   options: UseQueryOptions<
-    Promise<UserDataResponse[]>,
+    Promise<CategoryDataResponse>,
     AxiosError<ErrorResponse>
   >,
 ) {
-  const queryKey = ['getUsers', options]
+  const queryKey = ['GetCategoryById', id, options]
   const query = useQuery(
     queryKey,
-    async () => await ApiCall.Users.getUsers(),
+    async () => await ApiCall.Categories.getCategoryById(id),
     options as any,
   )
 

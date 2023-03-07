@@ -1,15 +1,22 @@
-import { dummyWalletssData } from 'utils/constants/dummyData'
+import { useQuery, type UseQueryOptions } from 'react-query'
 
-interface UseGetWalletsProps {
-  user_id?: string
-}
+import { type AxiosError } from 'axios'
+import ApiCall from 'services/ApiCall'
 
-export default function useGetWallets({ user_id }: UseGetWalletsProps = {}) {
-  let _data = [...dummyWalletssData]
+import { type ErrorResponse, type WalletDataResponse } from 'data/types'
 
-  if (user_id) {
-    _data = _data.filter((d) => d.user_id === user_id)
-  }
+export default function useGetWallets(
+  options: UseQueryOptions<
+    Promise<WalletDataResponse[]>,
+    AxiosError<ErrorResponse>
+  >,
+) {
+  const queryKey = ['getWallets', options]
+  const query = useQuery(
+    queryKey,
+    async () => await ApiCall.Wallets.getWallets(),
+    options as any,
+  )
 
-  return _data
+  return query
 }
