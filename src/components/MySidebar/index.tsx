@@ -44,7 +44,9 @@ const renderMenuItem = ({
         key={url}
         icon={() => WrappedIcon({ Icon, isMenuActive })}
         label={text}
-        className="finamiCollapse"
+        className={cn('finamiCollapse py-3', {
+          'bg-finamiBlue !text-white hover:!bg-finamiBlue': isMenuActive,
+        })}
       >
         {child.map((c) => renderMenuItem({ ...c, pathname }))}
       </Sidebar.Collapse>

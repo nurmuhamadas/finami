@@ -12,7 +12,7 @@ export const dummyUsersData: UserDataResponse[] = [
     username: 'user001',
     email: 'user001@mail.com',
     fullname: 'User 001',
-    image_url: undefined,
+    image_url: 'https://flowbite.com/docs/images/people/profile-picture-5.jpg',
     parent_id: undefined,
     created_at: new Date('2023-03-01'),
     updated_at: new Date('2023-03-01'),

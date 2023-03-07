@@ -4,6 +4,7 @@ import cn from 'classnames'
 
 import MyAvatar from 'components/MyAvatar'
 import MyButton from 'components/MyButton'
+import { useAuth } from 'contexts/AuthContext'
 
 import { type ProfileAvatarProps } from './types'
 
@@ -13,16 +14,17 @@ const ProfileAvatar = ({
   buttonText,
   onButtonClick,
 }: ProfileAvatarProps) => {
+  const { user } = useAuth()
   return (
     <div className="flex flex-col w-full space-y-2 items-center">
       <MyAvatar
-        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+        src={user?.imageUrl || '/static/images/default_pp.png'}
         aria-label="Nur Muhamad Ash Shidiqi"
         alt="Nur Muhamad Ash Shidiqi"
         size={128}
       />
       <span className={cn({ hidden: !showName }, 'text-center')}>
-        Nur Muhamad Ash Shdiqi
+        {user?.fullname}
       </span>
       <MyButton
         color="light"

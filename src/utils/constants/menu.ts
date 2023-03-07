@@ -65,7 +65,7 @@ export const sideMenu: MenuType[] = [
   {
     Icon: AiOutlineUser,
     text: 'Account',
-    url: '#',
+    url: PAGES_URL.account.url,
     child: accountMenu,
   },
 ]

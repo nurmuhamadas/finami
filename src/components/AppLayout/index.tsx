@@ -31,11 +31,11 @@ const AppLayout = ({ children, title, description }: AppLayoutProps) => {
         <div className="w-full sticky py-4 px-4 sm:px-8 z-10 left-0 top-0 bg-white flex justify-between">
           <div className="flex items-center gap-x-2">
             <Avatar
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              img={user?.imageUrl || '/static/images/default_pp.png'}
               rounded={true}
               className="lg:hidden"
             />
-            <span className="font-semibold">Hi, Nur Muhamad</span>
+            <span className="font-semibold">Hi, {user?.fullname}</span>
           </div>
           <div className="flex items-center justify-end">
             <div role="button" className="p-2">
