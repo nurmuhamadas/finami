@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { AiFillCheckCircle } from 'react-icons/ai'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Label } from 'flowbite-react'
+import cn from 'classnames'
+import { Alert, Label } from 'flowbite-react'
 
 import FormInput from 'components/Forms/FormInput'
 import MyButton from 'components/MyButton'
+import { useAuth } from 'contexts/AuthContext'
+import { dummyUsersData } from 'utils/constants/dummyData'
 import { PAGES_URL } from 'utils/constants/pages'
+import { saveAuthToLocal } from 'utils/helpers/helper'
 
 import { loginSchema } from './schema'
 import { type LoginDataTypes } from './types'
@@ -25,10 +30,40 @@ const LoginPage = () => {
   } = useForm<LoginDataTypes>({
     resolver: yupResolver(loginSchema),
   })
+  const { setUser } = useAuth()
   const [isShowPassword, setIsShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleLogin = async () => {
-    await router.push(PAGES_URL.overview.url)
+    try {
+      setIsLoading(true)
+      // DO API CALL HERE
+
+      // Save Session
+      const user = dummyUsersData[0]
+      const _user = {
+        id: user.id,
+        username: user.username,
+        fullname: user.fullname,
+        imageUrl: user.image_url,
+      }
+
+      saveAuthToLocal({
+        accessToken: 'Access Token',
+        refreshToken: 'Refresh Token',
+        ..._user,
+      })
+      setUser(_user)
+      setIsSuccess(true)
+
+      await router.replace(PAGES_URL.overview.url)
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -68,7 +103,19 @@ const LoginPage = () => {
             className="flex flex-col gap-4 mt-8"
             onSubmit={handleSubmit(handleLogin)}
           >
-            <p className="text-finamiRed text-sm mt-1">Error message</p>
+            <Alert
+              color="failure"
+              className={cn('text-sm mt-1', { hidden: !error })}
+            >
+              {error}
+            </Alert>
+            <Alert
+              color="success"
+              className={cn('text-sm mt-1', { hidden: !isSuccess })}
+              icon={AiFillCheckCircle}
+            >
+              Login successfully!
+            </Alert>
             <FormInput
               id="username"
               label="Username"
@@ -117,6 +164,7 @@ const LoginPage = () => {
                 type="submit"
                 colorType="primary"
                 className="w-full max-w-md"
+                loading={isLoading}
               >
                 Login
               </MyButton>

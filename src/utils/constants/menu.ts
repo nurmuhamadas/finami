@@ -3,7 +3,6 @@ import {
   AiOutlineCalendar,
   AiOutlineDashboard,
   AiOutlineInfoCircle,
-  AiOutlineLogout,
   AiOutlineSetting,
   AiOutlineTransaction,
   AiOutlineUser,
@@ -39,11 +38,6 @@ export const accountMenu: MenuType[] = [
     Icon: AiOutlineInfoCircle,
     text: PAGES_URL.account_about.title,
     url: PAGES_URL.account_about.url,
-  },
-  {
-    Icon: AiOutlineLogout,
-    text: PAGES_URL.account_logout.title,
-    url: PAGES_URL.account_logout.url,
   },
 ]
 

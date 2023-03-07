@@ -1,5 +1,7 @@
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
+import { enc } from 'crypto-js'
+import AES from 'crypto-js/aes'
 import dayjs from 'dayjs'
 
 import {
@@ -8,6 +10,8 @@ import {
   type TransactionDataResponse,
   type WalletDataResponse,
 } from 'data/types'
+
+import { LOCAL_STORAGE } from 'utils/constants/common'
 
 import { getStartEndDateOfWeeks } from './dates'
 
@@ -332,4 +336,31 @@ export const groupCategoriesByGroup = (
   })
 
   return _data
+}
+
+export const encryptText = (text: string) => {
+  const salt = process.env.NEXT_PUBLIC_SALT
+  return AES.encrypt(text, salt).toString()
+}
+
+export const decryptText = (text: string) => {
+  const salt = process.env.NEXT_PUBLIC_SALT
+  return AES.decrypt(text, salt).toString(enc.Utf8)
+}
+
+export const saveAuthToLocal = ({
+  accessToken,
+  refreshToken,
+  ...user
+}: {
+  accessToken: string
+  refreshToken: string
+  id: string
+  username: string
+  fullname: string
+  imageUrl: string
+}) => {
+  localStorage.setItem(LOCAL_STORAGE.accessTokenKey, encryptText(accessToken))
+  localStorage.setItem(LOCAL_STORAGE.refreshTokenKey, encryptText(refreshToken))
+  localStorage.setItem(LOCAL_STORAGE.userKey, encryptText(JSON.stringify(user)))
 }

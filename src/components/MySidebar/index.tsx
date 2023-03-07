@@ -1,4 +1,5 @@
 import { type IconType } from 'react-icons'
+import { AiOutlineLogout } from 'react-icons/ai'
 
 import { useRouter } from 'next/router'
 
@@ -75,10 +76,12 @@ const renderMenuItem = ({
 
 const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
   const { pathname, push } = useRouter()
-  const mappedMenu = menus.map((m) => ({
-    ...m,
-    child: m.child?.filter((c) => c.url !== PAGES_URL.account_profile.url),
-  }))
+  const mappedMenu = menus
+    .filter((m) => ![PAGES_URL.account_profile.url].includes(m.url))
+    .map((m) => ({
+      ...m,
+      child: m.child?.filter((c) => c.url !== PAGES_URL.account_profile.url),
+    }))
 
   // TODO:
 
@@ -110,11 +113,19 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
         </Sidebar.ItemGroup>
 
         <Sidebar.ItemGroup>
-          {mappedMenu
-            .filter((m) => m.url !== PAGES_URL.account_profile.url)
-            .map((menu) => {
-              return renderMenuItem({ ...menu, pathname })
-            })}
+          {mappedMenu.map((menu) => {
+            return renderMenuItem({ ...menu, pathname })
+          })}
+
+          <Sidebar.Item
+            href={PAGES_URL.account_logout.url}
+            icon={() =>
+              WrappedIcon({ isMenuActive: false, Icon: AiOutlineLogout })
+            }
+            className={cn('py-3 bg-inherit')}
+          >
+            <span className={cn('font-light text-gray-500')}>Logout</span>
+          </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

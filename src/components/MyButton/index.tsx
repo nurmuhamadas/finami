@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import { Button } from 'flowbite-react'
+import { Button, Spinner } from 'flowbite-react'
 
 import { type MyButtonProps } from './types'
 
@@ -7,6 +7,8 @@ const MyButton = ({
   colorType,
   children,
   className,
+  disabled,
+  loading = false,
   ...props
 }: MyButtonProps) => {
   return (
@@ -22,8 +24,10 @@ const MyButton = ({
         },
         className,
       )}
+      disabled={disabled || loading}
       {...props}
     >
+      {loading && <Spinner color="purple" className="mr-2" />}
       {children}
     </Button>
   )

@@ -44,3 +44,9 @@ export const CATEGORY_GROUP_OPT: Array<{
     type: 'in',
   },
 ]
+
+export const LOCAL_STORAGE = {
+  refreshTokenKey: 'J0b2tlbl90eXB',
+  accessTokenKey: 'IjoicmVmcm',
+  userKey: 'jk2ZjcxYjM2',
+}

@@ -64,3 +64,5 @@ export const QUERY_URL = {
     search_key: 'q',
   },
 }
+
+export const ONLY_PUBLIC_PAGE = [PAGES_URL.login.url, PAGES_URL.signup.url]

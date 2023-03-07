@@ -4,6 +4,7 @@ import { Avatar } from 'flowbite-react'
 
 import BottomNav from 'components/BottomNav'
 import MySidebar from 'components/MySidebar'
+import { useAuth } from 'contexts/AuthContext'
 import { bottomMenu, sideMenu } from 'utils/constants/menu'
 import { getPageTitle } from 'utils/helpers/pages'
 
@@ -11,6 +12,11 @@ import { type AppLayoutProps } from './types'
 
 const AppLayout = ({ children, title, description }: AppLayoutProps) => {
   const pageTitle = getPageTitle()
+  const { user } = useAuth()
+
+  if (!user) {
+    return <div></div>
+  }
 
   return (
     <div className="relative flex h-screen w-full">

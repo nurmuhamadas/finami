@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { AiOutlineLogout } from 'react-icons/ai'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -28,10 +29,6 @@ const AccountPage = () => {
       setScreenWidth(window.innerWidth)
     }
   }, [])
-
-  const logoutMenu = accountMenu.find(
-    (m) => m.url === PAGES_URL.account_logout.url,
-  )
 
   return (
     <AppLayout description="Manage your account settings">
@@ -73,14 +70,20 @@ const AccountPage = () => {
                   )
                 })}
               <li role="button" className="mt-8 justify-center flex">
-                <MyButton colorType="danger">
-                  <div className="w-full flex items-center gap-x-4">
-                    <div className="flex items-center text-white">
-                      <logoutMenu.Icon size={24} />
+                <Link
+                  href={PAGES_URL.account_logout.url}
+                  passHref
+                  className="w-max"
+                >
+                  <MyButton colorType="danger">
+                    <div className="w-full flex items-center gap-x-4">
+                      <div className="flex items-center text-white">
+                        <AiOutlineLogout size={24} />
+                      </div>
+                      <span className="">Logout</span>
                     </div>
-                    <span className="">{logoutMenu.text}</span>
-                  </div>
-                </MyButton>
+                  </MyButton>
+                </Link>
               </li>
             </ul>
           </OverviewCard>

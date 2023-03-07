@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
+import Provider from 'components/Provider'
 import { getPageTitle } from 'utils/helpers/pages'
 
 import '../styles/globals.css'
@@ -40,7 +41,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="width=device-width, initial-scale=1.0"
         ></meta>
       </Head>
-      <Component {...pageProps} />
+      <Provider>
+        <Component {...pageProps} />
+      </Provider>
     </Fragment>
   )
 }
