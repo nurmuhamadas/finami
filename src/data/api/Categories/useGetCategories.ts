@@ -11,7 +11,7 @@ import {
 
 export default function useGetCategories(
   queryData: GetCategoriesQuery = {},
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<CategoryDataResponse[]>,
     AxiosError<ErrorResponse>
   >,

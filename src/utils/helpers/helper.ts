@@ -360,8 +360,8 @@ export const saveAuthToLocal = ({
   fullname: string
   imageUrl: string
 }) => {
-  localStorage.setItem(LOCAL_STORAGE.accessTokenKey, encryptText(accessToken))
-  localStorage.setItem(LOCAL_STORAGE.refreshTokenKey, encryptText(refreshToken))
+  localStorage.setItem(LOCAL_STORAGE.accessTokenKey, accessToken) // * Encrypted from BE
+  localStorage.setItem(LOCAL_STORAGE.refreshTokenKey, refreshToken) // * Encrypted from BE
   localStorage.setItem(LOCAL_STORAGE.userKey, encryptText(JSON.stringify(user)))
 }
 

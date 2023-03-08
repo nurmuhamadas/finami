@@ -12,6 +12,7 @@ import {
   type GetCategoriesQuery,
   type GetPlanningsQuery,
   type GetTransactionsQuery,
+  type GetWalletsQuery,
   type LoginPayload,
   type LoginSuccessResponse,
   type LogoutPayload,
@@ -95,8 +96,10 @@ class BaseApiCall {
   }
 
   Wallets = {
-    getWallets: async (): Promise<WalletDataResponse[]> => {
-      return await this.api.get(API_ENDPOINT.wallets)
+    getWallets: async (
+      query: GetWalletsQuery,
+    ): Promise<WalletDataResponse[]> => {
+      return await this.api.get(urlQueryGenerator(API_ENDPOINT.wallets, query))
     },
     getWalletById: async (id: string): Promise<WalletDataResponse> => {
       return await this.api.get(`${API_ENDPOINT.wallets}/${id}`)

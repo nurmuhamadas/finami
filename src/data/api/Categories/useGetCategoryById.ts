@@ -7,7 +7,7 @@ import { type CategoryDataResponse, type ErrorResponse } from 'data/types'
 
 export default function useGetCategoryById(
   id: string,
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<CategoryDataResponse>,
     AxiosError<ErrorResponse>
   >,

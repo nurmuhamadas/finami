@@ -40,7 +40,7 @@ const WalletModal = ({
 
   const isNew = !initialData?.name
 
-  const users = useGetUsers()
+  const { data: users } = useGetUsers()
   const userOpt = mapDataToSelectOptions(users, 'id', 'fullname')
 
   useEffect(() => {

@@ -33,7 +33,7 @@ const TransactionsPage = () => {
   })
   const [searchKey, setSearchKey] = useState(undefined)
 
-  const orgData = useGetTransactions({
+  const { data: orgData } = useGetTransactions({
     ...filter,
     start_date: filter.startDate,
     end_date: filter.endDate,

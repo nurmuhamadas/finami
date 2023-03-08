@@ -32,10 +32,12 @@ const WalletsPage = () => {
     useState<WalletDataResponse | null>(null)
   const [selectedUser, setSelectedUser] = useState<Option>()
 
-  const users = useGetUsers()
+  const { data: users } = useGetUsers()
   const userOpt = mapDataToSelectOptions(users, 'id', 'fullname')
 
-  const walletsData = useGetWallets({ user_id: selectedUser?.value || null })
+  const { data: walletsData } = useGetWallets({
+    user_id: selectedUser?.value || null,
+  })
   const groupedWallet = groupWalletsByUser(walletsData)
 
   const handleSave = async (values: WalletFormData) => {

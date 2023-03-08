@@ -7,7 +7,7 @@ import { type ErrorResponse, type WalletDataResponse } from 'data/types'
 
 export default function useGetWalletById(
   id: string,
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<WalletDataResponse>,
     AxiosError<ErrorResponse>
   >,

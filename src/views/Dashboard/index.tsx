@@ -16,12 +16,12 @@ import { chartOptions2 } from './consts'
 const Dashboard = () => {
   const router = useRouter()
 
-  const recentTrxData = useGetTransactions({
+  const { data: recentTrxData } = useGetTransactions({
     limit: 5,
     sort_by: 'date',
     order_by: 'desc',
   })
-  const topSpendData = useGetTransactions({
+  const { data: topSpendData } = useGetTransactions({
     transaction_type: 'out',
     limit: 5,
     sort_by: 'amount',

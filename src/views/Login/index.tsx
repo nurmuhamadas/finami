@@ -9,16 +9,19 @@ import { useRouter } from 'next/router'
 import { yupResolver } from '@hookform/resolvers/yup'
 import cn from 'classnames'
 import { Alert, Label } from 'flowbite-react'
+import jwt from 'jsonwebtoken'
+import ApiCall from 'services/ApiCall'
+
+import loginMutation from 'data/mutations/auth/login'
+import { type LoginPayload } from 'data/types'
 
 import FormInput from 'components/Forms/FormInput'
 import MyButton from 'components/MyButton'
 import { useAuth } from 'contexts/AuthContext'
-import { dummyUsersData } from 'utils/constants/dummyData'
 import { PAGES_URL } from 'utils/constants/pages'
 import { saveAuthToLocal } from 'utils/helpers/helper'
 
 import { loginSchema } from './schema'
-import { type LoginDataTypes } from './types'
 
 const LoginPage = () => {
   const router = useRouter()
@@ -27,7 +30,7 @@ const LoginPage = () => {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginDataTypes>({
+  } = useForm<LoginPayload>({
     resolver: yupResolver(loginSchema),
   })
   const { setUser } = useAuth()
@@ -36,13 +39,18 @@ const LoginPage = () => {
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState(null)
 
-  const handleLogin = async () => {
+  const handleLogin = async (values: LoginPayload) => {
     try {
       setIsLoading(true)
       // DO API CALL HERE
+      const { data } = await loginMutation(values).mutateAsync()
 
       // Save Session
-      const user = dummyUsersData[0]
+      const decoded: any = jwt.verify(
+        data.accessToken,
+        process.env.ACCESS_TOKEN_KEY,
+      )
+      const user = await ApiCall.Users.getUserById(decoded.userId)
       const _user = {
         id: user.id,
         username: user.username,
@@ -51,8 +59,8 @@ const LoginPage = () => {
       }
 
       saveAuthToLocal({
-        accessToken: 'Access Token',
-        refreshToken: 'Refresh Token',
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
         ..._user,
       })
       setUser(_user)

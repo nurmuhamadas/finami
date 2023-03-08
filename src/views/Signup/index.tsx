@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { AiFillCheckCircle } from 'react-icons/ai'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Label } from 'flowbite-react'
+import cn from 'classnames'
+import { Alert, Label } from 'flowbite-react'
+
+import postUserMutation from 'data/mutations/users/postUserMutation'
 
 import FormInput from 'components/Forms/FormInput'
 import MyButton from 'components/MyButton'
@@ -26,9 +30,23 @@ const SignupPage = () => {
     resolver: yupResolver(signupSchema),
   })
   const [isShowPassword, setIsShowPassword] = useState(false)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
-  const handleSignup = async () => {
-    await router.push(PAGES_URL.login.url)
+  const handleSignup = async (values: SignupDataTypes) => {
+    try {
+      setIsLoading(true)
+
+      await postUserMutation(values).mutateAsync()
+
+      setIsSuccess(true)
+      await router.push(PAGES_URL.login.url)
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -68,11 +86,24 @@ const SignupPage = () => {
             className="flex flex-col gap-4 mt-8"
             onSubmit={handleSubmit(handleSignup)}
           >
-            <p className="text-finamiRed text-sm mt-1">Error message</p>
+            <Alert
+              color="failure"
+              className={cn('text-sm mt-1', { hidden: !error })}
+            >
+              {error}
+            </Alert>
+            <Alert
+              color="success"
+              className={cn('text-sm mt-1', { hidden: !isSuccess })}
+              icon={AiFillCheckCircle}
+            >
+              Create account successfully!
+            </Alert>
             <FormInput
               id="username"
               label="Username"
               placeholder="Input..."
+              disabled={isLoading}
               {...register('username')}
               onChange={(e) => {
                 if (e?.target?.value) {
@@ -87,6 +118,7 @@ const SignupPage = () => {
               id="fullname"
               label="Full Name"
               placeholder="Input..."
+              disabled={isLoading}
               {...register('fullname')}
               onChange={(e) => {
                 if (e?.target?.value) {
@@ -102,6 +134,7 @@ const SignupPage = () => {
               label="Email"
               placeholder="example@mail.com"
               type="email"
+              disabled={isLoading}
               {...register('email')}
               onChange={(e) => {
                 if (e?.target?.value) {
@@ -117,6 +150,7 @@ const SignupPage = () => {
               label="Password"
               type={isShowPassword ? 'text' : 'password'}
               placeholder="Input..."
+              disabled={isLoading}
               {...register('password')}
               onChange={(e) => {
                 if (e?.target?.value) {
@@ -132,6 +166,7 @@ const SignupPage = () => {
               label="Password Confirmation"
               type={isShowPassword ? 'text' : 'password'}
               placeholder="Input..."
+              disabled={isLoading}
               {...register('confirm_password')}
               onChange={(e) => {
                 if (e?.target?.value) {
@@ -148,6 +183,7 @@ const SignupPage = () => {
                 type="checkbox"
                 className="w-2 h-2 -mt-2"
                 wrapperClassName="!w-2 h-2"
+                disabled={isLoading}
                 onChange={(e) => {
                   setIsShowPassword(e.target.checked)
                 }}
@@ -161,6 +197,7 @@ const SignupPage = () => {
                 type="submit"
                 colorType="primary"
                 className="w-full max-w-md"
+                disabled={isLoading}
               >
                 Sign Up
               </MyButton>

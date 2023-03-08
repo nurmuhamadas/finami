@@ -7,7 +7,7 @@ import { type ErrorResponse, type UserDataResponse } from 'data/types'
 
 export default function useGetUserById(
   id: string,
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<UserDataResponse>,
     AxiosError<ErrorResponse>
   >,

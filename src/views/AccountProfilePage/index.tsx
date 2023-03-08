@@ -30,7 +30,7 @@ const AccountProfilePage = () => {
     resolver: yupResolver(updateProfileSchema),
   })
 
-  const data = useGetUserById({ id: ID })
+  const { data } = useGetUserById(ID)
 
   const handleRegister = (values: UpdateUserPayload) => {
     console.log(values)

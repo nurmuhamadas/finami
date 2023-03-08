@@ -11,7 +11,7 @@ import {
 
 export default function useGetPlannings(
   querydata: GetPlanningsQuery,
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<PlanningDataResponse[]>,
     AxiosError<ErrorResponse>
   >,

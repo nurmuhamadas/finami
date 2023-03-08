@@ -19,6 +19,9 @@ export type DateFormatsType =
   | 'yyyy-dd-mm'
 
 // WALLETS
+export interface GetWalletsQuery {
+  user_id?: string
+}
 export interface WalletDataResponse {
   id: string
   name: string

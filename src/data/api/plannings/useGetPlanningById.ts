@@ -7,7 +7,7 @@ import { type ErrorResponse, type PlanningDataResponse } from 'data/types'
 
 export default function useGetPlanningById(
   id: string,
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<PlanningDataResponse>,
     AxiosError<ErrorResponse>
   >,

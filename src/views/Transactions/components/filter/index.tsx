@@ -46,7 +46,7 @@ const FilterTransactions = ({
     transaction_type: undefined,
   })
 
-  const categories = useGetCategories({
+  const { data: categories } = useGetCategories({
     transaction_type: values.transaction_type,
     include_child: true,
   })
@@ -57,13 +57,13 @@ const FilterTransactions = ({
   )
 
   const optUser = mapDataToSelectOptions<UserDataResponse>(
-    useGetUsers(),
+    useGetUsers()?.data || [],
     'id',
     'fullname',
   )
 
   const optWallet = mapDataToSelectOptions<WalletDataResponse>(
-    useGetWallets(),
+    useGetWallets()?.data || [],
     'id',
     'name',
   )

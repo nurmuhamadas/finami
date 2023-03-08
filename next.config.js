@@ -9,4 +9,17 @@ module.exports = {
       },
     ],
   },
+  env: {
+    SALT: process.env.SALT,
+    SALT: process.env.ACCESS_TOKEN_KEY,
+    SALT: process.env.REFRESH_TOKEN_KEY,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*{/}?',
+        destination: `${process.env.BE_URL}:path*`,
+      },
+    ]
+  },
 }

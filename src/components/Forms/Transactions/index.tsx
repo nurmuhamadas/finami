@@ -34,9 +34,11 @@ const TransactionForm = ({
   })
 
   // OPTIONS
-  const wallets = useGetWallets()
+  const { data: wallets } = useGetWallets()
   const optWallets = mapDataToSelectOptions(wallets, 'id', 'name')
-  const categories = useGetCategories({ include_child: !initialData?.is_owner })
+  const { data: categories } = useGetCategories({
+    include_child: !initialData?.is_owner,
+  })
   const optcategories = mapDataToSelectOptions(categories, 'id', 'name')
 
   const [optionsValue, setOptionsValue] = useState({

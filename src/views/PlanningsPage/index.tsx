@@ -31,8 +31,8 @@ const PlanningsPage = () => {
     start_month: dayjs(orgQuery?.[pq.month]).toDate(),
     end_month: dayjs(orgQuery?.[pq.month]).toDate(),
   })
-  const data = useGetPlannings(filter)
-  const transactions = useGetTransactions({
+  const { data } = useGetPlannings(filter)
+  const { data: transactions } = useGetTransactions({
     ...filter,
     transaction_type: 'out',
     start_date: dayjs(filter.start_month).startOf('month').toDate(),

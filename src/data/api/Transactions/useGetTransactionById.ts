@@ -7,7 +7,7 @@ import { type ErrorResponse, type TransactionDataResponse } from 'data/types'
 
 export default function useGetTransactionById(
   id: string,
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<TransactionDataResponse>,
     AxiosError<ErrorResponse>
   >,

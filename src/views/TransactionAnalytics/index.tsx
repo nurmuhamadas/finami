@@ -39,7 +39,7 @@ const TransactionAnalyticsPage = () => {
   const [filter, setFilter] = useState<GetTransactionsQuery>({})
   const [isModalOpen, setIsModalOpen] = useState<ModalType>(undefined)
 
-  const orgData = useGetTransactions(filter)
+  const { data: orgData } = useGetTransactions(filter)
   const dataByWeeks = useMemo(
     () =>
       groupTransactionByWeek(orgData, {

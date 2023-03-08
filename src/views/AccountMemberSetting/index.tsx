@@ -20,7 +20,7 @@ const AccountMemberSetting = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserDataResponse>(undefined)
 
-  const data = useGetUsers()?.filter((d) => !!d.parent_id)
+  const data = useGetUsers()?.data?.filter((d) => !!d.parent_id)
 
   const handleRegister = (values: CreateUserPayload) => {
     console.log(values)

@@ -40,8 +40,8 @@ const PlanningAnalyticsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedData, setselectedData] = useState([])
 
-  const plannings = useGetPlannings(filter)
-  const transactions = useGetTransactions({
+  const { data: plannings } = useGetPlannings(filter)
+  const { data: transactions } = useGetTransactions({
     ...filter,
     transaction_type: 'out',
     start_date: dayjs(filter.start_month).startOf('month').toDate(),

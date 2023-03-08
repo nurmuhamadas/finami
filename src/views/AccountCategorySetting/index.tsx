@@ -25,7 +25,7 @@ const AccountCategorySetting = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryDataResponse>(undefined)
 
-  const data = useGetCategories()
+  const { data } = useGetCategories()
   const grouppedData = groupCategoriesByGroup(data)
 
   const handleRegister = (values: CreateCategoryPayload) => {

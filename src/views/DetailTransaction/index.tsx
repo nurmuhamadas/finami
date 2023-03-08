@@ -17,7 +17,7 @@ const DetailTransactionPage = () => {
   const router = useRouter()
   const trxId = router.query?.id
 
-  const data = useGetTransactionById({ id: trxId as string })
+  const { data } = useGetTransactionById(trxId as string)
 
   const handleUpdate = (value: CreateTransactionPayload) => {
     console.log(value)

@@ -6,7 +6,7 @@ import ApiCall from 'services/ApiCall'
 import { type ErrorResponse, type UserDataResponse } from 'data/types'
 
 export default function useGetUsers(
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<UserDataResponse[]>,
     AxiosError<ErrorResponse>
   >,

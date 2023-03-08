@@ -34,9 +34,9 @@ const PlanningForm = ({
   })
 
   // OPTIONS
-  const wallets = useGetWallets()
+  const { data: wallets } = useGetWallets()
   const optWallets = mapDataToSelectOptions(wallets, 'id', 'name')
-  const categories = useGetCategories({ transaction_type: 'out' })
+  const { data: categories } = useGetCategories({ transaction_type: 'out' })
   const optcategories = mapDataToSelectOptions(categories, 'id', 'name')
 
   const [optionsValue, setOptionsValue] = useState({

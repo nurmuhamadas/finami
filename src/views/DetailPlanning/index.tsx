@@ -15,7 +15,7 @@ const NewPlanningPage = () => {
   const router = useRouter()
   const query = router.query as Record<string, string>
 
-  const data = useGetPlanningById({ id: query?.id })
+  const { data } = useGetPlanningById(query?.id)
 
   const handleSubmit = (values: CreatePlanningPayload) => {
     console.log(values)

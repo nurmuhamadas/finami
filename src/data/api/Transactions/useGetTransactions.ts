@@ -11,7 +11,7 @@ import {
 
 export default function useGetTransactions(
   querydata: GetTransactionsQuery,
-  options: UseQueryOptions<
+  options?: UseQueryOptions<
     Promise<TransactionDataResponse[]>,
     AxiosError<ErrorResponse>
   >,
