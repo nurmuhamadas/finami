@@ -85,7 +85,7 @@ class BaseApiCall {
       return await this.api.get(API_ENDPOINT.user_members)
     },
     getUserById: async (id: string): Promise<Result<UserDataResponse>> => {
-      return await this.api.get(`${API_ENDPOINT.categories}/${id}`)
+      return await this.api.get(`${API_ENDPOINT.users}/${id}`)
     },
     postUser: async (
       payload: CreateUserPayload,

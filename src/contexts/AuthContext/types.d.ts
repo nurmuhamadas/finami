@@ -5,6 +5,9 @@ export type AuthContextProps = {
 }
 
 export type UserContextType = {
+  id: string
+  email: string
+  parent_id: string
   username?: string
   fullname?: string
   imageUrl?: string

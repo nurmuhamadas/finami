@@ -5,12 +5,15 @@ import ApiCall from 'services/ApiCall'
 
 import { type PutSuccessResponse, type UpdateUserPayload } from 'data/types'
 
+interface PutUserParams {
+  id: string
+  payload: UpdateUserPayload
+}
+
 export default function putUserMutation(
-  id: string,
-  payload: UpdateUserPayload,
-  options?: UseMutationOptions<PutSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<PutSuccessResponse, AxiosError, PutUserParams>,
 ) {
-  return useMutation(async () => {
+  return useMutation(async ({ id, payload }: PutUserParams) => {
     return await ApiCall.Users.putUser(id, payload)
   }, options)
 }

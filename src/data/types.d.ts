@@ -190,7 +190,7 @@ export interface CreateUserPayload {
 }
 export interface UpdateUserPayload {
   username: string
-  password: string
+  email: string
   fullname: string
   image_url?: string
 }
