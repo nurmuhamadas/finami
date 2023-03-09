@@ -7,12 +7,13 @@ import {
   type ErrorResponse,
   type GetPlanningsQuery,
   type PlanningDataResponse,
+  type Result,
 } from 'data/types'
 
 export default function useGetPlannings(
   querydata: GetPlanningsQuery,
   options?: UseQueryOptions<
-    Promise<PlanningDataResponse[]>,
+    Promise<Result<PlanningDataResponse[]>>,
     AxiosError<ErrorResponse>
   >,
 ) {
@@ -23,5 +24,8 @@ export default function useGetPlannings(
     options as any,
   )
 
-  return query
+  return {
+    ...query,
+    data: query.data?.data,
+  }
 }

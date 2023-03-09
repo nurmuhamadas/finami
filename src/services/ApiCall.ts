@@ -22,6 +22,7 @@ import {
   type PutSuccessResponse,
   type RefreshTokenPayload,
   type RefreshTokenSuccessResponse,
+  type SettingDataResponse,
   type TransactionDataResponse,
   type UpdateCategoryPayload,
   type UpdatePlanningPayload,
@@ -38,6 +39,11 @@ import { urlQueryGenerator } from 'utils/helpers/helper'
 
 import Fetcher from './fetcher'
 
+interface Result<T> {
+  status: string
+  data: T
+}
+
 class BaseApiCall {
   public api: AxiosInstance
 
@@ -48,12 +54,14 @@ class BaseApiCall {
   Categories = {
     getCategories: async (
       query: GetCategoriesQuery,
-    ): Promise<CategoryDataResponse[]> => {
+    ): Promise<Result<CategoryDataResponse[]>> => {
       return await this.api.get(
         urlQueryGenerator(API_ENDPOINT.categories, query),
       )
     },
-    getCategoryById: async (id: string): Promise<CategoryDataResponse> => {
+    getCategoryById: async (
+      id: string,
+    ): Promise<Result<CategoryDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.categories}/${id}`)
     },
     postCategory: async (
@@ -73,10 +81,10 @@ class BaseApiCall {
   }
 
   Users = {
-    getUsers: async (): Promise<UserDataResponse[]> => {
+    getUsers: async (): Promise<Result<UserDataResponse[]>> => {
       return await this.api.get(API_ENDPOINT.user_members)
     },
-    getUserById: async (id: string): Promise<UserDataResponse> => {
+    getUserById: async (id: string): Promise<Result<UserDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.categories}/${id}`)
     },
     postUser: async (
@@ -98,10 +106,10 @@ class BaseApiCall {
   Wallets = {
     getWallets: async (
       query: GetWalletsQuery,
-    ): Promise<WalletDataResponse[]> => {
+    ): Promise<Result<WalletDataResponse[]>> => {
       return await this.api.get(urlQueryGenerator(API_ENDPOINT.wallets, query))
     },
-    getWalletById: async (id: string): Promise<WalletDataResponse> => {
+    getWalletById: async (id: string): Promise<Result<WalletDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.wallets}/${id}`)
     },
     postWallet: async (
@@ -121,7 +129,7 @@ class BaseApiCall {
   }
 
   Settings = {
-    getSetting: async (id: string) => {
+    getSetting: async (id: string): Promise<Result<SettingDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.settings}/${id}`)
     },
     postSetting: async (
@@ -140,12 +148,14 @@ class BaseApiCall {
   Plannings = {
     getPlannings: async (
       query: GetPlanningsQuery,
-    ): Promise<PlanningDataResponse[]> => {
+    ): Promise<Result<PlanningDataResponse[]>> => {
       return await this.api.get(
         urlQueryGenerator(API_ENDPOINT.plannings, query),
       )
     },
-    getPlanningById: async (id: string): Promise<PlanningDataResponse> => {
+    getPlanningById: async (
+      id: string,
+    ): Promise<Result<PlanningDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.plannings}/${id}`)
     },
     postPlanning: async (
@@ -167,14 +177,14 @@ class BaseApiCall {
   Transactions = {
     getTransactions: async (
       query: GetTransactionsQuery,
-    ): Promise<TransactionDataResponse[]> => {
+    ): Promise<Result<TransactionDataResponse[]>> => {
       return await this.api.get(
         urlQueryGenerator(API_ENDPOINT.transactions, query),
       )
     },
     getTransactionById: async (
       id: string,
-    ): Promise<TransactionDataResponse> => {
+    ): Promise<Result<TransactionDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.transactions}/${id}`)
     },
     postTransaction: async (

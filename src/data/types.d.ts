@@ -281,3 +281,8 @@ export interface RefreshTokenSuccessResponse {
 export interface LogoutSuccessResponse {
   status: string
 }
+
+export interface Result<T> {
+  status: string
+  data: T
+}

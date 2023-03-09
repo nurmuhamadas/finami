@@ -1,41 +1,87 @@
+import { useMemo } from 'react'
 import { Chart } from 'react-google-charts'
 
 import { useRouter } from 'next/router'
 
+import cn from 'classnames'
+import dayjs from 'dayjs'
 import { Alert } from 'flowbite-react'
 
+import useGetPlannings from 'data/api/plannings/useGetPlannings'
 import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 
 import AppLayout from 'components/AppLayout'
+import EmptyList from 'components/EmptyList'
+import Loader from 'components/Loader'
 import OverviewCard from 'components/OverviewCard'
 import TransactionListItem from 'components/TransactionListItem'
 import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
+import { formatCurrency } from 'utils/helpers/formatter'
 
 import { chartOptions2 } from './consts'
 
 const Dashboard = () => {
   const router = useRouter()
 
-  const { data: recentTrxData } = useGetTransactions({
+  const { data: recentTrxData, isLoading: isTrxLoading } = useGetTransactions({
     limit: 5,
     sort_by: 'date',
     order_by: 'desc',
   })
-  const { data: topSpendData } = useGetTransactions({
+  const { data: topSpendData, isLoading: isSpendLoading } = useGetTransactions({
     transaction_type: 'out',
-    limit: 5,
+    start_date: dayjs().add(-1, 'month').startOf('month').toDate(),
+    end_date: dayjs().endOf('month').toDate(),
     sort_by: 'amount',
     order_by: 'desc',
   })
+  const { data: planningData, isLoading: isPlanLoading } = useGetPlannings({
+    start_month: dayjs().startOf('month').toDate(),
+    end_month: dayjs().endOf('month').toDate(),
+  })
+
+  const thisMonthSpend = useMemo(() => {
+    if (topSpendData?.length > 0) {
+      const endLastMonth = dayjs().add(-1, 'month').endOf('month')
+      return topSpendData
+        ?.filter((d) => dayjs(d.date).isAfter(endLastMonth))
+        ?.map((d) => d.amount)
+        ?.reduce((a, b) => a + b, 0)
+    }
+
+    return 0
+  }, [topSpendData])
+
+  const lastMonthSpend = useMemo(() => {
+    if (topSpendData?.length > 0) {
+      const startNextMonth = dayjs().startOf('month')
+      return topSpendData
+        ?.filter((d) => dayjs(d.date).isBefore(startNextMonth))
+        ?.map((d) => d.amount)
+        ?.reduce((a, b) => a + b, 0)
+    }
+
+    return 0
+  }, [topSpendData])
+
+  const thisPlanning = useMemo(() => {
+    if (planningData?.length > 0) {
+      return planningData?.map((d) => d.amount)?.reduce((a, b) => a + b, 0)
+    }
+
+    return 0
+  }, [planningData])
+
+  const diffPlanExpense = thisPlanning - thisMonthSpend
   const data = [
     ['', 'Last Month', 'This Month', ''],
-    [' ', 0, 20000, 0], // this month
-    [' ', 12000, 0, 0], // last nibtg
+    [' ', 0, thisMonthSpend, 0], // this month
+    [' ', lastMonthSpend, 0, 0], // last nibtg
   ]
   const data2 = [
     ['', 'Expense', 'Planning', ''],
-    [' ', 0, 2000000, 0], // planning
-    [' ', 1202000, 0, 0], // expense
+    [' ', 0, thisPlanning, 0], // planning
+    [' ', thisMonthSpend, 0, 0], // expense
   ]
 
   return (
@@ -132,6 +178,10 @@ const Dashboard = () => {
             cardClassName="planning-card-btn"
           >
             <ul className="flex flex-col">
+              {isTrxLoading && <Loader />}
+
+              {!isTrxLoading && !recentTrxData?.length && <EmptyList />}
+
               {recentTrxData?.map((d) => (
                 <TransactionListItem
                   key={JSON.stringify(d)}
@@ -165,21 +215,28 @@ const Dashboard = () => {
                     <span>Last Month</span>
                   </div>
                 </div>
-                <Chart
-                  chartType="Bar"
-                  width="100%"
-                  height="300px"
-                  data={data}
-                  options={{
-                    ...chartOptions2,
-                  }}
-                />
+                {isSpendLoading && <Loader />}
+                {!isSpendLoading && (
+                  <Chart
+                    chartType="Bar"
+                    width="100%"
+                    height="300px"
+                    data={data}
+                    options={{
+                      ...chartOptions2,
+                    }}
+                  />
+                )}
               </div>
               <h4 className="text-lg font-semibold text-gray-700">
                 Top Spending
               </h4>
               <ul className="mt-6 flex flex-col">
-                {topSpendData?.map((d) => (
+                {isSpendLoading && <Loader />}
+
+                {!isSpendLoading && !topSpendData?.length && <EmptyList />}
+
+                {topSpendData?.slice(0, 5)?.map((d) => (
                   <TransactionListItem
                     key={JSON.stringify(d)}
                     data={d}
@@ -214,22 +271,37 @@ const Dashboard = () => {
                     <span>Expense</span>
                   </div>
                 </div>
-                <Chart
-                  chartType="Bar"
-                  width="100%"
-                  height="300px"
-                  data={data2}
-                  options={{
-                    ...chartOptions2,
-                  }}
-                />
+                {(isSpendLoading || isPlanLoading) && <Loader />}
+                {!(isSpendLoading || isPlanLoading) && (
+                  <Chart
+                    chartType="Bar"
+                    width="100%"
+                    height="300px"
+                    data={data2}
+                    options={{
+                      ...chartOptions2,
+                    }}
+                  />
+                )}
               </div>
-              <Alert color="success">
-                <span>You have Rp 800,000 remaining budget for this month</span>
+              <Alert
+                color="success"
+                className={cn({ hidden: diffPlanExpense < 0 })}
+              >
+                <span>
+                  You have Rp. {formatCurrency(diffPlanExpense)} remaining
+                  budget for this month
+                </span>
               </Alert>
               {/* OR */}
-              <Alert color="failure">
-                <span>You have exceeded your budget by 20000</span>
+              <Alert
+                color="failure"
+                className={cn({ hidden: diffPlanExpense >= 0 })}
+              >
+                <span>
+                  You have exceeded your budget by Rp.{' '}
+                  {formatCurrency(Math.abs(diffPlanExpense))}
+                </span>
               </Alert>
             </div>
           </OverviewCard>

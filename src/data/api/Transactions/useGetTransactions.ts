@@ -6,13 +6,14 @@ import ApiCall from 'services/ApiCall'
 import {
   type ErrorResponse,
   type GetTransactionsQuery,
+  type Result,
   type TransactionDataResponse,
 } from 'data/types'
 
 export default function useGetTransactions(
   querydata: GetTransactionsQuery,
   options?: UseQueryOptions<
-    Promise<TransactionDataResponse[]>,
+    Promise<Result<TransactionDataResponse[]>>,
     AxiosError<ErrorResponse>
   >,
 ) {
@@ -23,5 +24,8 @@ export default function useGetTransactions(
     options as any,
   )
 
-  return query
+  return {
+    ...query,
+    data: query.data?.data,
+  }
 }
