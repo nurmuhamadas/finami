@@ -5,7 +5,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'flowbite.com',
+        hostname: 'i.ibb.co',
       },
     ],
   },

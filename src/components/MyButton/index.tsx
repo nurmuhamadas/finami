@@ -15,11 +15,11 @@ const MyButton = ({
     <Button
       className={cn(
         {
-          'bg-finamiBlue focus:bg-finamiBlueSecondary hover:bg-finamiBlueSecondary':
+          'bg-finamiBlue focus:bg-finamiBlueSecondary hover:bg-finamiBlueSecondary hover:disabled:bg-finamiBlue':
             colorType === 'primary',
-          'bg-finamiRed focus:bg-finamiRedSecondary hover:bg-finamiRedSecondary':
+          'bg-finamiRed focus:bg-finamiRedSecondary hover:bg-finamiRedSecondary hover:disabled:bg-finamiRed':
             colorType === 'danger',
-          'bg-finamiGreen focus:bg-finamiGreenSecondary hover:bg-finamiGreenSecondary':
+          'bg-finamiGreen focus:bg-finamiGreenSecondary hover:bg-finamiGreenSecondary hover:disabled:bg-finamiGreen':
             colorType === 'success',
         },
         className,

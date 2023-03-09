@@ -7,21 +7,25 @@ import {
   type CategoryDataResponse,
   type ErrorResponse,
   type GetCategoriesQuery,
+  type Result,
 } from 'data/types'
 
 export default function useGetCategories(
   queryData: GetCategoriesQuery = {},
-  options?: UseQueryOptions<
-    Promise<CategoryDataResponse[]>,
-    AxiosError<ErrorResponse>
+  options?: Omit<
+    UseQueryOptions<Result<CategoryDataResponse[]>, AxiosError<ErrorResponse>>,
+    'queryKey' & 'queryFn'
   >,
 ) {
   const queryKey = ['GetCategories', queryData, options]
   const query = useQuery(
     queryKey,
     async () => await ApiCall.Categories.getCategories(queryData),
-    options as any,
+    options,
   )
 
-  return query
+  return {
+    ...query,
+    data: query.data?.data,
+  }
 }
