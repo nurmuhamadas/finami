@@ -6,10 +6,15 @@ import ApiCall from 'services/ApiCall'
 import { type LoginPayload, type LoginSuccessResponse } from 'data/types'
 
 export default function loginMutation(
-  payload: LoginPayload,
-  options?: UseMutationOptions<LoginSuccessResponse, AxiosError>,
+  options?: Omit<
+    UseMutationOptions<LoginSuccessResponse, AxiosError, LoginPayload>,
+    'mutationFn'
+  >,
 ) {
-  return useMutation(async () => {
-    return await ApiCall.Auth.login(payload)
-  }, options)
+  return useMutation<LoginSuccessResponse, AxiosError, LoginPayload>(
+    async (payload: LoginPayload) => {
+      return await ApiCall.Auth.login(payload)
+    },
+    options,
+  )
 }

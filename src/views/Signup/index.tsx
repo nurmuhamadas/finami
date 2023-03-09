@@ -14,6 +14,7 @@ import postUserMutation from 'data/mutations/users/postUserMutation'
 
 import FormInput from 'components/Forms/FormInput'
 import MyButton from 'components/MyButton'
+import { useAuth } from 'contexts/AuthContext'
 import { PAGES_URL } from 'utils/constants/pages'
 
 import { signupSchema } from './schema'
@@ -21,6 +22,8 @@ import { type SignupDataTypes } from './types'
 
 const SignupPage = () => {
   const router = useRouter()
+  const { user } = useAuth()
+
   const {
     register,
     setValue,
@@ -34,19 +37,42 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
+  const postMutation = postUserMutation()
+
+  const handleChange = (key: keyof SignupDataTypes, value: string) => {
+    setError(null)
+    if (value) {
+      setValue(key, value)
+    } else {
+      setValue(key, undefined)
+    }
+  }
+
   const handleSignup = async (values: SignupDataTypes) => {
     try {
+      setError(null)
       setIsLoading(true)
 
-      await postUserMutation(values).mutateAsync()
+      await postMutation.mutateAsync({
+        username: values.username,
+        fullname: values.fullname,
+        email: values.email,
+        password: values.password,
+        image_url: undefined,
+        parent_id: undefined,
+      })
 
       setIsSuccess(true)
       await router.push(PAGES_URL.login.url)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      setError((error as Error).message)
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (user) {
+    return <div></div>
   }
 
   return (
@@ -79,7 +105,7 @@ const SignupPage = () => {
               <span className="font-semibold text-2xl">Finami</span>
             </div>
             <p className="text-3xl font-bold text-finamiBlue text-center mt-4">
-              Start manage your family financial
+              Join us and Stay in Control of Your Family&apos;s Finances
             </p>
           </div>
           <form
@@ -88,7 +114,9 @@ const SignupPage = () => {
           >
             <Alert
               color="failure"
-              className={cn('text-sm mt-1', { hidden: !error })}
+              className={cn('text-sm mt-1 whitespace-pre', {
+                hidden: !error,
+              })}
             >
               {error}
             </Alert>
@@ -106,11 +134,7 @@ const SignupPage = () => {
               disabled={isLoading}
               {...register('username')}
               onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('username', e.target.value)
-                } else {
-                  setValue('username', undefined)
-                }
+                handleChange('username', e.target?.value)
               }}
               errorMessage={errors.username?.message}
             />
@@ -121,11 +145,7 @@ const SignupPage = () => {
               disabled={isLoading}
               {...register('fullname')}
               onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('fullname', e.target.value)
-                } else {
-                  setValue('fullname', undefined)
-                }
+                handleChange('fullname', e.target?.value)
               }}
               errorMessage={errors.fullname?.message}
             />
@@ -137,11 +157,7 @@ const SignupPage = () => {
               disabled={isLoading}
               {...register('email')}
               onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('email', e.target.value)
-                } else {
-                  setValue('email', undefined)
-                }
+                handleChange('email', e.target?.value)
               }}
               errorMessage={errors.email?.message}
             />
@@ -153,11 +169,7 @@ const SignupPage = () => {
               disabled={isLoading}
               {...register('password')}
               onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('password', e.target.value)
-                } else {
-                  setValue('password', undefined)
-                }
+                handleChange('password', e.target?.value)
               }}
               errorMessage={errors.password?.message}
             />
@@ -169,11 +181,7 @@ const SignupPage = () => {
               disabled={isLoading}
               {...register('confirm_password')}
               onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('confirm_password', e.target.value)
-                } else {
-                  setValue('confirm_password', undefined)
-                }
+                handleChange('confirm_password', e.target?.value)
               }}
               errorMessage={errors.confirm_password?.message}
             />

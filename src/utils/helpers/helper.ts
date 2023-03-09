@@ -339,30 +339,43 @@ export const groupCategoriesByGroup = (
 }
 
 export const encryptText = (text: string) => {
-  const salt = process.env.NEXT_PUBLIC_SALT
+  const salt = process.env.SALT
   return AES.encrypt(text, salt).toString()
 }
 
 export const decryptText = (text: string) => {
-  const salt = process.env.NEXT_PUBLIC_SALT
+  const salt = process.env.SALT
   return AES.decrypt(text, salt).toString(enc.Utf8)
 }
 
 export const saveAuthToLocal = ({
   accessToken,
   refreshToken,
-  ...user
+  user,
 }: {
-  accessToken: string
-  refreshToken: string
-  id: string
-  username: string
-  fullname: string
-  imageUrl: string
+  accessToken?: string
+  refreshToken?: string
+  user?: {
+    id: string
+    username: string
+    email: string
+    fullname: string
+    parent_id: string
+    image_url: string
+  }
 }) => {
-  localStorage.setItem(LOCAL_STORAGE.accessTokenKey, accessToken) // * Encrypted from BE
-  localStorage.setItem(LOCAL_STORAGE.refreshTokenKey, refreshToken) // * Encrypted from BE
-  localStorage.setItem(LOCAL_STORAGE.userKey, encryptText(JSON.stringify(user)))
+  if (accessToken)
+    localStorage.setItem(LOCAL_STORAGE.accessTokenKey, encryptText(accessToken))
+  if (refreshToken)
+    localStorage.setItem(
+      LOCAL_STORAGE.refreshTokenKey,
+      encryptText(refreshToken),
+    )
+  if (user)
+    localStorage.setItem(
+      LOCAL_STORAGE.userKey,
+      encryptText(JSON.stringify(user)),
+    )
 }
 
 export const getAuthFromLocal = () => {
@@ -378,12 +391,15 @@ export const getAuthFromLocal = () => {
 }
 
 export function urlQueryGenerator<T>(url: string, query: T): string {
-  let _url = `${url}?`
+  let q = ''
   if (query) {
     Object.entries(query)?.forEach(([key, val]) => {
-      if (val) _url += `${key}=${val as string}`
+      if (val) {
+        if (q === '') q += `${key}=${val as string}`
+        else q += `&${key}=${val as string}`
+      }
     })
   }
 
-  return _url
+  return `${url}?${q}`
 }

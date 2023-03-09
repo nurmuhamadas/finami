@@ -13,13 +13,15 @@ const LogoutPage = () => {
   const router = useRouter()
   const { setUser } = useAuth()
 
+  const logoutMt = logoutMutation()
+
   useEffect(() => {
     void (async () => {
-      // TODO: LOGOUT HERE
       const { refreshToken } = getAuthFromLocal()
-      await logoutMutation({
+
+      await logoutMt.mutateAsync({
         refreshToken,
-      }).mutateAsync()
+      })
 
       setUser(null)
       localStorage.removeItem(LOCAL_STORAGE.accessTokenKey)

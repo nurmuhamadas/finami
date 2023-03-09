@@ -9,8 +9,6 @@ import { useRouter } from 'next/router'
 import { yupResolver } from '@hookform/resolvers/yup'
 import cn from 'classnames'
 import { Alert, Label } from 'flowbite-react'
-import jwt from 'jsonwebtoken'
-import ApiCall from 'services/ApiCall'
 
 import loginMutation from 'data/mutations/auth/login'
 import { type LoginPayload } from 'data/types'
@@ -25,6 +23,8 @@ import { loginSchema } from './schema'
 
 const LoginPage = () => {
   const router = useRouter()
+  const { user } = useAuth()
+
   const {
     register,
     setValue,
@@ -39,31 +39,27 @@ const LoginPage = () => {
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState(null)
 
+  const loginMt = loginMutation()
+
+  const handleChange = (key: keyof LoginPayload, value: string) => {
+    setError(null)
+    if (value) {
+      setValue(key, value)
+    } else {
+      setValue(key, undefined)
+    }
+  }
+
   const handleLogin = async (values: LoginPayload) => {
     try {
+      setError(null)
       setIsLoading(true)
-      // DO API CALL HERE
-      const { data } = await loginMutation(values).mutateAsync()
+
+      const { data } = await loginMt.mutateAsync(values)
 
       // Save Session
-      const decoded: any = jwt.verify(
-        data.accessToken,
-        process.env.ACCESS_TOKEN_KEY,
-      )
-      const user = await ApiCall.Users.getUserById(decoded.userId)
-      const _user = {
-        id: user.id,
-        username: user.username,
-        fullname: user.fullname,
-        imageUrl: user.image_url,
-      }
-
-      saveAuthToLocal({
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-        ..._user,
-      })
-      setUser(_user)
+      saveAuthToLocal({ ...data })
+      setUser(data.user)
       setIsSuccess(true)
 
       await router.replace(PAGES_URL.overview.url)
@@ -72,6 +68,10 @@ const LoginPage = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (user) {
+    return <div></div>
   }
 
   return (
@@ -113,7 +113,7 @@ const LoginPage = () => {
           >
             <Alert
               color="failure"
-              className={cn('text-sm mt-1', { hidden: !error })}
+              className={cn('text-sm mt-1 whitespace-pre', { hidden: !error })}
             >
               {error}
             </Alert>
@@ -130,11 +130,7 @@ const LoginPage = () => {
               placeholder="Input..."
               {...register('username')}
               onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('username', e.target.value)
-                } else {
-                  setValue('username', undefined)
-                }
+                handleChange('username', e?.target?.value)
               }}
               errorMessage={errors.username?.message}
             />
@@ -145,11 +141,7 @@ const LoginPage = () => {
               placeholder="Input..."
               {...register('password')}
               onChange={(e) => {
-                if (e?.target?.value) {
-                  setValue('password', e.target.value)
-                } else {
-                  setValue('password', undefined)
-                }
+                handleChange('password', e?.target?.value)
               }}
               errorMessage={errors.password?.message}
             />

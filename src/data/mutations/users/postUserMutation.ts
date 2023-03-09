@@ -6,10 +6,15 @@ import ApiCall from 'services/ApiCall'
 import { type CreateUserPayload, type PostSuccessResponse } from 'data/types'
 
 export default function postUserMutation(
-  payload: CreateUserPayload,
-  options?: UseMutationOptions<PostSuccessResponse, AxiosError>,
+  options?: Omit<
+    UseMutationOptions<PostSuccessResponse, AxiosError, CreateUserPayload>,
+    'mutationFn'
+  >,
 ) {
-  return useMutation(async () => {
-    return await ApiCall.Users.postUser(payload)
-  }, options)
+  return useMutation<PostSuccessResponse, AxiosError, CreateUserPayload>(
+    async (payload: CreateUserPayload) => {
+      return await ApiCall.Users.postUser(payload)
+    },
+    options,
+  )
 }

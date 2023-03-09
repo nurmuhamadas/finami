@@ -6,8 +6,16 @@ export const signupSchema = yup.object({
     .min(3, 'Should have at least 3 characters')
     .max(30, 'Maxium 30 characters')
     .required('Please fill username!'),
-  fullname: yup.string().required('Please fill Full Name!'),
-  email: yup.string().email().required('Please fill Email!'),
+  fullname: yup
+    .string()
+    .min(3, 'Should have at least 3 characters')
+    .required('Please fill Full Name!'),
+  email: yup
+    .string()
+    .email()
+    .max(50, 'Maxium 50 characters')
+    .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, 'Invalid email!')
+    .required('Please fill Email!'),
   password: yup
     .string()
     .min(8, 'Password is too short - should be 8 chars minimum.')

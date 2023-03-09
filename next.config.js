@@ -10,15 +10,16 @@ module.exports = {
     ],
   },
   env: {
+    BE_URL: process.env.BE_URL,
     SALT: process.env.SALT,
-    SALT: process.env.ACCESS_TOKEN_KEY,
-    SALT: process.env.REFRESH_TOKEN_KEY,
+    ACCESS_TOKEN_KEY: process.env.ACCESS_TOKEN_KEY,
+    REFRESH_TOKEN_KEY: process.env.REFRESH_TOKEN_KEY,
   },
   async rewrites() {
     return [
       {
         source: '/api/:path*{/}?',
-        destination: `${process.env.BE_URL}:path*`,
+        destination: `${process.env.BE_URL}/:path*`,
       },
     ]
   },

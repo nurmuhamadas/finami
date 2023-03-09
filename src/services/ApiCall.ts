@@ -42,7 +42,7 @@ class BaseApiCall {
   public api: AxiosInstance
 
   constructor() {
-    this.api = Fetcher.createAuthAxios(process.env.BACKEND_API)
+    this.api = Fetcher.createAuthAxios('http://localhost:3333/api')
   }
 
   Categories = {
