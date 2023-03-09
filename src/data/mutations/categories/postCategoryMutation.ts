@@ -9,10 +9,16 @@ import {
 } from 'data/types'
 
 export default function postCategoryMutation(
-  payload: CreateCategoryPayload,
-  options?: UseMutationOptions<PostSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<
+    PostSuccessResponse,
+    AxiosError,
+    CreateCategoryPayload
+  >,
 ) {
-  return useMutation(async () => {
-    return await ApiCall.Categories.postCategory(payload)
-  }, options)
+  return useMutation<PostSuccessResponse, AxiosError, CreateCategoryPayload>(
+    async (payload: CreateCategoryPayload) => {
+      return await ApiCall.Categories.postCategory(payload)
+    },
+    options,
+  )
 }

@@ -3,33 +3,49 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlus } from 'react-icons/ai'
 import Select from 'react-tailwindcss-select'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 
+import { Alert } from 'flowbite-react'
+
 import useGetCategories from 'data/api/Categories/useGetCategories'
+import deleteCategoryMutation from 'data/mutations/categories/deleteCategoryMutation'
+import postCategoryMutation from 'data/mutations/categories/postCategoryMutation'
+import putCategoryMutation from 'data/mutations/categories/putCategoryMutation'
 import {
   type CategoryDataResponse,
   type CreateCategoryPayload,
+  type UpdateCategoryPayload,
 } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
 import EmptyList from 'components/EmptyList'
+import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import { TRANSACTION_TYPES_OPT } from 'utils/constants/common'
 import { type TransactionTypesType } from 'utils/constants/types'
 import { groupCategoriesByGroup } from 'utils/helpers/helper'
 
-import ModalRegisterCategory from './components/ModalRegisterCategory'
+const MyModal = dynamic(async () => await import('components/MyModal'))
+const ModalRegisterCategory = dynamic(
+  async () => await import('./components/ModalRegisterCategory'),
+)
 
 const AccountCategorySetting = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<Option>(undefined)
+  const [errorMessage, setErrorMessage] = useState(undefined)
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryDataResponse>(undefined)
 
-  const { data } = useGetCategories({
+  const createCategoryMutation = postCategoryMutation()
+  const updateCategoryMutation = putCategoryMutation()
+  const deleteCategoryMt = deleteCategoryMutation()
+
+  const { data, isLoading, refetch } = useGetCategories({
     transaction_type: transactionType?.value as TransactionTypesType,
   })
   const grouppedData = useMemo(() => {
@@ -40,8 +56,43 @@ const AccountCategorySetting = () => {
     return []
   }, [data])
 
-  const handleRegister = (values: CreateCategoryPayload) => {
-    console.log(values, isDeleteOpen)
+  const handleRegister = async (
+    values: CreateCategoryPayload | UpdateCategoryPayload,
+  ) => {
+    setErrorMessage(undefined)
+    try {
+      if (selectedCategory) {
+        await updateCategoryMutation.mutateAsync({
+          id: selectedCategory.id,
+          payload: values as UpdateCategoryPayload,
+        })
+      } else {
+        await createCategoryMutation.mutateAsync(
+          values as CreateCategoryPayload,
+        )
+      }
+      await refetch()
+
+      setSelectedCategory(undefined)
+      setIsModalOpen(false)
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
+  }
+
+  const handleDelete = async () => {
+    setErrorMessage(undefined)
+    try {
+      if (!!selectedCategory && selectedCategory?.is_owner) {
+        await deleteCategoryMt.mutateAsync(selectedCategory?.id)
+        await refetch()
+
+        setSelectedCategory(undefined)
+        setIsDeleteOpen(false)
+      }
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
   }
 
   return (
@@ -66,11 +117,14 @@ const AccountCategorySetting = () => {
               onClick={() => {
                 setIsModalOpen(true)
               }}
+              disabled={isLoading}
             >
               <AiOutlinePlus />
             </MyButton>
           </div>
         </div>
+
+        {isLoading && <Loader />}
 
         {grouppedData?.map((d) => (
           <OverviewCard
@@ -93,7 +147,7 @@ const AccountCategorySetting = () => {
                       />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <span className="font-semibold text-gray-600 w-[275px] truncate">
+                      <span className="font-semibold text-gray-600 w-[225px] sm:w-[275px] truncate">
                         {c.name}
                       </span>
                       <span className="text-gray-500">
@@ -115,6 +169,7 @@ const AccountCategorySetting = () => {
                     <MyButton
                       colorType="danger"
                       onClick={() => {
+                        setSelectedCategory(c)
                         setIsDeleteOpen(true)
                       }}
                       disabled={!c.is_owner}
@@ -137,12 +192,49 @@ const AccountCategorySetting = () => {
         <ModalRegisterCategory
           show={isModalOpen}
           onClose={() => {
+            setErrorMessage(undefined)
             setSelectedCategory(undefined)
             setIsModalOpen(false)
           }}
           onSubmit={handleRegister}
           initialData={selectedCategory}
+          errorMessage={errorMessage}
+          loading={
+            createCategoryMutation?.isLoading ||
+            updateCategoryMutation.isLoading
+          }
+          disableForm={selectedCategory && !selectedCategory?.is_owner}
         />
+
+        <MyModal
+          show={isDeleteOpen}
+          onClose={() => {
+            setErrorMessage(undefined)
+            setSelectedCategory(undefined)
+            setIsDeleteOpen(false)
+          }}
+          header={<span>Delete Confirmation</span>}
+          footer={
+            <MyButton
+              colorType="danger"
+              className="ml-auto"
+              onClick={handleDelete}
+              loading={deleteCategoryMt.isLoading}
+            >
+              Delete
+            </MyButton>
+          }
+        >
+          {errorMessage && (
+            <Alert color="failure" className="mb-4">
+              {errorMessage}
+            </Alert>
+          )}
+          <p>
+            <span className="font-semibold">{selectedCategory?.name}</span>{' '}
+            category will be deleted. Are you sure?
+          </p>
+        </MyModal>
       </div>
     </AppLayout>
   )

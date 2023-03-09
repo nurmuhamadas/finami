@@ -6,10 +6,12 @@ import ApiCall from 'services/ApiCall'
 import { type DeleteSuccessResponse } from 'data/types'
 
 export default function deleteCategoryMutation(
-  id: string,
-  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError, string>,
 ) {
-  return useMutation(async () => {
-    return await ApiCall.Categories.deleteCategoryById(id)
-  }, options)
+  return useMutation<DeleteSuccessResponse, AxiosError, string>(
+    async (id: string) => {
+      return await ApiCall.Categories.deleteCategoryById(id)
+    },
+    options,
+  )
 }

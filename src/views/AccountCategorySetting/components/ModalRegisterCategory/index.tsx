@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Alert } from 'flowbite-react'
 
 import { type CategoryGroupsType, type CreateCategoryPayload } from 'data/types'
 
@@ -19,8 +20,10 @@ import { type ModalRegisterCategoryProps } from './types'
 const ModalRegisterCategory = ({
   initialData,
   show,
-  onClose,
   disableForm,
+  loading = false,
+  errorMessage,
+  onClose,
   onSubmit,
 }: ModalRegisterCategoryProps) => {
   const {
@@ -42,7 +45,7 @@ const ModalRegisterCategory = ({
       setValue('name', initialData.name)
       setValue('group', initialData.group)
       setValue('transaction_type', initialData.transaction_type)
-      setValue('icon_url', initialData.icon_url)
+      setValue('icon_url', initialData.icon_url || undefined)
 
       // OPTIONS
       const group = CATEGORY_GROUP_OPT.find(
@@ -65,6 +68,11 @@ const ModalRegisterCategory = ({
       }}
       header={<h3>{initialData ? 'Edit ' : `Register New `} Category</h3>}
     >
+      {errorMessage && (
+        <Alert color="failure" className="mb-4">
+          {errorMessage}
+        </Alert>
+      )}
       {show && (
         <form
           className="grid grid-cols-1 gap-4 w-full sm:grid-cols-2"
@@ -74,7 +82,7 @@ const ModalRegisterCategory = ({
             label="Category Name"
             id="name"
             placeholder="Input"
-            disabled={disableForm}
+            disabled={disableForm || loading}
             defaultValue={initialData?.name || null}
             {...register('name')}
             onChange={(e) => {
@@ -88,7 +96,7 @@ const ModalRegisterCategory = ({
           />
           <FormSelect
             label="Group"
-            disabled={disableForm}
+            disabled={disableForm || loading}
             {...register('group')}
             value={selectedOptions.group}
             onChange={(e: Option | Option[]) => {
@@ -117,7 +125,11 @@ const ModalRegisterCategory = ({
               alt={initialData?.name || 'avatar'}
               size={64}
             />
-            <MyButton color="light" className="" disabled={disableForm}>
+            <MyButton
+              color="light"
+              className=""
+              disabled={disableForm || loading}
+            >
               Upload
             </MyButton>
           </div>
@@ -127,6 +139,7 @@ const ModalRegisterCategory = ({
               colorType="primary"
               className="w-full max-w-[125px] mt-8 mx-auto"
               disabled={disableForm}
+              loading={loading}
             >
               Save
             </MyButton>
