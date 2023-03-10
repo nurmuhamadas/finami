@@ -23,7 +23,7 @@ import { updateProfileSchema } from './schema'
 
 const AccountProfilePage = () => {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
 
   const {
     register,
@@ -58,6 +58,7 @@ const AccountProfilePage = () => {
           ...values,
         },
       })
+      setUser({ ...user, ...values })
       await refetch()
 
       setIsSuccess(true)

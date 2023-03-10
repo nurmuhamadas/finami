@@ -6,10 +6,9 @@ import ApiCall from 'services/ApiCall'
 import { type DeleteSuccessResponse } from 'data/types'
 
 export default function deleteWalletMutation(
-  id: string,
-  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError, string>,
 ) {
-  return useMutation(async () => {
+  return useMutation(async (id: string) => {
     return await ApiCall.Wallets.deleteWalletById(id)
   }, options)
 }

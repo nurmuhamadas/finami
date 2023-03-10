@@ -5,7 +5,10 @@ export type WalletFormData = CreateWalletPayload
 export type WalletModalProps = {
   isOpen: boolean
   isEditData?: boolean
-  initialData?: WalletFormData
+  initialData?: CreateWalletPayload
+  errorMessage?: string
+  isSubmitting?: boolean
+  onFormChange?: () => void
   onClose: () => void
   onSave: (data: WalletFormData) => void
 }

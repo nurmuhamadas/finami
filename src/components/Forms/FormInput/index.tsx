@@ -12,6 +12,7 @@ const FormInput = ({
   labelClassName,
   className,
   required,
+  placeholder,
   ...props
 }: FormInputProps) => {
   return (
@@ -25,6 +26,7 @@ const FormInput = ({
         required={required}
         className={cn('finamiInput', className)}
         type={type || 'text'}
+        placeholder={placeholder || 'Input...'}
         {...props}
       />
       <p

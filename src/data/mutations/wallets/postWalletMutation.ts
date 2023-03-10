@@ -6,10 +6,13 @@ import ApiCall from 'services/ApiCall'
 import { type CreateWalletPayload, type PostSuccessResponse } from 'data/types'
 
 export default function postWalletMutation(
-  payload: CreateWalletPayload,
-  options?: UseMutationOptions<PostSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<
+    PostSuccessResponse,
+    AxiosError,
+    CreateWalletPayload
+  >,
 ) {
-  return useMutation(async () => {
+  return useMutation(async (payload: CreateWalletPayload) => {
     return await ApiCall.Wallets.postWallet(payload)
   }, options)
 }

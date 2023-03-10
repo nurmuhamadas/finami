@@ -1,14 +1,23 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Select from 'react-tailwindcss-select'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import dynamic from 'next/dynamic'
 
+import cn from 'classnames'
+import dayjs from 'dayjs'
+import { Alert } from 'flowbite-react'
+
+import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 import useGetUsers from 'data/api/Users/useGetUsers'
 import useGetWallets from 'data/api/Wallets/useGetWallets'
-import { type WalletDataResponse } from 'data/types'
+import deleteWalletMutation from 'data/mutations/wallets/deleteWalletMutation'
+import postWalletMutation from 'data/mutations/wallets/postWalletMutation'
+import putWalletMutation from 'data/mutations/wallets/putWalletMutation'
+import { type CreateWalletPayload, type WalletDataResponse } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
+import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import { formatCurrencySign } from 'utils/helpers/formatter'
@@ -17,7 +26,6 @@ import {
   mapDataToSelectOptions,
 } from 'utils/helpers/helper'
 
-import { type WalletFormData } from './components/WalletModal/types'
 import WalletsCard from './components/WalletsCard'
 
 const MyModal = dynamic(async () => await import('components/MyModal'))
@@ -31,21 +39,81 @@ const WalletsPage = () => {
   const [selectedWallet, setSelectedWallet] =
     useState<WalletDataResponse | null>(null)
   const [selectedUser, setSelectedUser] = useState<Option>()
+  const [errorMessage, setErrorMessage] = useState(undefined)
+
+  const createMutation = postWalletMutation()
+  const updateMutation = putWalletMutation()
+  const deleteMutation = deleteWalletMutation()
 
   const { data: users } = useGetUsers()
-  const userOpt = mapDataToSelectOptions(users, 'id', 'fullname')
+  const userOpt = mapDataToSelectOptions(users || [], 'id', 'fullname')
 
-  const { data: walletsData } = useGetWallets({
+  const { data: trxData, isLoading: trxLoading } = useGetTransactions({
+    start_date: dayjs().startOf('month').toDate(),
+    end_date: dayjs().endOf('month').toDate(),
+  })
+  const thisMonthExpense = useMemo(() => {
+    if (trxData) {
+      return trxData?.map((d) => d.amount).reduce((a, b) => a + b, 0)
+    }
+    return 0
+  }, [trxData])
+
+  const {
+    data: walletsData,
+    isLoading,
+    refetch,
+  } = useGetWallets({
     user_id: selectedUser?.value || null,
   })
-  const groupedWallet = groupWalletsByUser(walletsData)
+  const groupedWallet = useMemo(() => {
+    return groupWalletsByUser(walletsData)
+  }, [walletsData])
+  const lastMonth = groupedWallet?.total - thisMonthExpense
 
-  const handleSave = async (values: WalletFormData) => {
-    console.log(values, selectedWallet)
+  const resetState = () => {
+    setSelectedWallet(undefined)
+    setErrorMessage(undefined)
   }
 
-  const handleDelete = () => {
-    console.log('delete')
+  const handleSave = async (values: CreateWalletPayload) => {
+    try {
+      setErrorMessage(undefined)
+
+      if (selectedWallet) {
+        await updateMutation.mutateAsync({
+          id: selectedWallet?.id,
+          payload: {
+            name: values.name,
+            balance: values.balance,
+          },
+        })
+      } else {
+        await createMutation.mutateAsync(values)
+      }
+      await refetch()
+
+      setIsModalOpen(false)
+      resetState()
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      setErrorMessage(undefined)
+
+      if (selectedWallet?.is_owner) {
+        await deleteMutation.mutateAsync(selectedWallet?.id)
+        await refetch()
+      }
+
+      setIsOpenDeleteModal(false)
+      resetState()
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
   }
 
   return (
@@ -60,12 +128,18 @@ const WalletsPage = () => {
               <h3 className="block text-white">Balance</h3>
               <div className=" mb-3 flex items-center space-x-4">
                 <p className="text-3xl font-bold text-white">
-                  {formatCurrencySign(groupedWallet.total)}
+                  {trxLoading
+                    ? 'Loading...'
+                    : formatCurrencySign(groupedWallet.total)}
                 </p>
-                <span className="text-white">+20%</span>
+                <span className="text-white">
+                  {thisMonthExpense < 0 ? '-' : '+'}
+                  {(thisMonthExpense / (lastMonth || 1)) * 100}%
+                </span>
               </div>
               <span className="text-sm text-white">
-                Compared to last month (Rp100,000)
+                Compared to last month (
+                {formatCurrencySign(groupedWallet.total - thisMonthExpense)})
               </span>
             </div>
           </OverviewCard>
@@ -101,6 +175,8 @@ const WalletsPage = () => {
         </div>
 
         <div className="grid gap-8 xl:grid-cols-2">
+          {isLoading && <Loader />}
+
           {groupedWallet?.data?.map((d) => (
             <OverviewCard
               title={d.is_owner ? 'My Wallets' : d.user_fullname}
@@ -131,7 +207,7 @@ const WalletsPage = () => {
           isOpen={isModalOpen}
           isEditData={!!selectedWallet}
           onClose={() => {
-            setSelectedWallet(null)
+            resetState()
             setIsModalOpen(false)
           }}
           onSave={(data) => {
@@ -139,12 +215,17 @@ const WalletsPage = () => {
               await handleSave(data)
             })()
           }}
+          onFormChange={() => {
+            setErrorMessage(undefined)
+          }}
+          isSubmitting={createMutation.isLoading}
+          errorMessage={errorMessage}
         />
 
         <MyModal
           show={isOpenDeleteModal}
           onClose={() => {
-            setSelectedWallet(null)
+            resetState()
             setIsOpenDeleteModal(false)
           }}
           position="top-center"
@@ -157,9 +238,19 @@ const WalletsPage = () => {
             </div>
           }
         >
+          <Alert
+            color="failure"
+            className={cn('mb-4', { hidden: !errorMessage })}
+            onDismiss={() => {
+              setErrorMessage(undefined)
+            }}
+          >
+            {errorMessage}
+          </Alert>
           <p>
-            All transaction related to {selectedWallet?.name} wallet will be
-            deleted. Are you sure?
+            All transaction related to{' '}
+            <span className="font-semibold">{selectedWallet?.name}</span> wallet
+            will be deleted. Are you sure?
           </p>
         </MyModal>
       </div>

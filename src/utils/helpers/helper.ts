@@ -257,7 +257,7 @@ export const groupWalletsByUser = (
     data: [],
   }
 
-  data.forEach((d) => {
+  data?.forEach((d) => {
     const i = _data.data.findIndex((p) => p.user_id === d.user_id)
 
     // Calculate Main Total
@@ -290,7 +290,7 @@ export function mapDataToSelectOptions<T>(
   valueSelector: keyof T,
   labelSelector: keyof T,
 ): Option[] {
-  return data.map((d) => ({
+  return data?.map((d) => ({
     label: d[labelSelector] as string,
     value: d[valueSelector] as string,
   }))
@@ -395,8 +395,13 @@ export function urlQueryGenerator<T>(url: string, query: T): string {
   if (query) {
     Object.entries(query)?.forEach(([key, val]) => {
       if (val) {
-        if (q === '') q += `${key}=${val as string}`
-        else q += `&${key}=${val as string}`
+        if (key.includes('date')) {
+          if (q === '') q += `${key}=${(val as Date).toISOString()}`
+          else q += `&${key}=${(val as Date).toISOString()}`
+        } else {
+          if (q === '') q += `${key}=${val as string}`
+          else q += `&${key}=${val as string}`
+        }
       }
     })
   }

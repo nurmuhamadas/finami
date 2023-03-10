@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import cn from 'classnames'
+import { Alert } from 'flowbite-react'
 
 import useGetUsers from 'data/api/Users/useGetUsers'
 
@@ -18,9 +20,12 @@ import { type WalletFormData, type WalletModalProps } from './types'
 const WalletModal = ({
   isOpen,
   initialData,
+  errorMessage,
+  isEditData,
+  isSubmitting,
+  onFormChange,
   onClose,
   onSave,
-  isEditData,
 }: WalletModalProps) => {
   const {
     register,
@@ -42,6 +47,14 @@ const WalletModal = ({
 
   const { data: users } = useGetUsers()
   const userOpt = mapDataToSelectOptions(users, 'id', 'fullname')
+
+  const handleInputChange = (
+    key: keyof WalletFormData,
+    val: string | number,
+  ) => {
+    onFormChange?.()
+    setValue(key, val || undefined)
+  }
 
   useEffect(() => {
     if (initialData) {
@@ -65,6 +78,10 @@ const WalletModal = ({
       className="h-screen"
       header={`${isNew ? 'Add New' : 'Edit'} Wallet`}
     >
+      <Alert color="failure" className={cn('mb-4', { hidden: !errorMessage })}>
+        {errorMessage}
+      </Alert>
+
       {isOpen && (
         <form
           className="space-y-6"
@@ -75,32 +92,29 @@ const WalletModal = ({
           <FormInput
             label="Wallet name"
             id="name"
-            placeholder="Your name ..."
             required={true}
             {...register('name')}
+            onChange={(e) => {
+              handleInputChange('name', e.target?.value)
+            }}
             defaultValue={initialData?.name || null}
             errorMessage={errors.name?.message}
           />
           <FormInput
             label="Wallet balance"
             id="balance"
-            placeholder="Your name ..."
             required={true}
             type="number"
             defaultValue={initialData?.balance || null}
             {...register('balance')}
             onChange={(e) => {
-              if (e?.target?.value) {
-                setValue('balance', Number(e.target.value))
-              } else {
-                setValue('balance', 0)
-              }
+              handleInputChange('balance', e.target?.value)
             }}
             errorMessage={errors.balance?.message}
           />
           <FormSelect
             required
-            label="Planning category"
+            label="Wallet Owner"
             value={selectedUserId}
             onChange={(e: Option | Option[]) => {
               if (e) {
@@ -116,7 +130,13 @@ const WalletModal = ({
             errorMessage={errors.user_id?.message}
           />
           <div className="item-center flex justify-end">
-            <MyButton colorType="primary" type="submit">
+            <MyButton
+              colorType="primary"
+              type="submit"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              className="mx-auto w-64 mt-4"
+            >
               Save
             </MyButton>
           </div>
