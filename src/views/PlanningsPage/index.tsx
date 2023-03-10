@@ -12,6 +12,8 @@ import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 import { type GetPlanningsQuery } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
+import EmptyList from 'components/EmptyList'
+import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
 import OverviewCard from 'components/OverviewCard'
@@ -31,9 +33,18 @@ const PlanningsPage = () => {
     start_month: dayjs(orgQuery?.[pq.month]).toDate(),
     end_month: dayjs(orgQuery?.[pq.month]).toDate(),
   })
-  const { data } = useGetPlannings(filter)
+  const { data, isLoading } = useGetPlannings(filter)
+  const groupedPlans = useMemo(() => {
+    if (data) {
+      return groupPlanningsByUser(data)
+    }
+  }, [data])
+
   const { data: transactions } = useGetTransactions({
-    ...filter,
+    child_id: filter?.child_id,
+    category_id: filter?.category_id,
+    search_key: filter?.search_key,
+    wallet_id: filter?.wallet_id,
     transaction_type: 'out',
     start_date: dayjs(filter.start_month).startOf('month').toDate(),
     end_date: dayjs(filter.end_month).endOf('month').toDate(),
@@ -160,7 +171,11 @@ const PlanningsPage = () => {
           <div className="flex justify-end items-center" />
         </div>
         <div className="grid max-w-4xl space-y-8">
-          {groupPlanningsByUser(data).map((_data) => (
+          {isLoading && <Loader />}
+
+          {groupedPlans?.length === 0 && <EmptyList />}
+
+          {groupedPlans.map((_data) => (
             <OverviewCard
               key={_data[0].user_id}
               title={_data[0].user_fullname}

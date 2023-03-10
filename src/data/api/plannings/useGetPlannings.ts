@@ -26,6 +26,6 @@ export default function useGetPlannings(
 
   return {
     ...query,
-    data: query.data?.data,
+    data: query.data?.data || [],
   }
 }
