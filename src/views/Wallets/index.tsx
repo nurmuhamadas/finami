@@ -22,6 +22,7 @@ import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import { formatCurrencySign } from 'utils/helpers/formatter'
 import {
+  calculateRatio,
   groupWalletsByUser,
   mapDataToSelectOptions,
 } from 'utils/helpers/helper'
@@ -49,6 +50,7 @@ const WalletsPage = () => {
   const userOpt = mapDataToSelectOptions(users || [], 'id', 'fullname')
 
   const { data: trxData, isLoading: trxLoading } = useGetTransactions({
+    transaction_type: 'out',
     start_date: dayjs().startOf('month').toDate(),
     end_date: dayjs().endOf('month').toDate(),
   })
@@ -133,13 +135,11 @@ const WalletsPage = () => {
                     : formatCurrencySign(groupedWallet.total)}
                 </p>
                 <span className="text-white">
-                  {thisMonthExpense < 0 ? '-' : '+'}
-                  {(thisMonthExpense / (lastMonth || 1)) * 100}%
+                  {calculateRatio(groupedWallet.total, lastMonth)}
                 </span>
               </div>
               <span className="text-sm text-white">
-                Compared to last month (
-                {formatCurrencySign(groupedWallet.total - thisMonthExpense)})
+                Compared to last month ({formatCurrencySign(lastMonth)})
               </span>
             </div>
           </OverviewCard>

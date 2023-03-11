@@ -211,6 +211,7 @@ const TransactionsPage = () => {
                       showDescription
                       showUser
                       showDate
+                      showWallet
                     />
                   ))}
                 </ul>

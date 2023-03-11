@@ -408,3 +408,14 @@ export function urlQueryGenerator<T>(url: string, query: T): string {
 
   return `${url}?${q}`
 }
+
+export function calculateRatio(base: number, comparation: number, rounded = 2) {
+  const diff = (base || 0) - (comparation || 0)
+  let ratio = (diff / (comparation || 1)) * 100
+
+  if (comparation === 0) {
+    ratio = 100
+  }
+
+  return `${diff >= 0 ? '+' : ''}${ratio.toFixed(rounded)}%`
+}

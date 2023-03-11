@@ -9,4 +9,6 @@ export type TransactionListItemProps = {
   showDescription?: boolean
   showUser?: boolean
   disableAmountFormatting?: boolean
+  showWallet?: boolean
+  walletClassname?: string
 }

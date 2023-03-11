@@ -17,6 +17,8 @@ const TransactionListItem = ({
   showDate,
   showDescription,
   showUser,
+  showWallet,
+  walletClassname,
   disableAmountFormatting,
 }: TransactionListItemProps) => {
   const isTransactionIn = data.transaction_type === 'in'
@@ -87,14 +89,16 @@ const TransactionListItem = ({
             </span>
           </div>
         </div>
-        <div className="flex items-center w-full flex-wrap gap-2">
+        <div
+          className={cn('flex items-center w-full flex-wrap gap-2', {
+            hidden: !showWallet,
+          })}
+        >
           <AiOutlineWallet className="text-finamiBlue" />
           <span
             className={cn(
-              'text-sm text-gray-500 truncate block w-56 sm:w-[500px] md:w-[600px] font-openSans',
-              {
-                hidden: false,
-              },
+              'text-sm text-gray-500 truncate block w-52 sm:w-[500px] md:w-[600px] font-openSans',
+              walletClassname,
             )}
           >
             {data.wallet_name}
