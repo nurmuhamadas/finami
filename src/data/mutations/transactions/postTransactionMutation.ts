@@ -9,10 +9,13 @@ import {
 } from 'data/types'
 
 export default function postTransactionMutation(
-  payload: CreateTransactionPayload,
-  options?: UseMutationOptions<PostSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<
+    PostSuccessResponse,
+    AxiosError,
+    CreateTransactionPayload
+  >,
 ) {
-  return useMutation(async () => {
+  return useMutation(async (payload) => {
     return await ApiCall.Transactions.postTransaction(payload)
   }, options)
 }

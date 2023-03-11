@@ -10,11 +10,16 @@ import { TextInput } from 'flowbite-react'
 import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 
 import AppLayout from 'components/AppLayout'
+import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import TransactionListItem from 'components/TransactionListItem'
 import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
-import { dayjsToDate, formatCurrency } from 'utils/helpers/formatter'
+import {
+  dayjsToDate,
+  formatCurrency,
+  formatCurrencySign,
+} from 'utils/helpers/formatter'
 import { debounce, groupTransactionByDate } from 'utils/helpers/helper'
 
 import FilterTransactions from './components/filter'
@@ -33,8 +38,11 @@ const TransactionsPage = () => {
   })
   const [searchKey, setSearchKey] = useState(undefined)
 
-  const { data: orgData } = useGetTransactions({
-    ...filter,
+  const { data: orgData, isLoading } = useGetTransactions({
+    category_id: filter.category_id,
+    child_id: filter.child_id,
+    transaction_type: filter.transaction_type,
+    wallet_id: filter.wallet_id,
     start_date: filter.startDate,
     end_date: filter.endDate,
     search_key: searchKey,
@@ -80,18 +88,7 @@ const TransactionsPage = () => {
           initialValues={filter}
           onChange={setFilter}
           startComponent={
-            <div className="flex items-center space-x-2">
-              <MyButton
-                onClick={async () => {
-                  await router.push(
-                    { pathname: PAGES_URL.transactions_new.url, query },
-                    PAGES_URL.transactions_new.url,
-                  )
-                }}
-                colorType="primary"
-              >
-                <AiOutlinePlus />
-              </MyButton>
+            <div className="w-64 flex items-center space-x-2">
               <TextInput
                 id="searchkey"
                 placeholder="Search..."
@@ -115,21 +112,34 @@ const TransactionsPage = () => {
               Period: {dayjs(filter.startDate).format('DD MMM YYYY')} -{' '}
               {dayjs(filter.endDate).format('DD MMM YYYY')}
             </p>
-            <Link
-              href={{
-                pathname: PAGES_URL.transactions_analytics.url,
-                query,
-              }}
-              className="ml-auto"
-              passHref
-            >
-              <MyButton
-                color="light"
-                className="!text-gray-500 hover:!bg-finamiBlue hover:!text-white !text-sm"
+            <div className="flex justify-end items-center gap-2">
+              <Link
+                href={{
+                  pathname: PAGES_URL.transactions_analytics.url,
+                  query,
+                }}
+                className="ml-auto"
+                passHref
               >
-                <span className="text-sm">View Report</span>
+                <MyButton
+                  color="light"
+                  className="!text-gray-500 hover:!bg-finamiBlue hover:!text-white !text-sm"
+                >
+                  <span className="text-sm">View Report</span>
+                </MyButton>
+              </Link>
+              <MyButton
+                onClick={async () => {
+                  await router.push(
+                    { pathname: PAGES_URL.transactions_new.url, query },
+                    PAGES_URL.transactions_new.url,
+                  )
+                }}
+                colorType="primary"
+              >
+                <AiOutlinePlus />
               </MyButton>
-            </Link>
+            </div>
           </div>
           <OverviewCard
             Header={
@@ -142,25 +152,30 @@ const TransactionsPage = () => {
               <li className="flex justify-between items-center">
                 <span className="">Inflow</span>
                 <span className=" text-finamiGreen font-semibold">
-                  + Rp. {formatCurrency(inAmount)}
+                  {isLoading
+                    ? 'Loading...'
+                    : `+ Rp. ${formatCurrency(inAmount)}`}
                 </span>
               </li>
               <li className="flex justify-between items-center">
                 <span className="">Outflow</span>
                 <span className="text-finamiRed font-semibold">
-                  - Rp. {formatCurrency(outAmount)}
+                  {isLoading
+                    ? 'Loading...'
+                    : `- Rp. ${formatCurrency(outAmount)}`}
                 </span>
               </li>
               <li className="border-b-2 " />
               <li className="flex justify-between items-center">
                 <span className="font-semibold">Total</span>
                 <span className="font-semibold">
-                  {totalAmount < 0 ? '-' : ''} Rp.{' '}
-                  {formatCurrency(Math.abs(totalAmount))}
+                  {isLoading ? 'Loading...' : formatCurrencySign(totalAmount)}
                 </span>
               </li>
             </ul>
           </OverviewCard>
+
+          {isLoading && <Loader />}
 
           {data.map((_data) => {
             const f = 'DD-MM-YYYY'
@@ -195,6 +210,7 @@ const TransactionsPage = () => {
                       }}
                       showDescription
                       showUser
+                      showDate
                     />
                   ))}
                 </ul>

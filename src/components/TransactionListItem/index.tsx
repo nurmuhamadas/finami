@@ -1,3 +1,9 @@
+import {
+  AiOutlineCalendar,
+  AiOutlineUser,
+  AiOutlineWallet,
+} from 'react-icons/ai'
+
 import cn from 'classnames'
 
 import { formatCurrency, formatDate } from 'utils/helpers/formatter'
@@ -47,22 +53,6 @@ const TransactionListItem = ({
             {formatCurrency(data.amount)}
           </span>
         </div>
-        <div
-          className={cn('flex items-center justify-between', {
-            'space-x-2': showUser && showDate,
-          })}
-        >
-          <span
-            className={cn('text-sm text-gray-500', {
-              hidden: !showUser,
-            })}
-          >
-            By: {data.user_fullname}
-          </span>
-          <span className={cn('text-sm text-gray-500', { hidden: !showDate })}>
-            {formatDate(data.date, 'MM, dd yyyy')}
-          </span>
-        </div>
         <span
           className={cn(
             'text-sm text-gray-500 truncate block w-64 sm:w-[500px] md:w-[600px] font-openSans',
@@ -73,6 +63,43 @@ const TransactionListItem = ({
         >
           {data.description}
         </span>
+        <div
+          className={cn('flex items-center w-full justify-between flex-wrap', {
+            'gap-2': showUser && showDate,
+          })}
+        >
+          <div className="flex items-center flex-wrap gap-2">
+            <AiOutlineUser className="text-finamiBlue" />
+            <span
+              className={cn('text-sm text-gray-500', {
+                hidden: !showUser,
+              })}
+            >
+              By: {data.user_fullname}
+            </span>
+          </div>
+          <div className="flex items-center flex-wrap gap-2">
+            <AiOutlineCalendar className="text-finamiBlue" />
+            <span
+              className={cn('text-sm text-gray-500', { hidden: !showDate })}
+            >
+              {formatDate(data.date, 'MM, dd yyyy')}
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center w-full flex-wrap gap-2">
+          <AiOutlineWallet className="text-finamiBlue" />
+          <span
+            className={cn(
+              'text-sm text-gray-500 truncate block w-56 sm:w-[500px] md:w-[600px] font-openSans',
+              {
+                hidden: false,
+              },
+            )}
+          >
+            {data.wallet_name}
+          </span>
+        </div>
       </div>
     </li>
   )

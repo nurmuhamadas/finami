@@ -14,5 +14,7 @@ export type TransactionFormProps = {
     is_owner: boolean
   }
   disableForm?: boolean
+  isLoading?: boolean
+  onValueChange?: () => void
   onSubmit: (values: CreateTransactionPayload) => void
 }

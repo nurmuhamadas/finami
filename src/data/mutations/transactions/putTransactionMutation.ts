@@ -8,12 +8,19 @@ import {
   type UpdateTransactionPayload,
 } from 'data/types'
 
+interface PutTransactionParams {
+  id: string
+  payload: UpdateTransactionPayload
+}
+
 export default function putTransactionMutation(
-  id: string,
-  payload: UpdateTransactionPayload,
-  options?: UseMutationOptions<PutSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<
+    PutSuccessResponse,
+    AxiosError,
+    PutTransactionParams
+  >,
 ) {
-  return useMutation(async () => {
+  return useMutation(async ({ id, payload }) => {
     return await ApiCall.Transactions.putTransaction(id, payload)
   }, options)
 }

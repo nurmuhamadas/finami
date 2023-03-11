@@ -1,8 +1,12 @@
+import { useState } from 'react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { Alert } from 'flowbite-react'
+
+import postTransactionMutation from 'data/mutations/transactions/postTransactionMutation'
 import { type CreateTransactionPayload } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
@@ -26,8 +30,20 @@ const NewTransactionPage = () => {
     date: new Date(),
   }
 
-  const handleRegister = (value: CreateTransactionPayload) => {
-    console.log(value)
+  const [errorMessage, setErrorMessage] = useState(undefined)
+
+  const createTransaction = postTransactionMutation()
+
+  const handleRegister = async (values: CreateTransactionPayload) => {
+    try {
+      setErrorMessage(undefined)
+
+      await createTransaction.mutateAsync(values)
+
+      await router.push(PAGES_URL.transactions.url)
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
   }
 
   return (
@@ -48,12 +64,29 @@ const NewTransactionPage = () => {
             </Link>
           </div>
         </div>
+
+        {errorMessage && (
+          <Alert
+            color="failure"
+            onDismiss={() => {
+              setErrorMessage(undefined)
+            }}
+          >
+            {errorMessage}
+          </Alert>
+        )}
+
         <NewTransactionForm
           initialData={{
             ...initialValues,
             is_owner: false,
           }}
           onSubmit={handleRegister}
+          disableForm={createTransaction.isLoading}
+          isLoading={createTransaction.isLoading}
+          onValueChange={() => {
+            setErrorMessage(undefined)
+          }}
         />
       </div>
     </AppLayout>
