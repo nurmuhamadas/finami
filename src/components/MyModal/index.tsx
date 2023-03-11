@@ -22,7 +22,7 @@ const MyModal = ({
   }, [])
 
   return isBrowser ? (
-    <Modal className={cn('h-screen', className)} {...props}>
+    <Modal dismissible className={cn('h-screen', className)} {...props}>
       {!!header && (
         <Modal.Header className={cn(headerClassName)}>{header}</Modal.Header>
       )}

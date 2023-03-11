@@ -1,12 +1,15 @@
-import { Router } from 'next/router'
+import Router from 'next/router'
 
 import axios, { type AxiosError } from 'axios'
 
 import { API_ENDPOINT } from 'utils/constants/api'
 import { LOCAL_STORAGE } from 'utils/constants/common'
+import { PAGES_URL } from 'utils/constants/pages'
 import { getAuthFromLocal, saveAuthToLocal } from 'utils/helpers/helper'
 
 function createAuthAxios(baseURL: string) {
+  let refreshCount = 0
+
   const instanceAxios = axios.create({
     baseURL,
     // withCredentials: true,
@@ -35,9 +38,13 @@ function createAuthAxios(baseURL: string) {
 
       if (error.response?.status === 401 || error.response?.status === 403) {
         try {
+          if (refreshCount > 4) {
+            throw new Error('Logged out')
+          }
+
           const { refreshToken } = getAuthFromLocal()
           const { data } = await axios.put(
-            `${process.env.BE_URL}api/${API_ENDPOINT.authentications}`,
+            `${baseURL}${API_ENDPOINT.authentications}`,
             { refreshToken },
           )
           const { accessToken } = data
@@ -47,12 +54,14 @@ function createAuthAxios(baseURL: string) {
           }`
           saveAuthToLocal({ accessToken, refreshToken })
 
+          refreshCount += 1
           return await instanceAxios(originalRequest)
         } catch (err) {
+          refreshCount = 0
           localStorage.removeItem(LOCAL_STORAGE.accessTokenKey)
           localStorage.removeItem(LOCAL_STORAGE.refreshTokenKey)
           localStorage.removeItem(LOCAL_STORAGE.userKey)
-          await (Router as any).replace('/')
+          await Router.replace(PAGES_URL.login.url)
         }
       }
 

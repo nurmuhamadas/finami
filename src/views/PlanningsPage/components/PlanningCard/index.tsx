@@ -1,3 +1,5 @@
+import { AiOutlineAppstoreAdd, AiOutlineWallet } from 'react-icons/ai'
+
 import cn from 'classnames'
 
 import { formatCurrency, formatCurrencySign } from 'utils/helpers/formatter'
@@ -6,9 +8,10 @@ import { type PlanningCardProps } from './types'
 
 const PlanningCard = ({
   planning,
-  expense,
+  expense = 0,
   showExpense,
   wrapperClassName,
+  showInfo,
   onClick,
 }: PlanningCardProps) => {
   const diffAmount = (planning.amount || 0) - (expense || 0)
@@ -25,19 +28,26 @@ const PlanningCard = ({
       }}
     >
       <div className="flex items-center justify-between">
-        <span className="font-semibold">
-          {planning.name} {!showExpense ? `- ${planning.category_name}` : ''}
-        </span>
+        <span className="font-semibold">{planning.name}</span>
         <span className="font-semibold">
           Rp. {formatCurrency(planning.amount)}
         </span>
       </div>
       <div
         className={cn('flex items-center justify-between', {
-          hidden: showExpense,
+          hidden: !showInfo || (showExpense && showInfo),
         })}
       >
-        <span className={cn('text-sm')}>{planning.category_name}</span>
+        <div className="flex flex-col gap-y-2">
+          <span className={cn('text-sm flex items-center gap-1')}>
+            <AiOutlineAppstoreAdd size={16} className="text-finamiBlue" />
+            {planning.category_name}
+          </span>
+          <span className={cn('text-sm flex items-center gap-1')}>
+            <AiOutlineWallet size={16} className="text-finamiBlue" />
+            {planning.wallet_name}
+          </span>
+        </div>
         <span className="text-sm"></span>
       </div>
       <div
@@ -49,7 +59,7 @@ const PlanningCard = ({
         <span className={cn('text-sm')}>Rp. {formatCurrency(expense)}</span>
       </div>
       <div
-        className={cn('flex items-center justify-between', {
+        className={cn('flex items-center justify-between pb-2', {
           hidden: !showExpense,
         })}
       >
@@ -61,6 +71,23 @@ const PlanningCard = ({
         >
           {formatCurrencySign(diffAmount)}
         </span>
+      </div>
+      <div
+        className={cn('flex items-center justify-between', {
+          hidden: !(showInfo && showExpense),
+        })}
+      >
+        <div className="flex gap-3 items-center flex-wrap">
+          <span className={cn('text-sm flex items-center gap-1')}>
+            <AiOutlineAppstoreAdd size={16} className="text-finamiBlue" />
+            {planning.category_name}
+          </span>
+          <span className={cn('text-sm flex items-center gap-1')}>
+            <AiOutlineWallet size={16} className="text-finamiBlue" />
+            {planning.wallet_name}
+          </span>
+        </div>
+        <span className="text-sm"></span>
       </div>
     </li>
   )

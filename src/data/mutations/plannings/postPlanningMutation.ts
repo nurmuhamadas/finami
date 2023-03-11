@@ -9,10 +9,13 @@ import {
 } from 'data/types'
 
 export default function postPlanningMutation(
-  payload: CreatePlanningPayload,
-  options?: UseMutationOptions<PostSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<
+    PostSuccessResponse,
+    AxiosError,
+    CreatePlanningPayload
+  >,
 ) {
-  return useMutation(async () => {
+  return useMutation(async (payload) => {
     return await ApiCall.Plannings.postPlanning(payload)
   }, options)
 }

@@ -8,7 +8,6 @@ import dayjs from 'dayjs'
 import { TextInput } from 'flowbite-react'
 
 import useGetPlannings from 'data/api/plannings/useGetPlannings'
-import useGetTransactions from 'data/api/Transactions/useGetTransactions'
 import { type GetPlanningsQuery } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
@@ -39,16 +38,6 @@ const PlanningsPage = () => {
       return groupPlanningsByUser(data)
     }
   }, [data])
-
-  const { data: transactions } = useGetTransactions({
-    child_id: filter?.child_id,
-    category_id: filter?.category_id,
-    search_key: filter?.search_key,
-    wallet_id: filter?.wallet_id,
-    transaction_type: 'out',
-    start_date: dayjs(filter.start_month).startOf('month').toDate(),
-    end_date: dayjs(filter.end_month).endOf('month').toDate(),
-  })
 
   const query = useMemo(() => {
     const _f: Record<string, string> = {}
@@ -96,24 +85,7 @@ const PlanningsPage = () => {
           }}
           hide={{ date: true, type: true }}
           startComponent={
-            <div className="flex items-center space-x-2">
-              <MyButton
-                colorType="primary"
-                disabled={dayjs(filter.start_month).isBefore(
-                  dayjs().startOf('month'),
-                )}
-                onClick={async () => {
-                  await router.push(
-                    {
-                      pathname: PAGES_URL.plannings_new.url,
-                      query,
-                    },
-                    PAGES_URL.plannings_new.url,
-                  )
-                }}
-              >
-                <AiOutlinePlus />
-              </MyButton>
+            <div className="flex items-center gap-2 w-full flex-wrap">
               <MyDatePicker
                 onChange={(v) => {
                   setFilter((f) => ({
@@ -123,7 +95,7 @@ const PlanningsPage = () => {
                   }))
                 }}
                 displayFormat="MMM YYYY"
-                containerClassName="!w-60"
+                containerClassName="w-full sm:!w-60"
                 initialValue={{
                   startDate: filter.start_month,
                   endDate: filter.end_month,
@@ -132,7 +104,7 @@ const PlanningsPage = () => {
               <TextInput
                 id="searchkey"
                 placeholder="Search..."
-                className="finamiInput w-80"
+                className="finamiInput w-full sm:w-80"
                 rightIcon={AiOutlineSearch}
                 onChange={debounce((e) => {
                   if (e) {
@@ -168,7 +140,25 @@ const PlanningsPage = () => {
               </MyButton>
             </Link>
           </div>
-          <div className="flex justify-end items-center" />
+          <div className="flex justify-end items-center">
+            <MyButton
+              colorType="primary"
+              disabled={dayjs(filter.start_month).isBefore(
+                dayjs().startOf('month'),
+              )}
+              onClick={async () => {
+                await router.push(
+                  {
+                    pathname: PAGES_URL.plannings_new.url,
+                    query,
+                  },
+                  PAGES_URL.plannings_new.url,
+                )
+              }}
+            >
+              <AiOutlinePlus />
+            </MyButton>
+          </div>
         </div>
         <div className="grid max-w-4xl space-y-8">
           {isLoading && <Loader />}
@@ -184,21 +174,11 @@ const PlanningsPage = () => {
               <div className="">
                 <ul className="space-y-2">
                   {_data.map((d) => {
-                    const sum = transactions
-                      .filter(
-                        (t) =>
-                          t.user_id === d.user_id &&
-                          d.category_id === t.category_id &&
-                          t.transaction_type === 'out',
-                      )
-                      .map((d) => d.amount)
-                      .reduce((a, b) => a + b, 0)
-
                     return (
                       <PlanningCard
                         key={d.id}
                         planning={d}
-                        expense={sum}
+                        showInfo
                         onClick={async () => {
                           await router.push(
                             `${PAGES_URL.plannings.url}/${d.id}`,

@@ -22,6 +22,9 @@ import { type PlanningFormProps } from './types'
 const PlanningForm = ({
   initialData,
   disableForm,
+  isLoading,
+  disableInput = {},
+  onValueChange,
   onSubmit,
 }: PlanningFormProps) => {
   const {
@@ -36,7 +39,10 @@ const PlanningForm = ({
   // OPTIONS
   const { data: wallets } = useGetWallets()
   const optWallets = mapDataToSelectOptions(wallets, 'id', 'name')
-  const { data: categories } = useGetCategories({ transaction_type: 'out' })
+  const { data: categories } = useGetCategories({
+    transaction_type: 'out',
+    include_child: true,
+  })
   const optcategories = mapDataToSelectOptions(categories, 'id', 'name')
 
   const [optionsValue, setOptionsValue] = useState({
@@ -44,11 +50,37 @@ const PlanningForm = ({
     category_id: undefined,
   })
 
-  const handleOptionChange = (v: Option, name: string) => {
-    setOptionsValue((o) => ({
-      ...o,
-      [name]: v,
-    }))
+  const handleOptionChange = (v: Option, name: keyof CreatePlanningPayload) => {
+    if (v) {
+      setValue(name, v.value)
+      setOptionsValue((o) => ({
+        ...o,
+        [name]: v,
+      }))
+    } else {
+      setValue(name, undefined)
+      setOptionsValue((o) => ({
+        ...o,
+        [name]: undefined,
+      }))
+    }
+
+    onValueChange?.()
+  }
+
+  const handleInputChange = (
+    key: keyof CreatePlanningPayload,
+    v: string | number,
+  ) => {
+    if (v) {
+      if (key === 'amount') {
+        setValue(key, Number(v))
+      }
+      setValue(key, v)
+    } else {
+      setValue(key, 0)
+    }
+    onValueChange?.()
   }
 
   useEffect(() => {
@@ -87,16 +119,12 @@ const PlanningForm = ({
         defaultValue={initialData?.name || null}
         {...register('name')}
         onChange={(e) => {
-          if (e?.target?.value) {
-            setValue('name', e.target.value)
-          } else {
-            setValue('name', undefined)
-          }
+          handleInputChange('name', e.target?.value)
         }}
         errorMessage={errors.name?.message}
       />
       <FormInput
-        label="Planning name"
+        label="Planning amount"
         id="amount"
         placeholder="Input amount..."
         required={true}
@@ -106,25 +134,23 @@ const PlanningForm = ({
         defaultValue={initialData?.amount || null}
         {...register('amount')}
         onChange={(e) => {
-          if (e?.target?.value) {
-            setValue('amount', Number(e.target.value))
-          } else {
-            setValue('amount', 0)
-          }
+          handleInputChange('amount', e.target?.value)
         }}
         errorMessage={errors.amount?.message}
       />
       <div>
         <div className="mb-2 block">
           <Label htmlFor="month" value="Planning month" />
+          <span className="text-red-500">*</span>
         </div>
         <MyDatePicker
-          disabled={disableForm}
+          disabled={disableForm || disableInput?.month}
           initialValue={{
             startDate: initialData?.month || new Date(),
             endDate: initialData?.month || new Date(),
           }}
           onChange={(v) => {
+            onValueChange?.()
             setValue('month', v as Date)
           }}
           displayFormat="MMM YYYY"
@@ -139,36 +165,26 @@ const PlanningForm = ({
       </div>
       <FormSelect
         required
+        isSearchable
         label="Wallet"
         isDisabled={disableForm}
         placeholder="Select wallet..."
         value={optionsValue.wallet_id}
         onChange={(e: Option | Option[]) => {
-          if (e) {
-            setValue('wallet_id', (e as Option).value)
-            handleOptionChange(e as Option, 'wallet_id')
-          } else {
-            setValue('wallet_id', undefined)
-            handleOptionChange(undefined, 'wallet_id')
-          }
+          handleOptionChange(e as Option, 'wallet_id')
         }}
         options={optWallets}
         errorMessage={errors.wallet_id?.message}
       />
       <FormSelect
         required
+        isSearchable
         label="Planning category"
         isDisabled={disableForm}
         placeholder="Select category..."
         value={optionsValue.category_id}
         onChange={(e: Option | Option[]) => {
-          if (e) {
-            setValue('category_id', (e as Option).value)
-            handleOptionChange(e as Option, 'category_id')
-          } else {
-            setValue('category_id', undefined)
-            handleOptionChange(undefined, 'category_id')
-          }
+          handleOptionChange(e as Option, 'category_id')
         }}
         options={optcategories}
         errorMessage={errors.category_id?.message}
@@ -178,7 +194,8 @@ const PlanningForm = ({
           type="submit"
           colorType="primary"
           className="w-full max-w-md"
-          disabled={disableForm}
+          disabled={disableForm || isLoading}
+          loading={isLoading}
         >
           Save
         </MyButton>

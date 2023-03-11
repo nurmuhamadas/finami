@@ -6,10 +6,9 @@ import ApiCall from 'services/ApiCall'
 import { type DeleteSuccessResponse } from 'data/types'
 
 export default function deletePlanningMutation(
-  id: string,
-  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError>,
+  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError, string>,
 ) {
-  return useMutation(async () => {
+  return useMutation(async (id) => {
     return await ApiCall.Plannings.deletePlanningById(id)
   }, options)
 }

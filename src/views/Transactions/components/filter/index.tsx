@@ -46,10 +46,13 @@ const FilterTransactions = ({
     transaction_type: undefined,
   })
 
-  const { data: categories } = useGetCategories({
-    transaction_type: values.transaction_type,
-    include_child: true,
-  })
+  const { data: categories } = useGetCategories(
+    {
+      transaction_type: values.transaction_type,
+      include_child: true,
+    },
+    { enabled: !hide.category && isShowFilter },
+  )
   const optCategory = mapDataToSelectOptions<CategoryDataResponse>(
     categories,
     'id',
@@ -57,13 +60,13 @@ const FilterTransactions = ({
   )
 
   const optUser = mapDataToSelectOptions<UserDataResponse>(
-    useGetUsers()?.data || [],
+    useGetUsers({ enabled: !hide.user && isShowFilter })?.data || [],
     'id',
     'fullname',
   )
 
   const optWallet = mapDataToSelectOptions<WalletDataResponse>(
-    useGetWallets()?.data || [],
+    useGetWallets({}, { enabled: !hide.wallet && isShowFilter })?.data || [],
     'id',
     'name',
   )
@@ -127,7 +130,7 @@ const FilterTransactions = ({
         </div>
       </div>
       <div
-        className={cn('grid sm:grid-cols-2 md:grid-cols-3 gap-3', {
+        className={cn('grid sm:grid-cols-2 xl:grid-cols-3 gap-3', {
           hidden: !isShowFilter,
         })}
       >

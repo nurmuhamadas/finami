@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import dayjs from 'dayjs'
+import { Alert } from 'flowbite-react'
 
+import postPlanningMutation from 'data/mutations/plannings/postPlanningMutation'
 import { type CreatePlanningPayload } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
@@ -27,8 +30,20 @@ const NewPlanningPage = () => {
     month: dayjs(query?.[pq.month]).toDate(),
   }
 
-  const handleSubmit = (values: CreatePlanningPayload) => {
-    console.log(values)
+  const [errorMessage, setErrorMessage] = useState(undefined)
+
+  const createMutation = postPlanningMutation()
+
+  const handleSubmit = async (values: CreatePlanningPayload) => {
+    try {
+      setErrorMessage(undefined)
+
+      await createMutation.mutateAsync(values)
+
+      await router.push(PAGES_URL.plannings.url)
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
   }
 
   return (
@@ -49,7 +64,28 @@ const NewPlanningPage = () => {
             </Link>
           </div>
         </div>
-        <PlanningForm onSubmit={handleSubmit} initialData={initialValues} />
+
+        {errorMessage && (
+          <Alert
+            color="failure"
+            className=""
+            onDismiss={() => {
+              setErrorMessage(undefined)
+            }}
+          >
+            {errorMessage}
+          </Alert>
+        )}
+
+        <PlanningForm
+          onSubmit={handleSubmit}
+          initialData={initialValues}
+          isLoading={createMutation.isLoading}
+          disableForm={createMutation.isLoading}
+          onValueChange={() => {
+            setErrorMessage(undefined)
+          }}
+        />
       </div>
     </AppLayout>
   )
