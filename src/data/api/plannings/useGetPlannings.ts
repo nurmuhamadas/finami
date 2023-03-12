@@ -12,16 +12,16 @@ import {
 
 export default function useGetPlannings(
   querydata: GetPlanningsQuery,
-  options?: UseQueryOptions<
-    Promise<Result<PlanningDataResponse[]>>,
-    AxiosError<ErrorResponse>
+  options?: Omit<
+    UseQueryOptions<Result<PlanningDataResponse[]>, AxiosError<ErrorResponse>>,
+    'queryKey' & 'queryFn'
   >,
 ) {
   const queryKey = ['getPlannings', querydata, options]
   const query = useQuery(
     queryKey,
     async () => await ApiCall.Plannings.getPlannings(querydata),
-    options as any,
+    options,
   )
 
   return {

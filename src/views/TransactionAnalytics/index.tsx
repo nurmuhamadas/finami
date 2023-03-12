@@ -39,20 +39,25 @@ const TransactionAnalyticsPage = () => {
   const [filter, setFilter] = useState<GetTransactionsQuery>({})
   const [isModalOpen, setIsModalOpen] = useState<ModalType>(undefined)
 
-  const { data: orgData } = useGetTransactions(filter)
-  const dataByWeeks = useMemo(
-    () =>
-      groupTransactionByWeek(orgData, {
+  const { data: orgData, isLoading } = useGetTransactions(filter, {
+    enabled: !!filter?.start_date && !!filter?.end_date,
+  })
+
+  const {
+    dataByCategory,
+    chartData1,
+    chartData2,
+    chartData3,
+    legends2,
+    legends3,
+  } = useMemo(() => {
+    if (orgData?.length) {
+      const dataByWeeks = groupTransactionByWeek(orgData, {
         startDate: filter.start_date,
         endDate: filter.end_date,
-      }),
-    [orgData],
-  )
-
-  const { dataByCategory, chartData1, chartData2, chartData3 } = useMemo(() => {
-    if (orgData?.length) {
+      })
       // Data By Weeks
-      const _d = dataByWeeks.data.map((d) => ({
+      const _d = dataByWeeks?.data.map((d) => ({
         ...d,
         xLabel: `${dayjs(d.dateRange[0]).format('DD MMM')} - ${dayjs(
           d.dateRange[1],
@@ -73,24 +78,41 @@ const TransactionAnalyticsPage = () => {
         xAxisKey: 'category_name',
         yAxisKey: ['inAmount'],
         xAxisLabel: '',
-      })
+      })?.filter((d, i) => i === 0 || (d[1] as number) > 0)
       const chartData3 = formatDataToBarChart(_dCat, {
         legendLabels: ['Expense'],
         xAxisKey: 'category_name',
         yAxisKey: ['outAmount'],
         xAxisLabel: '',
-      })
+      })?.filter((d, i) => i === 0 || (d[1] as number) > 0)
+
+      const legends2 = dataByCategory?.data
+        ?.filter((d) => d.inAmount > 0)
+        ?.map((d, i) => ({
+          label: d.category_name,
+          color: `bg-${chartColors[i].slice(1)}`,
+        }))
+
+      const legends3 = dataByCategory?.data
+        ?.filter((d) => d.outAmount > 0)
+        ?.map((d, i) => ({
+          label: d.category_name,
+          color: `bg-${chartColors[i].slice(1)}`,
+        }))
 
       return {
+        dataByWeeks,
         dataByCategory,
         chartData1,
         chartData2,
         chartData3,
+        legends2,
+        legends3,
       }
     }
 
     return {}
-  }, [orgData])
+  }, [orgData, filter])
 
   useEffect(() => {
     if (query) {
@@ -136,11 +158,11 @@ const TransactionAnalyticsPage = () => {
                 onButtonClick={() => {
                   setIsModalOpen('summary')
                 }}
-                amount={dataByWeeks.totalAmount}
+                amount={dataByCategory?.totalAmount || 0}
                 label="Net Income"
               />
             }
-            loading={chartData1?.length <= 0}
+            loading={isLoading}
           >
             <div className="flex flex-col pb-6 space-y-16 overflow-auto">
               <div className="flex w-full overflow-x-auto py-4 pb-6 finamiBlueScollX">
@@ -173,22 +195,15 @@ const TransactionAnalyticsPage = () => {
                   onButtonClick={() => {
                     setIsModalOpen('income')
                   }}
-                  amount={dataByWeeks.inAmount}
+                  amount={dataByCategory?.inAmount || 0}
                   label="Income"
                 />
               }
-              loading={chartData2?.length <= 0}
+              loading={isLoading}
             >
               <div className="flex flex-col pb-6 space-y-16">
                 <div className="flex flex-col">
-                  <ChartLegends
-                    legends={dataByCategory?.data
-                      ?.filter((d) => d.inAmount > 0)
-                      ?.map((d, i) => ({
-                        label: d.category_name,
-                        color: `bg-${chartColors[i].slice(1)}`,
-                      }))}
-                  />
+                  <ChartLegends legends={legends2} />
                   <Chart
                     chartType="PieChart"
                     width="100%"
@@ -209,22 +224,15 @@ const TransactionAnalyticsPage = () => {
                   onButtonClick={() => {
                     setIsModalOpen('expense')
                   }}
-                  amount={dataByWeeks.outAmount}
+                  amount={dataByCategory?.outAmount || 0}
                   label="Expense"
                 />
               }
-              loading={chartData3?.length <= 0}
+              loading={isLoading}
             >
               <div className="flex flex-col pb-6 space-y-16">
                 <div className="flex flex-col">
-                  <ChartLegends
-                    legends={dataByCategory?.data
-                      ?.filter((d) => d.outAmount > 0)
-                      ?.map((d, i) => ({
-                        label: d.category_name,
-                        color: `bg-${chartColors[i].slice(1)}`,
-                      }))}
-                  />
+                  <ChartLegends legends={legends3} />
                   <Chart
                     chartType="PieChart"
                     width="100%"

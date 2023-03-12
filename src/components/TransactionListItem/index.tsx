@@ -70,17 +70,21 @@ const TransactionListItem = ({
             'gap-2': showUser && showDate,
           })}
         >
-          <div className="flex items-center flex-wrap gap-2">
+          <div
+            className={cn('flex items-center flex-wrap gap-2', {
+              hidden: !showUser,
+            })}
+          >
             <AiOutlineUser className="text-finamiBlue" />
-            <span
-              className={cn('text-sm text-gray-500', {
-                hidden: !showUser,
-              })}
-            >
+            <span className={cn('text-sm text-gray-500')}>
               By: {data.user_fullname}
             </span>
           </div>
-          <div className="flex items-center flex-wrap gap-2">
+          <div
+            className={cn('flex items-center flex-wrap gap-2', {
+              hidden: !showDate,
+            })}
+          >
             <AiOutlineCalendar className="text-finamiBlue" />
             <span
               className={cn('text-sm text-gray-500', { hidden: !showDate })}

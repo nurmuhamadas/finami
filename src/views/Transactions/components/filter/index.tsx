@@ -46,7 +46,7 @@ const FilterTransactions = ({
     transaction_type: undefined,
   })
 
-  const { data: categories } = useGetCategories(
+  const { data: categories, isLoading: isCatLoading } = useGetCategories(
     {
       transaction_type: values.transaction_type,
     },
@@ -58,14 +58,22 @@ const FilterTransactions = ({
     'name',
   )
 
+  const { data: users, isLoading: isUserLoading } = useGetUsers(
+    {},
+    { enabled: !hide.user && isShowFilter },
+  )
   const optUser = mapDataToSelectOptions<UserDataResponse>(
-    useGetUsers({}, { enabled: !hide.user && isShowFilter })?.data || [],
+    users,
     'id',
     'fullname',
   )
 
+  const { data: wallets, isLoading: isWalletLoading } = useGetWallets(
+    {},
+    { enabled: !hide.wallet && isShowFilter },
+  )
   const optWallet = mapDataToSelectOptions<WalletDataResponse>(
-    useGetWallets({}, { enabled: !hide.wallet && isShowFilter })?.data || [],
+    wallets,
     'id',
     'name',
   )
@@ -91,7 +99,13 @@ const FilterTransactions = ({
   }
 
   useEffect(() => {
-    if (initialValues && initial) {
+    if (
+      initialValues &&
+      initial &&
+      !isCatLoading &&
+      !isUserLoading &&
+      !isWalletLoading
+    ) {
       setValues(initialValues)
 
       const _ca = optCategory?.find(
@@ -110,7 +124,7 @@ const FilterTransactions = ({
       })
     }
     initial = false
-  }, [initialValues])
+  }, [initialValues, isCatLoading, isUserLoading, isWalletLoading])
 
   return (
     <div className={cn(wrapperClassName, 'block')}>
@@ -174,6 +188,7 @@ const FilterTransactions = ({
         />
         <FormSelect
           isClearable
+          isSearchable
           isDisabled={loading}
           wrapperClassName={cn({ hidden: hide.category })}
           label="Category"
@@ -187,6 +202,7 @@ const FilterTransactions = ({
         />
         <FormSelect
           isClearable
+          isSearchable
           isDisabled={loading}
           wrapperClassName={cn({ hidden: hide.user })}
           label="User"
@@ -200,6 +216,7 @@ const FilterTransactions = ({
         />
         <FormSelect
           isClearable
+          isSearchable
           isDisabled={loading}
           wrapperClassName={cn({ hidden: hide.wallet })}
           label="Wallet"

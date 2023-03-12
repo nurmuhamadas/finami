@@ -37,16 +37,22 @@ const TransactionsPage = () => {
     endDate: dayjsToDate(dayjs().endOf('month')),
   })
   const [searchKey, setSearchKey] = useState(undefined)
+  const [isAfterInit, setIsAfterInit] = useState(false)
 
-  const { data: orgData, isLoading } = useGetTransactions({
-    category_id: filter.category_id,
-    child_id: filter.child_id,
-    transaction_type: filter.transaction_type,
-    wallet_id: filter.wallet_id,
-    start_date: filter.startDate,
-    end_date: filter.endDate,
-    search_key: searchKey,
-  })
+  const { data: orgData, isLoading } = useGetTransactions(
+    {
+      category_id: filter.category_id,
+      child_id: filter.child_id,
+      transaction_type: filter.transaction_type,
+      wallet_id: filter.wallet_id,
+      start_date: filter.startDate,
+      end_date: filter.endDate,
+      search_key: searchKey,
+    },
+    {
+      enabled: isAfterInit,
+    },
+  )
   const { inAmount, outAmount, totalAmount, data } =
     groupTransactionByDate(orgData)
 
@@ -79,6 +85,7 @@ const TransactionsPage = () => {
         child_id: orgQuery?.[ta.user_id],
       })
     }
+    setIsAfterInit(true)
   }, [orgQuery])
 
   return (

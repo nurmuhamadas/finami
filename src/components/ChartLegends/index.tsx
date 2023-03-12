@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { type ChartLegendsProps } from './types'
 
 const ChartLegends = ({
-  legends,
+  legends = [],
   wrapperClassName,
   labelClassName,
 }: ChartLegendsProps) => {

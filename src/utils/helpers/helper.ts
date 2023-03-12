@@ -108,7 +108,11 @@ export const groupTransactionByWeek = (
       data: [] as TransactionDataResponse[],
     }
     data
-      .filter((d) => !dayjs(d.date).isBefore(s) && !dayjs(d.date).isAfter(e))
+      .filter(
+        (d) =>
+          dayjs(d.date).isAfter(dayjs(s).add(-1, 'day').endOf('day')) &&
+          dayjs(d.date).isBefore(dayjs(e).add(1, 'day').startOf('day')),
+      )
       ?.forEach((d) => {
         _d.inAmount += d.transaction_type === 'in' ? d.amount : 0
         _d.outAmount += d.transaction_type === 'out' ? d.amount : 0
