@@ -114,7 +114,7 @@ export interface PlanningDataResponse {
   deleted_at?: Date
 }
 export interface GetPlanningsQuery {
-  child_id?: string
+  user_id?: string
   start_month?: Date
   end_month?: Date
   wallet_id?: string

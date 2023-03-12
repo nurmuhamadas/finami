@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Alert } from 'flowbite-react'
 
@@ -92,6 +93,7 @@ const NewPlanningPage = () => {
                 setIsDeleteOpen(true)
               }}
               disabled={isPlanFinished}
+              className={cn({ hidden: !data?.is_owner })}
             >
               <AiOutlineDelete size={18} />
             </MyButton>

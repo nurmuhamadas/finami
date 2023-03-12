@@ -25,7 +25,6 @@ import { updateProfileSchema } from './schema'
 const AccountProfilePage = () => {
   const router = useRouter()
   const { user, setUser } = useAuth()
-  console.log(user)
 
   const {
     register,

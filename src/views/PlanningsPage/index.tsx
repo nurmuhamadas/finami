@@ -45,7 +45,7 @@ const PlanningsPage = () => {
     const _f: Record<string, string> = {}
     if (filter?.end_month) _f[pq.month] = filter?.end_month?.toISOString()
     if (filter?.category_id) _f[pq.category_id] = filter?.category_id
-    if (filter?.child_id) _f[pq.user_id] = filter?.child_id
+    if (filter?.user_id) _f[pq.user_id] = filter?.user_id
     if (filter?.wallet_id) _f[pq.wallet_id] = filter?.wallet_id
     if (filter?.search_key) _f[pq.search_key] = filter?.search_key
     return _f
@@ -56,13 +56,13 @@ const PlanningsPage = () => {
       setFilter({
         ...filter,
         category_id: orgQuery?.[pq.category_id],
-        child_id: orgQuery?.[pq.user_id],
+        user_id: orgQuery?.[pq.user_id],
         wallet_id: orgQuery?.[pq.wallet_id],
         start_month: dayjs(orgQuery?.[pq.month]).isValid()
-          ? dayjs(orgQuery?.[pq.month]).toDate()
+          ? dayjs(orgQuery?.[pq.month]).startOf('month').toDate()
           : dayjs().toDate(),
         end_month: dayjs(orgQuery?.[pq.month]).isValid()
-          ? dayjs(orgQuery?.[pq.month]).toDate()
+          ? dayjs(orgQuery?.[pq.month]).endOf('month').toDate()
           : dayjs().toDate(),
       })
     }
@@ -73,14 +73,14 @@ const PlanningsPage = () => {
       <div className="flex w-full flex-col space-y-8">
         <FilterTransactions
           initialValues={{
-            child_id: filter.child_id,
+            child_id: filter.user_id,
             category_id: filter.category_id,
             wallet_id: filter.wallet_id,
           }}
           onChange={(v) => {
             setFilter({
               ...filter,
-              child_id: v.child_id,
+              user_id: v.child_id,
               category_id: v.category_id,
               wallet_id: v.wallet_id,
             })

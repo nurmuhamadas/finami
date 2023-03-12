@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { type Option } from 'react-tailwindcss-select/dist/components/type'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import cn from 'classnames'
 import { Label, Textarea } from 'flowbite-react'
 
 import useGetCategories from 'data/api/Categories/useGetCategories'
@@ -217,7 +218,10 @@ const TransactionForm = ({
         <MyButton
           type="submit"
           colorType="primary"
-          className="w-full max-w-md"
+          className={cn(
+            { hidden: initialData?.category_id && !initialData?.is_owner },
+            'w-full max-w-md',
+          )}
           disabled={disableForm || isLoading}
           loading={isLoading}
         >
