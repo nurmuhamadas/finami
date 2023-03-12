@@ -179,7 +179,7 @@ const WalletsPage = () => {
 
           {groupedWallet?.data?.map((d) => (
             <OverviewCard
-              title={d.is_owner ? 'My Wallets' : d.user_fullname}
+              title={d.is_owner ? 'My Wallets' : `${d.user_fullname}'s wallets`}
               key={JSON.stringify(d)}
             >
               <WalletsCard

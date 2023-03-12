@@ -24,6 +24,7 @@ const WalletModal = ({
   const {
     register,
     setValue,
+    getValues,
     handleSubmit,
     reset,
     formState: { errors },
@@ -47,8 +48,8 @@ const WalletModal = ({
 
   useEffect(() => {
     if (initialData) {
-      setValue('name', initialData.name)
-      setValue('balance', initialData.balance)
+      if (!getValues('name')) setValue('name', initialData.name)
+      if (!getValues('balance')) setValue('balance', initialData.balance)
     }
   }, [initialData])
 

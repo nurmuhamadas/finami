@@ -16,6 +16,7 @@ import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
 import OverviewCard from 'components/OverviewCard'
+import { useAuth } from 'contexts/AuthContext'
 import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
 import { debounce, groupPlanningsByUser } from 'utils/helpers/helper'
 import FilterTransactions from 'views/Transactions/components/filter'
@@ -26,6 +27,7 @@ const pq = QUERY_URL.plannings
 
 const PlanningsPage = () => {
   const router = useRouter()
+  const { user } = useAuth()
   const orgQuery = router.query as Record<string, string>
 
   const [filter, setFilter] = useState<GetPlanningsQuery>({
@@ -165,32 +167,38 @@ const PlanningsPage = () => {
 
           {groupedPlans?.length === 0 && <EmptyList />}
 
-          {groupedPlans.map((_data) => (
-            <OverviewCard
-              key={_data[0].user_id}
-              title={_data[0].user_fullname}
-              cardClassName="planning-card-btn"
-            >
-              <div className="">
-                <ul className="space-y-2">
-                  {_data.map((d) => {
-                    return (
-                      <PlanningCard
-                        key={d.id}
-                        planning={d}
-                        showInfo
-                        onClick={async () => {
-                          await router.push(
-                            `${PAGES_URL.plannings.url}/${d.id}`,
-                          )
-                        }}
-                      />
-                    )
-                  })}
-                </ul>
-              </div>
-            </OverviewCard>
-          ))}
+          {groupedPlans.map((_data) => {
+            const title =
+              _data[0].user_id === user?.id
+                ? 'My Plans'
+                : `${_data[0].user_fullname}'s plans`
+            return (
+              <OverviewCard
+                key={_data[0].user_id}
+                title={title}
+                cardClassName="planning-card-btn"
+              >
+                <div className="">
+                  <ul className="space-y-2">
+                    {_data.map((d) => {
+                      return (
+                        <PlanningCard
+                          key={d.id}
+                          planning={d}
+                          showInfo
+                          onClick={async () => {
+                            await router.push(
+                              `${PAGES_URL.plannings.url}/${d.id}`,
+                            )
+                          }}
+                        />
+                      )
+                    })}
+                  </ul>
+                </div>
+              </OverviewCard>
+            )
+          })}
         </div>
       </div>
     </AppLayout>

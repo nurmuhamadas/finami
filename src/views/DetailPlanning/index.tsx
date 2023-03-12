@@ -127,6 +127,7 @@ const NewPlanningPage = () => {
           disableInput={{
             month: true,
           }}
+          isChildData={!data?.is_owner}
         />
 
         <MyModal

@@ -152,7 +152,7 @@ export interface CategoryDataResponse {
 }
 export interface GetCategoriesQuery {
   transaction_type?: TransactionTypesType
-  include_child?: boolean
+  user_id?: string
 }
 export interface CreateCategoryPayload {
   name: string

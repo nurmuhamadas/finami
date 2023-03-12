@@ -8,6 +8,7 @@ export type PlanningFormProps = {
   disableInput?: {
     month?: boolean
   }
+  isChildData?: boolean
   onValueChange?: () => void
   onSubmit: (values: CreatePlanningPayload) => void
 }

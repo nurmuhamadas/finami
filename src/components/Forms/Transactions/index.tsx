@@ -11,6 +11,7 @@ import { type CreateTransactionPayload } from 'data/types'
 
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
+import { useAuth } from 'contexts/AuthContext'
 import { mapDataToSelectOptions } from 'utils/helpers/helper'
 
 import FormInput from '../FormInput'
@@ -26,6 +27,7 @@ const TransactionForm = ({
   onValueChange,
   onSubmit,
 }: TransactionFormProps) => {
+  const { user } = useAuth()
   const {
     register,
     setValue,
@@ -36,11 +38,16 @@ const TransactionForm = ({
     resolver: yupResolver(registerTransactionSchema),
   })
 
+  // * Only include child if edit data and not owner
+  const includeChild = !!initialData?.category_id && !initialData?.is_owner
+
   // OPTIONS
-  const { data: wallets, isLoading: isWalletLoading } = useGetWallets()
+  const { data: wallets, isLoading: isWalletLoading } = useGetWallets({
+    user_id: !includeChild ? user?.id : undefined,
+  })
   const optWallets = mapDataToSelectOptions(wallets, 'id', 'name')
   const { data: categories, isLoading: isCategoryLoading } = useGetCategories({
-    include_child: !initialData?.is_owner,
+    user_id: !includeChild ? user?.id : undefined,
   })
   const optCategories = mapDataToSelectOptions(categories, 'id', 'name')
 

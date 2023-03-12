@@ -23,6 +23,7 @@ import EmptyList from 'components/EmptyList'
 import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
+import { useAuth } from 'contexts/AuthContext'
 import { TRANSACTION_TYPES_OPT } from 'utils/constants/common'
 import { type TransactionTypesType } from 'utils/constants/types'
 import { groupCategoriesByGroup } from 'utils/helpers/helper'
@@ -33,6 +34,8 @@ const ModalRegisterCategory = dynamic(
 )
 
 const AccountCategorySetting = () => {
+  const { user } = useAuth()
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<Option>(undefined)
@@ -45,9 +48,13 @@ const AccountCategorySetting = () => {
   const updateCategoryMutation = putCategoryMutation()
   const deleteCategoryMt = deleteCategoryMutation()
 
-  const { data, isLoading, refetch } = useGetCategories({
-    transaction_type: transactionType?.value as TransactionTypesType,
-  })
+  const { data, isLoading, refetch } = useGetCategories(
+    {
+      transaction_type: transactionType?.value as TransactionTypesType,
+      user_id: user?.id,
+    },
+    { enabled: !!user?.id },
+  )
   const grouppedData = useMemo(() => {
     if (data?.length > 0) {
       return groupCategoriesByGroup(data)

@@ -14,6 +14,7 @@ import FormInput from 'components/Forms/FormInput'
 import FormSelect from 'components/Forms/FormSelect'
 import MyButton from 'components/MyButton'
 import MyDatePicker from 'components/MyDatePicker'
+import { useAuth } from 'contexts/AuthContext'
 import { mapDataToSelectOptions } from 'utils/helpers/helper'
 
 import { registerPlanningSchema } from './schema'
@@ -24,12 +25,15 @@ const PlanningForm = ({
   disableForm,
   isLoading,
   disableInput = {},
+  isChildData,
   onValueChange,
   onSubmit,
 }: PlanningFormProps) => {
+  const { user } = useAuth()
   const {
     register,
     setValue,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<CreatePlanningPayload>({
@@ -37,11 +41,13 @@ const PlanningForm = ({
   })
 
   // OPTIONS
-  const { data: wallets } = useGetWallets()
+  const { data: wallets, isLoading: isWalletLoading } = useGetWallets({
+    user_id: isChildData ? undefined : user?.id,
+  })
   const optWallets = mapDataToSelectOptions(wallets, 'id', 'name')
-  const { data: categories } = useGetCategories({
+  const { data: categories, isLoading: isCategoryLoading } = useGetCategories({
     transaction_type: 'out',
-    include_child: true,
+    user_id: isChildData ? undefined : user?.id,
   })
   const optcategories = mapDataToSelectOptions(categories, 'id', 'name')
 
@@ -84,13 +90,14 @@ const PlanningForm = ({
   }
 
   useEffect(() => {
-    if (initialData) {
+    if (initialData && !isWalletLoading && !isCategoryLoading) {
       // FORM VALUES
-      setValue('wallet_id', initialData.wallet_id)
-      setValue('amount', initialData.amount)
-      setValue('category_id', initialData.category_id)
-      setValue('month', initialData.month)
-      setValue('name', initialData.name)
+      if (!getValues('wallet_id')) setValue('wallet_id', initialData.wallet_id)
+      if (!getValues('amount')) setValue('amount', initialData.amount)
+      if (!getValues('category_id'))
+        setValue('category_id', initialData.category_id)
+      if (!getValues('month')) setValue('month', initialData.month)
+      if (!getValues('name')) setValue('name', initialData.name)
 
       // OPTIONS VALUES
       const _wallet = optWallets.find((d) => d.value === initialData.wallet_id)
@@ -102,7 +109,7 @@ const PlanningForm = ({
         category_id: _category,
       })
     }
-  }, [initialData])
+  }, [initialData, isWalletLoading, isCategoryLoading])
 
   return (
     <form

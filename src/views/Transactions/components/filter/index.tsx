@@ -49,7 +49,6 @@ const FilterTransactions = ({
   const { data: categories } = useGetCategories(
     {
       transaction_type: values.transaction_type,
-      include_child: true,
     },
     { enabled: !hide.category && isShowFilter },
   )

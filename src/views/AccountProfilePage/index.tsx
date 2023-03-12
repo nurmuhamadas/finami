@@ -18,12 +18,14 @@ import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import ProfileAvatar from 'components/ProfileAvatar'
 import { useAuth } from 'contexts/AuthContext'
+import { saveAuthToLocal } from 'utils/helpers/helper'
 
 import { updateProfileSchema } from './schema'
 
 const AccountProfilePage = () => {
   const router = useRouter()
   const { user, setUser } = useAuth()
+  console.log(user)
 
   const {
     register,
@@ -59,6 +61,16 @@ const AccountProfilePage = () => {
         },
       })
       setUser({ ...user, ...values })
+      saveAuthToLocal({
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          parent_id: user.parent_id,
+          fullname: values.fullname,
+          image_url: values.image_url,
+        },
+      })
       await refetch()
 
       setIsSuccess(true)
