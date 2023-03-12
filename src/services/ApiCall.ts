@@ -3,6 +3,7 @@ import { type AxiosInstance } from 'axios'
 import {
   type CategoryDataResponse,
   type CreateCategoryPayload,
+  type CreateMemberPayload,
   type CreatePlanningPayload,
   type CreateSettingPayload,
   type CreateTransactionPayload,
@@ -12,6 +13,7 @@ import {
   type GetCategoriesQuery,
   type GetPlanningsQuery,
   type GetTransactionsQuery,
+  type GetUsersQuery,
   type GetWalletsQuery,
   type LoginPayload,
   type LoginSuccessResponse,
@@ -81,8 +83,12 @@ class BaseApiCall {
   }
 
   Users = {
-    getUsers: async (): Promise<Result<UserDataResponse[]>> => {
-      return await this.api.get(API_ENDPOINT.user_members)
+    getUsers: async (
+      query: GetUsersQuery,
+    ): Promise<Result<UserDataResponse[]>> => {
+      return await this.api.get(
+        urlQueryGenerator(API_ENDPOINT.user_members, query),
+      )
     },
     getUserById: async (id: string): Promise<Result<UserDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.users}/${id}`)
@@ -100,6 +106,11 @@ class BaseApiCall {
     },
     deleteUserById: async (id: string): Promise<DeleteSuccessResponse> => {
       return await this.api.delete(`${API_ENDPOINT.users}/${id}`)
+    },
+    postMember: async (
+      payload: CreateMemberPayload,
+    ): Promise<PostSuccessResponse> => {
+      return await this.api.post(`${API_ENDPOINT.user_members}`, payload)
     },
   }
 

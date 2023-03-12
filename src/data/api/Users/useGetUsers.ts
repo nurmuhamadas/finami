@@ -5,11 +5,13 @@ import ApiCall from 'services/ApiCall'
 
 import {
   type ErrorResponse,
+  type GetUsersQuery,
   type Result,
   type UserDataResponse,
 } from 'data/types'
 
 export default function useGetUsers(
+  queryData: GetUsersQuery = {},
   options?: Omit<
     UseQueryOptions<Result<UserDataResponse[]>, AxiosError<ErrorResponse>>,
     'queryKey' & 'queryFn'
@@ -18,7 +20,7 @@ export default function useGetUsers(
   const queryKey = ['getUsers', options]
   const query = useQuery(
     queryKey,
-    async () => await ApiCall.Users.getUsers(),
+    async () => await ApiCall.Users.getUsers(queryData),
     options,
   )
 

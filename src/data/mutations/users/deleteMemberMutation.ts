@@ -5,11 +5,10 @@ import ApiCall from 'services/ApiCall'
 
 import { type DeleteSuccessResponse } from 'data/types'
 
-export default function deleteUserMutation(
-  id: string,
-  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError>,
+export default function deleteMemberMutation(
+  options?: UseMutationOptions<DeleteSuccessResponse, AxiosError, string>,
 ) {
-  return useMutation(async () => {
+  return useMutation(async (id) => {
     return await ApiCall.Users.deleteUserById(id)
   }, options)
 }

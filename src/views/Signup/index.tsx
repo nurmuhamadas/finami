@@ -59,7 +59,6 @@ const SignupPage = () => {
         email: values.email,
         password: values.password,
         image_url: undefined,
-        parent_id: undefined,
       })
 
       setIsSuccess(true)

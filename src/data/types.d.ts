@@ -180,17 +180,26 @@ export interface UserDataResponse {
   updated_at: Date
   deleted_at?: Date
 }
+export interface GetUsersQuery {
+  member_only?: boolean
+}
 export interface CreateUserPayload {
   username: string
   email: string
   password: string
   fullname: string
-  parent_id?: string
   image_url?: string
 }
 export interface UpdateUserPayload {
   username: string
   email: string
+  fullname: string
+  image_url?: string
+}
+export interface CreateMemberPayload {
+  username: string
+  email: string
+  password: string
   fullname: string
   image_url?: string
 }

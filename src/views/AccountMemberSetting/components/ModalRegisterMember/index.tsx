@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Alert } from 'flowbite-react'
 
 import { type CreateUserPayload } from 'data/types'
 
@@ -15,8 +16,10 @@ import { type ModalRegisterMemberProps } from './types'
 const ModalRegisterMember = ({
   initialData,
   show,
-  onClose,
   disableForm,
+  errorMessage,
+  onValueChange,
+  onClose,
   onSubmit,
 }: ModalRegisterMemberProps) => {
   const {
@@ -28,6 +31,15 @@ const ModalRegisterMember = ({
     resolver: yupResolver(registerMemberSchema),
   })
 
+  const handeValuechange = (key: keyof CreateUserPayload, val: string) => {
+    if (val) {
+      setValue(key, val)
+    } else {
+      setValue(key, undefined)
+    }
+    onValueChange?.()
+  }
+
   useEffect(() => {
     if (initialData) {
       // FORM VALUES
@@ -35,7 +47,6 @@ const ModalRegisterMember = ({
       setValue('email', initialData.email)
       setValue('password', initialData.password)
       setValue('fullname', initialData.fullname)
-      setValue('parent_id', initialData.parent_id)
     }
   }, [initialData])
 
@@ -45,6 +56,12 @@ const ModalRegisterMember = ({
       onClose={onClose}
       header={<h3>Register New Member</h3>}
     >
+      {errorMessage && (
+        <Alert color="failure" className="mb-4">
+          {errorMessage}
+        </Alert>
+      )}
+
       <form
         className="grid gap-4 md:grid-cols-2"
         onSubmit={handleSubmit(onSubmit)}
@@ -57,11 +74,7 @@ const ModalRegisterMember = ({
           className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
           {...register('username')}
           onChange={(e) => {
-            if (e?.target?.value) {
-              setValue('username', e.target.value)
-            } else {
-              setValue('username', undefined)
-            }
+            handeValuechange('username', e?.target?.value)
           }}
           errorMessage={errors.username?.message}
         />
@@ -74,11 +87,7 @@ const ModalRegisterMember = ({
           className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
           {...register('email')}
           onChange={(e) => {
-            if (e?.target?.value) {
-              setValue('email', e.target.value)
-            } else {
-              setValue('email', undefined)
-            }
+            handeValuechange('email', e?.target?.value)
           }}
           errorMessage={errors.email?.message}
         />
@@ -90,11 +99,7 @@ const ModalRegisterMember = ({
           className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
           {...register('fullname')}
           onChange={(e) => {
-            if (e?.target?.value) {
-              setValue('fullname', e.target.value)
-            } else {
-              setValue('fullname', undefined)
-            }
+            handeValuechange('fullname', e?.target?.value)
           }}
           errorMessage={errors.fullname?.message}
         />
@@ -107,11 +112,7 @@ const ModalRegisterMember = ({
           className="focus:!ring-finamiBlue focus:!border-finamiBlue text-sm"
           {...register('password')}
           onChange={(e) => {
-            if (e?.target?.value) {
-              setValue('password', e.target.value)
-            } else {
-              setValue('password', undefined)
-            }
+            handeValuechange('password', e?.target?.value)
           }}
           errorMessage={errors.password?.message}
         />

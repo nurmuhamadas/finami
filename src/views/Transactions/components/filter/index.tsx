@@ -60,7 +60,7 @@ const FilterTransactions = ({
   )
 
   const optUser = mapDataToSelectOptions<UserDataResponse>(
-    useGetUsers({ enabled: !hide.user && isShowFilter })?.data || [],
+    useGetUsers({}, { enabled: !hide.user && isShowFilter })?.data || [],
     'id',
     'fullname',
   )

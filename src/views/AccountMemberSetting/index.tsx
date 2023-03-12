@@ -3,10 +3,15 @@ import { AiOutlineDelete, AiOutlineFile, AiOutlinePlus } from 'react-icons/ai'
 
 import dynamic from 'next/dynamic'
 
+import { Alert } from 'flowbite-react'
+
 import useGetUsers from 'data/api/Users/useGetUsers'
-import { type CreateUserPayload, type UserDataResponse } from 'data/types'
+import deleteMemberMutation from 'data/mutations/users/deleteMemberMutation'
+import postMemberMutation from 'data/mutations/users/postMemberMutation'
+import { type CreateMemberPayload, type UserDataResponse } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
+import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 
@@ -19,15 +24,37 @@ const AccountMemberSetting = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserDataResponse>(undefined)
+  const [errorMessage, setErrorMessage] = useState(undefined)
 
-  const data = useGetUsers()?.data?.filter((d) => !!d.parent_id)
+  const addMutation = postMemberMutation()
+  const deleteMutation = deleteMemberMutation()
 
-  const handleRegister = (values: CreateUserPayload) => {
-    console.log(values)
+  const { data, isLoading, refetch } = useGetUsers({ member_only: true })
+
+  const handleRegister = async (values: CreateMemberPayload) => {
+    try {
+      setErrorMessage(undefined)
+
+      await addMutation.mutateAsync(values)
+
+      await refetch()
+      setIsModalOpen(false)
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
   }
 
-  const handleDelete = () => {
-    console.log(selectedUser)
+  const handleDelete = async () => {
+    try {
+      setErrorMessage(undefined)
+
+      await deleteMutation.mutateAsync(selectedUser?.id)
+
+      await refetch()
+      setIsDeleteOpen(false)
+    } catch (error) {
+      setErrorMessage((error as Error).message)
+    }
   }
 
   return (
@@ -51,6 +78,8 @@ const AccountMemberSetting = () => {
           Header={<h3 className="text-lg font-semibold">List Member</h3>}
         >
           <ul className="">
+            {isLoading && <Loader />}
+
             {data?.map((d) => (
               <li
                 key={d.id}
@@ -78,7 +107,7 @@ const AccountMemberSetting = () => {
               </li>
             ))}
 
-            {data?.length <= 0 && (
+            {!isLoading && data?.length <= 0 && (
               <li className="w-full items-center justify-center py-12">
                 <div className="mx-auto w-max flex flex-col items-center text-gray-500">
                   <AiOutlineFile size={32} />
@@ -95,6 +124,10 @@ const AccountMemberSetting = () => {
             setIsModalOpen(false)
           }}
           onSubmit={handleRegister}
+          errorMessage={errorMessage}
+          onValueChange={() => {
+            setErrorMessage(undefined)
+          }}
         />
 
         <MyModal
@@ -112,6 +145,17 @@ const AccountMemberSetting = () => {
             </div>
           }
         >
+          {errorMessage && (
+            <Alert
+              color="failure"
+              className="mb-4"
+              onDismiss={() => {
+                setErrorMessage(undefined)
+              }}
+            >
+              {errorMessage}
+            </Alert>
+          )}
           <p>
             All related data to the {selectedUser?.fullname} user will be
             deleted. Are you sure?
