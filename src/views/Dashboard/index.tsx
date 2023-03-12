@@ -209,28 +209,26 @@ const Dashboard = () => {
             wrapperClassName="mb-8"
           >
             <ul className="flex flex-col">
-              <li className="flex space-x-4 border-b-2 border-gray-200 py-3">
-                <div className="flex w-full flex-col space-y-2">
-                  <span className="font-semibold">My Wallets</span>
-                  <div className="flex w-full items-center justify-between">
-                    <span className="text-gray-700">Wallet 1</span>
-                    <span className="font-semibold text-gray-600">
-                      Rp. 12.000
-                    </span>
-                  </div>
-                </div>
-              </li>
-              <li className="flex items-center justify-between space-x-4 py-3">
-                <div className="flex w-full flex-col space-y-2">
-                  <span className="font-semibold">Children 1 Wallets</span>
-                  <div className="flex w-full items-center justify-between">
-                    <span className="text-gray-700">Wallet 1</span>
-                    <span className="font-semibold text-gray-600">
-                      Rp. 12.000
-                    </span>
-                  </div>
-                </div>
-              </li>
+              {walletsData?.map((d) => {
+                return (
+                  <li
+                    key={d.id}
+                    className="flex space-x-4 border-b-2 border-gray-200 py-3"
+                  >
+                    <div className="flex w-full flex-col space-y-2">
+                      <span className="font-semibold">{d.name}</span>
+                      <div className="flex w-full items-center justify-between">
+                        <span className="text-sm text-gray-700">
+                          {d.user_fullname}
+                        </span>
+                        <span className="font-semibold text-gray-600">
+                          {formatCurrencySign(d.balance)}
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
             </ul>
           </OverviewCard>
 

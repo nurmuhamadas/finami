@@ -192,6 +192,7 @@ const WalletsPage = () => {
                   setSelectedWallet(_data)
                   setIsModalOpen(true)
                 }}
+                showAction={d.is_owner}
               />
             </OverviewCard>
           ))}
@@ -201,8 +202,6 @@ const WalletsPage = () => {
           initialData={{
             name: selectedWallet?.name,
             balance: selectedWallet?.balance,
-            user_id:
-              selectedWallet?.user_id || selectedUser?.value || undefined,
           }}
           isOpen={isModalOpen}
           isEditData={!!selectedWallet}

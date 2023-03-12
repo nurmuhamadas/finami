@@ -5,6 +5,7 @@ export type WalletsCardProps = {
     total: number
     data: WalletDataResponse[]
   }
+  showAction?: boolean
   onDeleteClick: (wallet: WalletDataResponse) => void
   onEditClick: (wallet: WalletDataResponse) => void
 }

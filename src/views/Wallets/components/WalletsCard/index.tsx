@@ -1,6 +1,8 @@
 import React from 'react'
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 
+import cn from 'classnames'
+
 import MyButton from 'components/MyButton'
 import { formatCurrencySign } from 'utils/helpers/formatter'
 
@@ -8,6 +10,7 @@ import { type WalletsCardProps } from './types'
 
 const WalletsCard = ({
   wallets,
+  showAction,
   onDeleteClick,
   onEditClick,
 }: WalletsCardProps) => {
@@ -35,7 +38,11 @@ const WalletsCard = ({
                 {formatCurrencySign(d.balance)}
               </span>
             </div>
-            <div className="ml-auto mt-2 flex space-x-2">
+            <div
+              className={cn('ml-auto mt-2 flex space-x-2', {
+                hidden: !showAction,
+              })}
+            >
               <MyButton
                 outline
                 onClick={() => {

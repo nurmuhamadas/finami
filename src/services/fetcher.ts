@@ -36,13 +36,14 @@ function createAuthAxios(baseURL: string) {
     async (error: AxiosError) => {
       const originalRequest = error.config
 
-      if (error.response?.status === 401 || error.response?.status === 403) {
+      if (error.response?.status === 401) {
         try {
-          if (refreshCount > 4) {
+          const { refreshToken } = getAuthFromLocal()
+
+          if (!refreshToken || refreshCount > 4) {
             throw new Error('Logged out')
           }
 
-          const { refreshToken } = getAuthFromLocal()
           const { data } = await axios.put(
             `${baseURL}${API_ENDPOINT.authentications}`,
             { refreshToken },
@@ -57,11 +58,11 @@ function createAuthAxios(baseURL: string) {
           refreshCount += 1
           return await instanceAxios(originalRequest)
         } catch (err) {
-          refreshCount = 0
           localStorage.removeItem(LOCAL_STORAGE.accessTokenKey)
           localStorage.removeItem(LOCAL_STORAGE.refreshTokenKey)
           localStorage.removeItem(LOCAL_STORAGE.userKey)
           await Router.replace(PAGES_URL.login.url)
+          refreshCount = 0
         }
       }
 

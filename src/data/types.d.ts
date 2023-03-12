@@ -37,7 +37,6 @@ export interface WalletDataResponse {
 export interface CreateWalletPayload {
   name: string
   balance: number
-  user_id: string
 }
 export interface UpdateWalletPayload {
   name: string
