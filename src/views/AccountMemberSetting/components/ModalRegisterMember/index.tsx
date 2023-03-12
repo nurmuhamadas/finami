@@ -24,6 +24,7 @@ const ModalRegisterMember = ({
 }: ModalRegisterMemberProps) => {
   const {
     register,
+    reset,
     setValue,
     handleSubmit,
     formState: { errors },
@@ -47,13 +48,17 @@ const ModalRegisterMember = ({
       setValue('email', initialData.email)
       setValue('password', initialData.password)
       setValue('fullname', initialData.fullname)
+      setValue('image_url', initialData.image_url)
     }
   }, [initialData])
 
   return (
     <MyModal
       show={show}
-      onClose={onClose}
+      onClose={() => {
+        onClose()
+        reset()
+      }}
       header={<h3>Register New Member</h3>}
     >
       {errorMessage && (

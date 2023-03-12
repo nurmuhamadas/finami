@@ -8,12 +8,14 @@ import AppLayout from 'components/AppLayout'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import ProfileAvatar from 'components/ProfileAvatar'
+import { useAuth } from 'contexts/AuthContext'
 import { accountMenu } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
 import { debounce } from 'utils/helpers/helper'
 
 const AccountPage = () => {
   const router = useRouter()
+  const { user } = useAuth()
   const [mounted, setMounted] = useState(false)
   const [screenWidth, setScreenWidth] = useState(0)
 
@@ -42,6 +44,10 @@ const AccountPage = () => {
                   showName
                   onButtonClick={async () => {
                     await router.push(PAGES_URL.account_profile.url)
+                  }}
+                  data={{
+                    name: user?.fullname,
+                    src: user?.imageUrl,
                   }}
                   buttonText="Change profile"
                 />

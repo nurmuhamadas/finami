@@ -52,6 +52,7 @@ const AccountMemberSetting = () => {
 
       await refetch()
       setIsDeleteOpen(false)
+      setSelectedUser(undefined)
     } catch (error) {
       setErrorMessage((error as Error).message)
     }

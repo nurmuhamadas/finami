@@ -105,7 +105,7 @@ class BaseApiCall {
       return await this.api.put(`${API_ENDPOINT.users}/${id}`, payload)
     },
     deleteUserById: async (id: string): Promise<DeleteSuccessResponse> => {
-      return await this.api.delete(`${API_ENDPOINT.users}/${id}`)
+      return await this.api.delete(`${API_ENDPOINT.user_members}/${id}`)
     },
     postMember: async (
       payload: CreateMemberPayload,

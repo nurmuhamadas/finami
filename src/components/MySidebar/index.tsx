@@ -7,6 +7,7 @@ import cn from 'classnames'
 import { Sidebar } from 'flowbite-react'
 
 import ProfileAvatar from 'components/ProfileAvatar'
+import { useAuth } from 'contexts/AuthContext'
 import { PAGES_URL } from 'utils/constants/pages'
 import { type MenuType } from 'utils/constants/types'
 
@@ -78,6 +79,7 @@ const renderMenuItem = ({
 
 const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
   const { pathname, push } = useRouter()
+  const { user } = useAuth()
   const mappedMenu = menus
     .filter((m) => ![PAGES_URL.account_profile.url].includes(m.url))
     .map((m) => ({
@@ -107,6 +109,10 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
               showButton
               showName
               buttonText="Edit profile"
+              data={{
+                name: user?.fullname,
+                src: user?.imageUrl,
+              }}
               onButtonClick={async () => {
                 await push(PAGES_URL.account_profile.url)
               }}
