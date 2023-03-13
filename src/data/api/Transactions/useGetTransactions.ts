@@ -12,16 +12,19 @@ import {
 
 export default function useGetTransactions(
   querydata: GetTransactionsQuery,
-  options?: UseQueryOptions<
-    Promise<Result<TransactionDataResponse[]>>,
-    AxiosError<ErrorResponse>
+  options?: Omit<
+    UseQueryOptions<
+      Result<TransactionDataResponse[]>,
+      AxiosError<ErrorResponse>
+    >,
+    'queryKey' & 'queryFn'
   >,
 ) {
   const queryKey = ['getTransactions', querydata, options]
   const query = useQuery(
     queryKey,
     async () => await ApiCall.Transactions.getTransactions(querydata),
-    options as any,
+    options,
   )
 
   return {

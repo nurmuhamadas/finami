@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 
 import Image from 'next/image'
@@ -7,17 +7,20 @@ import { useRouter } from 'next/router'
 
 import cn from 'classnames'
 
+import MyAvatar from 'components/MyAvatar'
 import MyButton from 'components/MyButton'
+import { useAuth } from 'contexts/AuthContext'
 import { navbarMenu } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
 
 const MyNavbar = () => {
   const router = useRouter()
+  const { user } = useAuth()
 
   const [isShowMenu, setIsShowMenu] = useState(false)
 
   return (
-    <section className="h-full w-full border-box transition-all duration-500 linear bg-white lg:px-24 md:px-20 px-8 py-6 border-b-2 sticky top-0 left-0">
+    <section className="z-10 h-full w-full border-box transition-all duration-500 linear bg-white lg:px-24 md:px-20 px-8 py-6 border-b-2 sticky top-0 left-0">
       <div className="container mx-auto flex flex-wrap gap-2 flexRow items-center justify-between">
         <div className="flex gap-2">
           <Image
@@ -64,14 +67,24 @@ const MyNavbar = () => {
             { hidden: !isShowMenu },
           )}
         >
-          <Link href={PAGES_URL.signup.url} passHref>
-            <MyButton outline color="light">
-              Login
-            </MyButton>
-          </Link>
-          <Link href={PAGES_URL.signup.url} passHref>
-            <MyButton colorType="primary">Get Started</MyButton>
-          </Link>
+          {!user && (
+            <Fragment>
+              <Link href={PAGES_URL.login.url} passHref>
+                <MyButton outline color="light">
+                  Login
+                </MyButton>
+              </Link>
+              <Link href={PAGES_URL.signup.url} passHref>
+                <MyButton colorType="primary">Get Started</MyButton>
+              </Link>
+            </Fragment>
+          )}
+
+          {user && (
+            <Link href={PAGES_URL.overview.url} passHref>
+              <MyAvatar src={user.imageUrl} alt={user.fullname} role="link" />
+            </Link>
+          )}
         </div>
       </div>
     </section>

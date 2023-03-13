@@ -238,7 +238,7 @@ export const groupCategoriesByUser = (
     }
   })
 
-  return _data
+  return _data?.sort((a) => (a[0]?.is_owner ? -1 : 1))
 }
 
 interface GroupWalletsByUserId {
@@ -286,7 +286,10 @@ export const groupWalletsByUser = (
     }
   })
 
-  return _data
+  return {
+    ..._data,
+    data: _data.data?.sort((a) => (a.is_owner ? -1 : 1)),
+  }
 }
 
 export function mapDataToSelectOptions<T>(
@@ -300,8 +303,8 @@ export function mapDataToSelectOptions<T>(
   }))
 }
 
-export function debounce<Params extends any[]>(
-  func: (...args: Params) => any,
+export function debounce<T, Params extends T[]>(
+  func: (...args: Params) => void,
   timeout = 300,
 ): (...args: Params) => void {
   let timer: NodeJS.Timeout

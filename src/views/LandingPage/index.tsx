@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
 
 import MainLayout from 'components/MainLayout'
-import MyFooter from 'components/MyFooter'
+import { useAuth } from 'contexts/AuthContext'
 import { PAGES_URL } from 'utils/constants/pages'
 
 const LandingPage = () => {
+  const { user } = useAuth()
+
   return (
     <MainLayout>
       <div>
@@ -20,16 +22,28 @@ const LandingPage = () => {
               Smart Financial Management for Your Family&apos;s Future
             </h1>
             <div className="inline-block items-center mx-auto lg:mx-0 lg:flex justify-center lg:space-x-8 md:space-x-2 space-x-3">
-              <Link href={PAGES_URL.signup.url} passHref>
-                <button className="bg-finamiBlue inline-flex font-semibold text-white text-base py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
-                  Try it free
-                </button>
-              </Link>
-              <Link href="#benefit" passHref>
-                <button className="hover:border-finamiBlue border-2 fill-finamiBlue font-normal text-black text-base py-4 px-6 rounded-xl focus:outline-none bg-transparent hover:text-finamiBlue">
-                  <div className="flex items-center">Learn More</div>
-                </button>
-              </Link>
+              {!user && (
+                <Fragment>
+                  <Link href={PAGES_URL.signup.url} passHref>
+                    <button className="bg-finamiBlue inline-flex font-semibold text-white text-base py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
+                      Try it free
+                    </button>
+                  </Link>
+                  <Link href="#benefit" passHref>
+                    <button className="hover:border-finamiBlue border-2 fill-finamiBlue font-normal text-black text-base py-4 px-6 rounded-xl focus:outline-none bg-transparent hover:text-finamiBlue">
+                      Learn More
+                    </button>
+                  </Link>
+                </Fragment>
+              )}
+
+              {user && (
+                <Link href={PAGES_URL.overview.url} passHref>
+                  <button className="bg-finamiBlue inline-flex font-semibold justify-center text-white text-base py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
+                    Go to dashboard
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -148,11 +162,21 @@ const LandingPage = () => {
                   </p>
                 </div>
                 <div className="inline-block items-center my-auto text-center">
-                  <Link href={PAGES_URL.signup.url} passHref>
-                    <button className="w-48 justify-center bg-finamiBlue inline-flex font-semibold text-white py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
-                      Try it free
-                    </button>
-                  </Link>
+                  {!user && (
+                    <Link href={PAGES_URL.signup.url} passHref>
+                      <button className="w-48 justify-center bg-finamiBlue inline-flex font-semibold text-white py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
+                        Try it free
+                      </button>
+                    </Link>
+                  )}
+
+                  {user && (
+                    <Link href={PAGES_URL.overview.url} passHref>
+                      <button className="w-48 bg-finamiBlue inline-flex font-semibold justify-center text-white text-base py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
+                        Go to dashboard
+                      </button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -168,11 +192,21 @@ const LandingPage = () => {
               Management Starts Here
             </div>
             <div className="flex flex-col items-center justify-center mt-18 md:flex-row md:space-x-7">
-              <Link href={PAGES_URL.signup.url} passHref>
-                <button className="w-48 justify-center bg-finamiBlue inline-flex font-semibold text-white py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
-                  Try it free
-                </button>
-              </Link>
+              {!user && (
+                <Link href={PAGES_URL.signup.url} passHref>
+                  <button className="w-48 justify-center bg-finamiBlue inline-flex font-semibold text-white py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
+                    Try it free
+                  </button>
+                </Link>
+              )}
+
+              {user && (
+                <Link href={PAGES_URL.overview.url} passHref>
+                  <button className="bg-finamiBlue inline-flex font-semibold text-center text-white text-base py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
+                    Go to dashboard
+                  </button>
+                </Link>
+              )}
               <a
                 href={PAGES_URL.signup.url}
                 className="w-48 hover:border-finamiBlue text-center border-2 fill-finamiBlue font-normal text-black text-base py-4 px-6 rounded-xl focus:outline-none bg-transparent border-gray-400 hover:text-finamiBlue"
@@ -183,8 +217,6 @@ const LandingPage = () => {
           </div>
         </main>
       </section>
-
-      <MyFooter />
     </MainLayout>
   )
 }

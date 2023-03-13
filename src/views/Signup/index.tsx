@@ -212,7 +212,7 @@ const SignupPage = () => {
           </form>
           <p className="mt-8 text-center">
             Already have an account?{' '}
-            <Link href={PAGES_URL.signup.url} className="text-finamiBlue ml-2">
+            <Link href={PAGES_URL.login.url} className="text-finamiBlue ml-2">
               Login here
             </Link>
           </p>

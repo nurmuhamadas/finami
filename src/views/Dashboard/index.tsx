@@ -22,6 +22,8 @@ import { calculateRatio } from 'utils/helpers/helper'
 
 import { chartOptions2 } from './consts'
 
+const { transactions_analytics: ta } = QUERY_URL
+
 const Dashboard = () => {
   const router = useRouter()
 
@@ -263,7 +265,11 @@ const Dashboard = () => {
           <OverviewCard
             title="Spending Report"
             actionText="View Detail"
-            actionUrl={`${PAGES_URL.transactions_analytics.url}?${QUERY_URL.transactions_analytics.transaction_type}=out`}
+            actionUrl={`${PAGES_URL.transactions_analytics.url}?${
+              ta.transaction_type
+            }=out&${ta.startDate}=${dayjs().startOf('month').toISOString()}&${
+              ta.endDate
+            }=${dayjs().endOf('month').toISOString()}`}
             wrapperClassName="mb-8"
           >
             <div className="flex flex-col">

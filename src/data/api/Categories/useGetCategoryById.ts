@@ -3,21 +3,28 @@ import { useQuery, type UseQueryOptions } from 'react-query'
 import { type AxiosError } from 'axios'
 import ApiCall from 'services/ApiCall'
 
-import { type CategoryDataResponse, type ErrorResponse } from 'data/types'
+import {
+  type CategoryDataResponse,
+  type ErrorResponse,
+  type Result,
+} from 'data/types'
 
 export default function useGetCategoryById(
   id: string,
-  options?: UseQueryOptions<
-    Promise<CategoryDataResponse>,
-    AxiosError<ErrorResponse>
+  options?: Omit<
+    UseQueryOptions<Result<CategoryDataResponse>, AxiosError<ErrorResponse>>,
+    'queryKey' & 'queryFn'
   >,
 ) {
   const queryKey = ['GetCategoryById', id, options]
   const query = useQuery(
     queryKey,
     async () => await ApiCall.Categories.getCategoryById(id),
-    options as any,
+    options,
   )
 
-  return query
+  return {
+    ...query,
+    data: query.data?.data,
+  }
 }

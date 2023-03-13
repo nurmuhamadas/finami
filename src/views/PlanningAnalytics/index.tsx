@@ -16,6 +16,7 @@ import { type GetPlanningsQuery, type PlanningDataResponse } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
 import ChartLegends from 'components/ChartLegends'
+import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
@@ -42,10 +43,13 @@ const PlanningAnalyticsPage = () => {
   const [selectedData, setselectedData] = useState([])
   const [isAfterInit, setIsAfterInit] = useState(false)
 
-  const { data: plannings } = useGetPlannings(filter, {
-    enabled: isAfterInit,
-  })
-  const { data: transactions } = useGetTransactions(
+  const { data: plannings, isLoading: isPlanLoading } = useGetPlannings(
+    filter,
+    {
+      enabled: isAfterInit,
+    },
+  )
+  const { data: transactions, isLoading: isTrxLoading } = useGetTransactions(
     {
       category_id: filter.category_id,
       wallet_id: filter.wallet_id,
@@ -185,54 +189,57 @@ const PlanningAnalyticsPage = () => {
         </div>
 
         <div className="flex w-full flex-col space-y-8 max-w-3xl">
-          {data?.map((d) => (
-            <OverviewCard
-              key={JSON.stringify(d)}
-              title={`${d.userName}'s plan`}
-              Header={
-                <div className="flex flex-col-reverse justify-between items-end sm:flex-row sm:items-center gap-4">
-                  {d.isOverLimit ? (
-                    <Alert color="failure" className="w-full max-w-md">
-                      <span>You have planning that exceeded the limit!</span>
-                    </Alert>
-                  ) : (
-                    <div />
-                  )}
-                  <MyButton
-                    onClick={() => {
-                      onDetailClicked([d])
-                    }}
-                    colorType="primary"
-                    className="w-max"
-                  >
-                    Detail
-                  </MyButton>
-                </div>
-              }
-            >
-              <div className="flex flex-col pb-6 space-y-16 overflow-auto">
-                <div className="flex w-full overflow-x-auto py-4 pb-6 finamiBlueScollX">
-                  <div className="flex flex-col">
-                    <ChartLegends
-                      legends={[
-                        { color: 'bg-finamiBlue', label: 'Planning' },
-                        { color: 'bg-finamiBlueSecondary', label: 'Expense' },
-                      ]}
-                    />
-                    <Chart
-                      chartType="Bar"
-                      width={`${
-                        d.charts?.length > 5 ? 100 * d.charts?.length : 400
-                      }px`}
-                      height="300px"
-                      data={d.charts}
-                      options={chartOptions}
-                    />
+          {isPlanLoading && isTrxLoading && <Loader />}
+
+          {!(isPlanLoading && isTrxLoading) &&
+            data?.map((d) => (
+              <OverviewCard
+                key={JSON.stringify(d)}
+                title={`${d.userName}'s plan`}
+                Header={
+                  <div className="flex flex-col-reverse justify-between items-end sm:flex-row sm:items-center gap-4">
+                    {d.isOverLimit ? (
+                      <Alert color="failure" className="w-full max-w-md">
+                        <span>You have planning that exceeded the limit!</span>
+                      </Alert>
+                    ) : (
+                      <div />
+                    )}
+                    <MyButton
+                      onClick={() => {
+                        onDetailClicked([d])
+                      }}
+                      colorType="primary"
+                      className="w-max"
+                    >
+                      Detail
+                    </MyButton>
+                  </div>
+                }
+              >
+                <div className="flex flex-col pb-6 space-y-16 overflow-auto">
+                  <div className="flex w-full overflow-x-auto py-4 pb-6 finamiBlueScollX">
+                    <div className="flex flex-col">
+                      <ChartLegends
+                        legends={[
+                          { color: 'bg-finamiBlue', label: 'Planning' },
+                          { color: 'bg-finamiBlueSecondary', label: 'Expense' },
+                        ]}
+                      />
+                      <Chart
+                        chartType="Bar"
+                        width={`${
+                          d.charts?.length > 5 ? 100 * d.charts?.length : 400
+                        }px`}
+                        height="300px"
+                        data={d.charts}
+                        options={chartOptions}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </OverviewCard>
-          ))}
+              </OverviewCard>
+            ))}
         </div>
 
         <ModalAnalytic

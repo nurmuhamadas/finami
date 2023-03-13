@@ -14,6 +14,7 @@ import { type GetTransactionsQuery } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
 import ChartLegends from 'components/ChartLegends'
+import Loader from 'components/Loader'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import { PAGES_URL, QUERY_URL } from 'utils/constants/pages'
@@ -131,6 +132,7 @@ const TransactionAnalyticsPage = () => {
       })
     }
   }, [query])
+  console.log(isLoading)
 
   return (
     <AppLayout description="Analyze your transaction flow">
@@ -203,7 +205,6 @@ const TransactionAnalyticsPage = () => {
                 label="Net Income"
               />
             }
-            loading={isLoading}
           >
             <div className="flex flex-col pb-6 space-y-16 overflow-auto">
               <div className="flex w-full overflow-x-auto py-4 pb-6 finamiBlueScollX">
@@ -214,17 +215,22 @@ const TransactionAnalyticsPage = () => {
                       { color: 'bg-finamiBlueSecondary', label: 'Expense' },
                     ]}
                   />
-                  <Chart
-                    chartType="Bar"
-                    width={
-                      chartData1?.length < 5
-                        ? '400px'
-                        : `${100 * chartData1?.length}px`
-                    }
-                    height="300px"
-                    data={chartData1 || ['', '', '']}
-                    options={chartOptions}
-                  />
+
+                  {isLoading && <Loader />}
+
+                  {!isLoading && chartData1 && (
+                    <Chart
+                      chartType="Bar"
+                      width={
+                        chartData1?.length < 5
+                          ? '400px'
+                          : `${100 * chartData1?.length}px`
+                      }
+                      height="300px"
+                      data={chartData1 || ['', '', '']}
+                      options={chartOptions}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -245,18 +251,22 @@ const TransactionAnalyticsPage = () => {
                   label="Income"
                 />
               }
-              loading={isLoading}
             >
               <div className="flex flex-col pb-6 space-y-16">
                 <div className="flex flex-col">
                   <ChartLegends legends={legends2} />
-                  <Chart
-                    chartType="PieChart"
-                    width="100%"
-                    height="300px"
-                    data={chartData2 || ['', '', '']}
-                    options={chartOptions2}
-                  />
+
+                  {isLoading && <Loader />}
+
+                  {!isLoading && chartData2 && (
+                    <Chart
+                      chartType="PieChart"
+                      width="100%"
+                      height="300px"
+                      data={chartData2 || ['', '', '']}
+                      options={chartOptions2}
+                    />
+                  )}
                 </div>
               </div>
             </OverviewCard>
@@ -275,18 +285,22 @@ const TransactionAnalyticsPage = () => {
                   label="Expense"
                 />
               }
-              loading={isLoading}
             >
               <div className="flex flex-col pb-6 space-y-16">
                 <div className="flex flex-col">
                   <ChartLegends legends={legends3} />
-                  <Chart
-                    chartType="PieChart"
-                    width="100%"
-                    height="300px"
-                    data={chartData3 || ['', '', '']}
-                    options={chartOptions2}
-                  />
+
+                  {isLoading && <Loader />}
+
+                  {!isLoading && chartData3 && (
+                    <Chart
+                      chartType="PieChart"
+                      width="100%"
+                      height="300px"
+                      data={chartData3 || ['', '', '']}
+                      options={chartOptions2}
+                    />
+                  )}
                 </div>
               </div>
             </OverviewCard>

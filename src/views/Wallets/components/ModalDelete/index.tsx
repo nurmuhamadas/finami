@@ -26,8 +26,8 @@ const ModalDelete = ({
       }
     >
       <p>
-        All transaction related to {walletName} wallet will be deleted. Are you
-        sure?
+        All transaction and planning related to {walletName} wallet will be
+        deleted. Are you sure?
       </p>
     </MyModal>
   )

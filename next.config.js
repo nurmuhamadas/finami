@@ -11,6 +11,7 @@ module.exports = {
   },
   env: {
     BE_URL: process.env.BE_URL,
+    BE_ALIAS_URL: process.env.BE_ALIAS_URL,
     SALT: process.env.SALT,
     ACCESS_TOKEN_KEY: process.env.ACCESS_TOKEN_KEY,
     REFRESH_TOKEN_KEY: process.env.REFRESH_TOKEN_KEY,

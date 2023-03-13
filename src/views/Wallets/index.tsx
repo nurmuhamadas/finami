@@ -73,6 +73,7 @@ const WalletsPage = () => {
   }, [walletsData])
   const lastMonth = groupedWallet?.total - thisMonthExpense
 
+  console.log(groupedWallet)
   const resetState = () => {
     setSelectedWallet(undefined)
     setErrorMessage(undefined)
@@ -247,7 +248,7 @@ const WalletsPage = () => {
             {errorMessage}
           </Alert>
           <p>
-            All transaction related to{' '}
+            All transaction and planning related to{' '}
             <span className="font-semibold">{selectedWallet?.name}</span> wallet
             will be deleted. Are you sure?
           </p>

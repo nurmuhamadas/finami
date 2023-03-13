@@ -50,7 +50,7 @@ class BaseApiCall {
   public api: AxiosInstance
 
   constructor() {
-    this.api = Fetcher.createAuthAxios('http://localhost:3333/api')
+    this.api = Fetcher.createAuthAxios(process.env.BE_ALIAS_URL)
   }
 
   Categories = {
