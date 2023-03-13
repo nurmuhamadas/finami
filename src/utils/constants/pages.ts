@@ -43,7 +43,9 @@ export const PAGES_URL = {
     title: 'Categories Setting',
   },
   account_logout: { url: '/app/account/logout', title: 'Logout' },
-  account_about: { url: '/about', title: 'About Finami' },
+
+  about: { url: '/about', title: 'About Finami' },
+  learn: { url: '/learn', title: 'Financial Knowledge' },
 }
 
 export const QUERY_URL = {

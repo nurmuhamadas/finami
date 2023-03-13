@@ -9,13 +9,14 @@ import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import ProfileAvatar from 'components/ProfileAvatar'
 import { useAuth } from 'contexts/AuthContext'
-import { accountMenu } from 'utils/constants/menu'
+import { accountMenu, parentOnlyUrl } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
 import { debounce } from 'utils/helpers/helper'
 
 const AccountPage = () => {
   const router = useRouter()
   const { user } = useAuth()
+  const isChildMember = !!user.parent_id
   const [mounted, setMounted] = useState(false)
   const [screenWidth, setScreenWidth] = useState(0)
 
@@ -62,6 +63,10 @@ const AccountPage = () => {
                     ].includes(m.url),
                 )
                 .map(({ Icon, text, url }) => {
+                  if (isChildMember && parentOnlyUrl.includes(url)) {
+                    return null
+                  }
+
                   return (
                     <li key={url} role="link">
                       <Link href={url} passHref className="w-full">

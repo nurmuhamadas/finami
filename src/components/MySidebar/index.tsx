@@ -8,6 +8,7 @@ import { Sidebar } from 'flowbite-react'
 
 import ProfileAvatar from 'components/ProfileAvatar'
 import { useAuth } from 'contexts/AuthContext'
+import { parentOnlyUrl } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
 import { type MenuType } from 'utils/constants/types'
 
@@ -35,8 +36,9 @@ const renderMenuItem = ({
   text,
   url,
   child,
+  isChildMember,
   pathname,
-}: MenuType & { pathname: string }) => {
+}: MenuType & { pathname: string; isChildMember: boolean }) => {
   const isMenuActive = pathname.startsWith(url)
 
   if (child?.length > 0) {
@@ -49,9 +51,13 @@ const renderMenuItem = ({
           'bg-finamiBlue !text-white hover:!bg-finamiBlue': isMenuActive,
         })}
       >
-        {child.map((c) => renderMenuItem({ ...c, pathname }))}
+        {child.map((c) => renderMenuItem({ ...c, pathname, isChildMember }))}
       </Sidebar.Collapse>
     )
+  }
+
+  if (isChildMember && parentOnlyUrl.includes(url)) {
+    return null
   }
 
   return (
@@ -80,6 +86,7 @@ const renderMenuItem = ({
 const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
   const { pathname, push } = useRouter()
   const { user } = useAuth()
+  const isChildMember = !!user.parent_id
   const mappedMenu = menus
     .filter((m) => ![PAGES_URL.account_profile.url].includes(m.url))
     .map((m) => ({
@@ -122,7 +129,7 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
 
         <Sidebar.ItemGroup>
           {mappedMenu.map((menu) => {
-            return renderMenuItem({ ...menu, pathname })
+            return renderMenuItem({ ...menu, pathname, isChildMember })
           })}
 
           <Sidebar.Item

@@ -2,6 +2,7 @@ import {
   AiOutlineAppstoreAdd,
   AiOutlineCalendar,
   AiOutlineDashboard,
+  AiOutlineExperiment,
   AiOutlineInfoCircle,
   AiOutlineSetting,
   AiOutlineTransaction,
@@ -35,9 +36,14 @@ export const accountMenu: MenuType[] = [
     url: PAGES_URL.account_setting.url,
   },
   {
+    Icon: AiOutlineExperiment,
+    text: PAGES_URL.learn.title,
+    url: PAGES_URL.learn.url,
+  },
+  {
     Icon: AiOutlineInfoCircle,
-    text: PAGES_URL.account_about.title,
-    url: PAGES_URL.account_about.url,
+    text: PAGES_URL.about.title,
+    url: PAGES_URL.about.url,
   },
 ]
 
@@ -97,3 +103,5 @@ export const bottomMenu: MenuType[] = [
     url: PAGES_URL.account.url,
   },
 ]
+
+export const parentOnlyUrl = [PAGES_URL.account_member_setting.url]
