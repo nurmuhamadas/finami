@@ -107,7 +107,7 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
         imgAlt="Finami logo"
         className="mb-8 py-4 flex items-center space-x-3"
       >
-        Finami
+        <span className="text-finamiBlue text-2xl font-bold">Finami App</span>
       </Sidebar.Logo>
       <Sidebar.Items>
         <Sidebar.ItemGroup>

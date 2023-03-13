@@ -1,21 +1,34 @@
 import { AiOutlineBell } from 'react-icons/ai'
 
+import { useRouter } from 'next/router'
+
 import { Avatar } from 'flowbite-react'
 
 import BottomNav from 'components/BottomNav'
 import MySidebar from 'components/MySidebar'
 import { useAuth } from 'contexts/AuthContext'
-import { bottomMenu, sideMenu } from 'utils/constants/menu'
+import { bottomMenu, parentOnlyUrl, sideMenu } from 'utils/constants/menu'
 import { getPageTitle } from 'utils/helpers/pages'
 
 import { type AppLayoutProps } from './types'
 
 const AppLayout = ({ children, title, description }: AppLayoutProps) => {
+  const router = useRouter()
   const pageTitle = getPageTitle()
   const { user } = useAuth()
 
   if (!user) {
     return <div></div>
+  }
+
+  if (user.parent_id && parentOnlyUrl.includes(router.pathname)) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <p className="text-lg">
+          Sorry.. You are not allowed to access this page!
+        </p>
+      </div>
+    )
   }
 
   return (
