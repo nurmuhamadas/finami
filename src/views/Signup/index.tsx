@@ -98,7 +98,7 @@ const SignupPage = () => {
               <Image
                 width={48}
                 height={48}
-                src="/static/favicon.ico"
+                src="/static/images/logo.png"
                 alt="Finami"
               />
               <span className="font-semibold text-2xl">Finami</span>

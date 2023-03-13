@@ -18,8 +18,16 @@ const MyNavbar = () => {
 
   return (
     <section className="h-full w-full border-box transition-all duration-500 linear bg-white lg:px-24 md:px-20 px-8 py-6 border-b-2 sticky top-0 left-0">
-      <div className="container mx-auto flex flex-wrap flexRow items-center justify-between">
-        <Image src="/static/favicon.ico" alt="Finami" width={32} height={32} />
+      <div className="container mx-auto flex flex-wrap gap-2 flexRow items-center justify-between">
+        <div className="flex gap-2">
+          <Image
+            src="/static/images/logo.png"
+            alt="Finami"
+            width={32}
+            height={32}
+          />
+          <span className="text-finamiBlue text-2xl font-bold">Finami</span>
+        </div>
         <label
           role="button"
           htmlFor="menu-toggle"

@@ -63,8 +63,8 @@ const LoginPage = () => {
       setIsSuccess(true)
 
       await router.replace(PAGES_URL.overview.url)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      setError((error as Error).message)
     } finally {
       setIsLoading(false)
     }
@@ -98,7 +98,7 @@ const LoginPage = () => {
               <Image
                 width={48}
                 height={48}
-                src="/static/favicon.ico"
+                src="/static/images/logo.png"
                 alt="Finami"
               />
               <span className="font-semibold text-2xl">Finami</span>

@@ -103,7 +103,7 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
     >
       <Sidebar.Logo
         href="/"
-        img="/static/favicon.ico"
+        img="/static/images/logo.png"
         imgAlt="Finami logo"
         className="mb-8 py-4 flex items-center space-x-3"
       >
