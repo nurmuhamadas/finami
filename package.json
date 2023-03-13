@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev -p 3333",
     "build": "cross-env NODE_ENV=\"production\" npx tailwindcss -o flowbite.css && next build",
-    "start": "next start -p 3333",
+    "start": "npm run build && next start -p 3333",
     "lint": "next lint",
     "type-check": "tsc -p tsconfig.json --noEmit"
   },
