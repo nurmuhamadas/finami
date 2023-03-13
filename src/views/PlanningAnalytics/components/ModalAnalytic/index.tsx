@@ -11,7 +11,7 @@ const ModalAnalytic = ({ show, data, onClose }: ModalAnalyticProps) => {
       header={
         <div className="w-full flex items-center justify-between">
           <span className="text-lg font-semibold">
-            {data?.[0]?.user_fullname} Planning and Expense
+            {data?.[0]?.user_fullname}&apos;s Planning and Expense
           </span>
         </div>
       }

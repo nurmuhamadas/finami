@@ -30,11 +30,13 @@ const PlanningsPage = () => {
   const { user } = useAuth()
   const orgQuery = router.query as Record<string, string>
 
+  const [isAfterInit, setIsAfterInit] = useState(false)
+
   const [filter, setFilter] = useState<GetPlanningsQuery>({
     start_month: dayjs(orgQuery?.[pq.month]).toDate(),
     end_month: dayjs(orgQuery?.[pq.month]).toDate(),
   })
-  const { data, isLoading } = useGetPlannings(filter)
+  const { data, isLoading } = useGetPlannings(filter, { enabled: isAfterInit })
   const groupedPlans = useMemo(() => {
     if (data) {
       return groupPlanningsByUser(data)
@@ -66,6 +68,7 @@ const PlanningsPage = () => {
           : dayjs().toDate(),
       })
     }
+    setIsAfterInit(true)
   }, [orgQuery])
 
   return (

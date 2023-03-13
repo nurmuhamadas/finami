@@ -46,7 +46,7 @@ const FilterTransactions = ({
     transaction_type: undefined,
   })
 
-  const { data: categories, isLoading: isCatLoading } = useGetCategories(
+  const { data: categories, isFetching: isCatLoading } = useGetCategories(
     {
       transaction_type: values.transaction_type,
     },
@@ -58,7 +58,7 @@ const FilterTransactions = ({
     'name',
   )
 
-  const { data: users, isLoading: isUserLoading } = useGetUsers(
+  const { data: users, isFetching: isUserLoading } = useGetUsers(
     {},
     { enabled: !hide.user && isShowFilter },
   )
@@ -68,7 +68,7 @@ const FilterTransactions = ({
     'fullname',
   )
 
-  const { data: wallets, isLoading: isWalletLoading } = useGetWallets(
+  const { data: wallets, isFetching: isWalletLoading } = useGetWallets(
     {},
     { enabled: !hide.wallet && isShowFilter },
   )
@@ -108,14 +108,20 @@ const FilterTransactions = ({
     ) {
       setValues(initialValues)
 
+      const typeByCategory = categories?.find(
+        (d) => d.id === initialValues.category_id,
+      )
       const _ca = optCategory?.find(
         (d) => d.value === initialValues.category_id,
       )
       const _c = optUser?.find((d) => d.value === initialValues.child_id)
       const _w = optWallet?.find((d) => d.value === initialValues.wallet_id)
       const _t = TRANSACTION_TYPES_OPT?.find(
-        (d) => d.value === initialValues.transaction_type,
+        (d) =>
+          d.value ===
+          (typeByCategory?.transaction_type || initialValues.transaction_type),
       )
+
       setOptionsState({
         category_id: _ca,
         child_id: _c,

@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Alert } from 'flowbite-react'
 
@@ -39,14 +40,23 @@ const PlanningAnalyticsPage = () => {
   })
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedData, setselectedData] = useState([])
+  const [isAfterInit, setIsAfterInit] = useState(false)
 
-  const { data: plannings } = useGetPlannings(filter)
-  const { data: transactions } = useGetTransactions({
-    ...filter,
-    transaction_type: 'out',
-    start_date: dayjs(filter.start_month).startOf('month').toDate(),
-    end_date: dayjs(filter.end_month).endOf('month').toDate(),
+  const { data: plannings } = useGetPlannings(filter, {
+    enabled: isAfterInit,
   })
+  const { data: transactions } = useGetTransactions(
+    {
+      category_id: filter.category_id,
+      wallet_id: filter.wallet_id,
+      child_id: filter.user_id,
+      start_date: dayjs(filter.start_month).startOf('month').toDate(),
+      end_date: dayjs(filter.end_month).endOf('month').toDate(),
+    },
+    {
+      enabled: isAfterInit,
+    },
+  )
 
   const { data, planTransactions } = useMemo(() => {
     if (plannings && transactions) {
@@ -107,16 +117,17 @@ const PlanningAnalyticsPage = () => {
       setFilter({
         ...filter,
         category_id: query?.[pq.category_id],
-        child_id: query?.[pq.user_id],
+        user_id: query?.[pq.user_id],
         wallet_id: query?.[pq.wallet_id],
         start_month: dayjs(query?.[pq.month]).isValid()
-          ? dayjs(query?.[pq.month]).toDate()
+          ? dayjs(query?.[pq.month]).startOf('month').toDate()
           : dayjs().toDate(),
         end_month: dayjs(query?.[pq.month]).isValid()
-          ? dayjs(query?.[pq.month]).toDate()
+          ? dayjs(query?.[pq.month]).endOf('month').toDate()
           : dayjs().toDate(),
       })
     }
+    setIsAfterInit(true)
   }, [query])
 
   const onDetailClicked = ([value]: typeof data) => {
@@ -145,10 +156,39 @@ const PlanningAnalyticsPage = () => {
         </div>
 
         <div className="flex w-full flex-col space-y-8 max-w-3xl">
+          <OverviewCard
+            Header={<h3 className="font-semibold text-lg">Plan Attribute</h3>}
+          >
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <li className={cn('flex', { hidden: !filter?.end_month })}>
+                <span className="font-semibold w-24 block">Month</span>
+                <span className="mx-2">:</span>
+                <span>{dayjs(filter?.end_month).format('MMM, YYYY')}</span>
+              </li>
+              <li className={cn('flex', { hidden: !filter?.user_id })}>
+                <span className="font-semibold w-24 block">User</span>
+                <span className="mx-2">:</span>
+                <span>{plannings?.[0]?.user_fullname}</span>
+              </li>
+              <li className={cn('flex', { hidden: !filter?.category_id })}>
+                <span className="font-semibold w-24 block">Category</span>
+                <span className="mx-2">:</span>
+                <span>{plannings?.[0]?.category_name}</span>
+              </li>
+              <li className={cn('flex', { hidden: !filter?.wallet_id })}>
+                <span className="font-semibold w-24 block">Wallet</span>
+                <span className="mx-2">:</span>
+                <span>{plannings?.[0]?.wallet_name}</span>
+              </li>
+            </ul>
+          </OverviewCard>
+        </div>
+
+        <div className="flex w-full flex-col space-y-8 max-w-3xl">
           {data?.map((d) => (
             <OverviewCard
               key={JSON.stringify(d)}
-              title={d.userName}
+              title={`${d.userName}'s plan`}
               Header={
                 <div className="flex flex-col-reverse justify-between items-end sm:flex-row sm:items-center gap-4">
                   {d.isOverLimit ? (
@@ -201,7 +241,6 @@ const PlanningAnalyticsPage = () => {
             setIsModalOpen(undefined)
             setselectedData([])
           }}
-          title={`asdad`}
           data={selectedData}
         />
       </div>

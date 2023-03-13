@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import cn from 'classnames'
 import dayjs from 'dayjs'
 
 import useGetTransactions from 'data/api/Transactions/useGetTransactions'
@@ -117,6 +118,7 @@ const TransactionAnalyticsPage = () => {
   useEffect(() => {
     if (query) {
       setFilter({
+        child_id: query[ta.user_id],
         category_id: query[ta.category_id] || undefined,
         start_date: query[ta.startDate]
           ? new Date(query[ta.startDate])
@@ -149,6 +151,44 @@ const TransactionAnalyticsPage = () => {
           </div>
         </div>
         <div className="w-full">
+          {/* Transaction Attribute */}
+          <OverviewCard
+            wrapperClassName="mb-8 max-w-3xl"
+            Header={
+              <h3 className="font-semibold text-lg">Transaction Attribute</h3>
+            }
+          >
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-3">
+              <li
+                className={cn('flex', {
+                  hidden: !filter?.start_date && !filter?.end_date,
+                })}
+              >
+                <span className="font-semibold w-24 block">Date</span>
+                <span className="mx-2">:</span>
+                <span>
+                  {dayjs(filter?.start_date).format('DD MMM YYYY')} -{' '}
+                  {dayjs(filter?.end_date).format('DD MMM YYYY')}
+                </span>
+              </li>
+              <li className={cn('flex', { hidden: !filter?.child_id })}>
+                <span className="font-semibold w-24 block">User</span>
+                <span className="mx-2">:</span>
+                <span>{orgData?.[0]?.user_fullname}</span>
+              </li>
+              <li className={cn('flex', { hidden: !filter?.category_id })}>
+                <span className="font-semibold w-24 block">Category</span>
+                <span className="mx-2">:</span>
+                <span>{orgData?.[0]?.category_name}</span>
+              </li>
+              <li className={cn('flex', { hidden: !filter?.wallet_id })}>
+                <span className="font-semibold w-24 block">Wallet</span>
+                <span className="mx-2">:</span>
+                <span>{orgData?.[0]?.wallet_name}</span>
+              </li>
+            </ul>
+          </OverviewCard>
+
           {/* Summary Analytic */}
           <OverviewCard
             title="Summary"
@@ -159,6 +199,7 @@ const TransactionAnalyticsPage = () => {
                   setIsModalOpen('summary')
                 }}
                 amount={dataByCategory?.totalAmount || 0}
+                disableButton={dataByCategory?.totalAmount === 0}
                 label="Net Income"
               />
             }
@@ -175,7 +216,11 @@ const TransactionAnalyticsPage = () => {
                   />
                   <Chart
                     chartType="Bar"
-                    width={`${100 * chartData1?.length}px`}
+                    width={
+                      chartData1?.length < 5
+                        ? '400px'
+                        : `${100 * chartData1?.length}px`
+                    }
                     height="300px"
                     data={chartData1 || ['', '', '']}
                     options={chartOptions}
@@ -196,6 +241,7 @@ const TransactionAnalyticsPage = () => {
                     setIsModalOpen('income')
                   }}
                   amount={dataByCategory?.inAmount || 0}
+                  disableButton={dataByCategory?.inAmount === 0}
                   label="Income"
                 />
               }
@@ -225,6 +271,7 @@ const TransactionAnalyticsPage = () => {
                     setIsModalOpen('expense')
                   }}
                   amount={dataByCategory?.outAmount || 0}
+                  disableButton={dataByCategory?.outAmount === 0}
                   label="Expense"
                 />
               }

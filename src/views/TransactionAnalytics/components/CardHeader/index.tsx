@@ -3,7 +3,12 @@ import { formatCurrencySign } from 'utils/helpers/formatter'
 
 import { type CardHeaderProps } from './types'
 
-const CardHeader = ({ amount, label, onButtonClick }: CardHeaderProps) => {
+const CardHeader = ({
+  amount,
+  label,
+  disableButton,
+  onButtonClick,
+}: CardHeaderProps) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex flex-col">
@@ -12,7 +17,11 @@ const CardHeader = ({ amount, label, onButtonClick }: CardHeaderProps) => {
           {formatCurrencySign(amount)}
         </span>
       </div>
-      <MyButton onClick={onButtonClick} colorType="primary">
+      <MyButton
+        disabled={disableButton}
+        onClick={onButtonClick}
+        colorType="primary"
+      >
         Detail
       </MyButton>
     </div>
