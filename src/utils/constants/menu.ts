@@ -104,4 +104,23 @@ export const bottomMenu: MenuType[] = [
   },
 ]
 
+export const navbarMenu: Array<Omit<MenuType, 'Icon'>> = [
+  {
+    text: PAGES_URL.home.title,
+    url: PAGES_URL.home.url,
+  },
+  {
+    text: PAGES_URL.about.title,
+    url: PAGES_URL.about.url,
+  },
+  {
+    text: PAGES_URL.teams.title,
+    url: PAGES_URL.teams.url,
+  },
+  {
+    text: PAGES_URL.learn.title,
+    url: PAGES_URL.learn.url,
+  },
+]
+
 export const parentOnlyUrl = [PAGES_URL.account_member_setting.url]

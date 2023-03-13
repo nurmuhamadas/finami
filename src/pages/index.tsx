@@ -1,11 +1,9 @@
 import type { NextPage } from 'next'
 
+import LandingPage from 'views/LandingPage'
+
 const Home: NextPage = () => {
-  return (
-    <div>
-      <h1>Finami App</h1>
-    </div>
-  )
+  return <LandingPage />
 }
 
 export default Home

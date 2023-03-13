@@ -44,8 +44,10 @@ export const PAGES_URL = {
   },
   account_logout: { url: '/app/account/logout', title: 'Logout' },
 
+  home: { url: '/', title: 'Home' },
   about: { url: '/about', title: 'About Finami' },
   learn: { url: '/learn', title: 'Financial Knowledge' },
+  teams: { url: '/teams', title: 'Our Teams' },
 }
 
 export const QUERY_URL = {
