@@ -7,6 +7,10 @@ module.exports = {
         protocol: 'https',
         hostname: 'i.ibb.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.rareblocks.xyz',
+      },
     ],
   },
   env: {
