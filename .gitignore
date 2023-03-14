@@ -19,6 +19,8 @@
 .DS_Store
 *.pem
 
+flowbite.css
+
 # debug
 npm-debug.log*
 yarn-debug.log*
