@@ -35,6 +35,7 @@ const Dashboard = () => {
   const { data: topSpendData, isLoading: isSpendLoading } = useGetTransactions({
     start_date: dayjs().add(-1, 'month').startOf('month').toDate(),
     end_date: dayjs().endOf('month').toDate(),
+    transaction_type: 'out',
     sort_by: 'amount',
     order_by: 'desc',
   })
