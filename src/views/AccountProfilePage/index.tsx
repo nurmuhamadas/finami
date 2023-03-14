@@ -122,6 +122,8 @@ const AccountProfilePage = () => {
                   name: getValues('fullname'),
                   src: getValues('image_url'),
                 }}
+                disableButton
+                disableDeleteButton
               />
             </div>
 

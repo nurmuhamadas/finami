@@ -128,7 +128,7 @@ const ModalRegisterCategory = ({
             <MyButton
               color="light"
               className=""
-              disabled={disableForm || loading}
+              disabled={disableForm || loading || true}
             >
               Upload
             </MyButton>

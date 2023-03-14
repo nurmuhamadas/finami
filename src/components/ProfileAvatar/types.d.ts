@@ -3,6 +3,8 @@ export type ProfileAvatarProps = {
   showButton?: boolean
   showDelete?: boolean
   buttonText?: string
+  disableButton?: boolean
+  disableDeleteButton?: boolean
   size?: number
   data: {
     src: string

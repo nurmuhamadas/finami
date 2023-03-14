@@ -12,6 +12,8 @@ const ProfileAvatar = ({
   showButton,
   showDelete,
   buttonText,
+  disableButton,
+  disableDeleteButton,
   data = {
     src: undefined,
     name: undefined,
@@ -44,6 +46,7 @@ const ProfileAvatar = ({
           color="light"
           className={cn('w-max', { hidden: !showButton })}
           onClick={onButtonClick}
+          disabled={disableButton}
         >
           <div className="w-full flex items-center gap-x-4">
             <div className="flex items-center">
@@ -56,6 +59,7 @@ const ProfileAvatar = ({
           color="light"
           className={cn('w-max', { hidden: !showDelete })}
           onClick={onDelete}
+          disabled={disableDeleteButton}
         >
           <AiOutlineDelete size={20} />
         </MyButton>
