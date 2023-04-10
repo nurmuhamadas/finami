@@ -95,8 +95,6 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
       child: m.child?.filter((c) => c.url !== PAGES_URL.account_profile.url),
     }))
 
-  console.log(user?.image_url)
-
   return (
     <Sidebar
       aria-label="Sidebar menu"

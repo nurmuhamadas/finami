@@ -12,6 +12,7 @@ import MyButton from 'components/MyButton'
 import { useAuth } from 'contexts/AuthContext'
 import { navbarMenu } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
+import { getBEImageUrl } from 'utils/helpers/helper'
 
 const MyNavbar = () => {
   const router = useRouter()
@@ -82,7 +83,11 @@ const MyNavbar = () => {
 
           {user && (
             <Link href={PAGES_URL.overview.url} passHref>
-              <MyAvatar src={user.image_url} alt={user.fullname} role="link" />
+              <MyAvatar
+                src={getBEImageUrl(user.image_url)}
+                alt={user.fullname}
+                role="link"
+              />
             </Link>
           )}
         </div>
