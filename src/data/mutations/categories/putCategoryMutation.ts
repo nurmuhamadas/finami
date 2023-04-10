@@ -3,24 +3,21 @@ import { useMutation, type UseMutationOptions } from 'react-query'
 import { type AxiosError } from 'axios'
 import ApiCall from 'services/ApiCall'
 
-import { type PutSuccessResponse, type UpdateCategoryPayload } from 'data/types'
+import { type PutSuccessResponse } from 'data/types'
 
-interface PostCategoryParams {
+interface PutCategoryParams {
   id: string
-  payload: UpdateCategoryPayload
+  payload: FormData
 }
 
 export default function putCategoryMutation(
   options?: UseMutationOptions<
     PutSuccessResponse,
     AxiosError,
-    PostCategoryParams
+    PutCategoryParams
   >,
 ) {
-  return useMutation<PutSuccessResponse, AxiosError, PostCategoryParams>(
-    async ({ id, payload }) => {
-      return await ApiCall.Categories.putCategory(id, payload)
-    },
-    options,
-  )
+  return useMutation(async ({ id, payload }) => {
+    return await ApiCall.Categories.putCategory(id, payload)
+  }, options)
 }

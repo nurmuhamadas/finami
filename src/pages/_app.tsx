@@ -6,6 +6,7 @@ import Head from 'next/head'
 import Provider from 'components/Provider'
 import { getPageTitle } from 'utils/helpers/pages'
 
+import 'react-image-crop/dist/ReactCrop.css'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -11,6 +11,14 @@ module.exports = {
         protocol: 'https',
         hostname: 'cdn.rareblocks.xyz',
       },
+      {
+        protocol: 'https',
+        hostname: process.env.BE_URL,
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
   },
   env: {

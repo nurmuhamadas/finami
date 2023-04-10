@@ -73,7 +73,6 @@ const WalletsPage = () => {
   }, [walletsData])
   const lastMonth = groupedWallet?.total - thisMonthExpense
 
-  console.log(groupedWallet)
   const resetState = () => {
     setSelectedWallet(undefined)
     setErrorMessage(undefined)

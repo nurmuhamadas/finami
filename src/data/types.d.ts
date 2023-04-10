@@ -5,7 +5,7 @@ export type SorterTransactionType = 'amount' | 'date'
 export type CategoryGroupsType =
   | 'Required Expense'
   | 'Irregular Expense'
-  | 'Invensting and Debt Payment'
+  | 'Investing and Debt Payment'
   | 'Fun and Relax'
   | 'Income'
 export type DateFormatsType =
@@ -157,13 +157,14 @@ export interface GetCategoriesQuery {
 export interface CreateCategoryPayload {
   name: string
   transaction_type: TransactionTypesType
-  icon_url?: string
+  icon: File
   group: CategoryGroupsType
 }
 export interface UpdateCategoryPayload {
   name: string
   transaction_type: TransactionTypesType
-  icon_url?: string
+  icon_url: string
+  icon?: File
   group: CategoryGroupsType
 }
 

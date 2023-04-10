@@ -18,7 +18,7 @@ const MyAvatar = ({
   return (
     <div
       className={cn(
-        'rounded-full w-max overflow-hidden relative',
+        'rounded-full w-max overflow-hidden relative border',
         wrapperClassName,
       )}
     >

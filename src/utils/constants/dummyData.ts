@@ -143,7 +143,7 @@ export const dummyCategoriesData: CategoryDataResponse[] = [
     id: 'categorycategory-005',
     name: 'Category 005',
     icon_url: undefined,
-    group: 'Invensting and Debt Payment',
+    group: 'Investing and Debt Payment',
     is_owner: false,
     user_id: dummyUsersData[1].id,
     user_name: dummyUsersData[1].username,

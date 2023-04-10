@@ -1,9 +1,9 @@
-import { CreateCategoryPayload } from 'data/types'
+import { CreateCategoryPayload, UpdateCategoryPayload } from 'data/types'
 
 export type ModalRegisterCategoryProps = {
-  onSubmit: (values: CreateCategoryPayload) => void
+  onSubmit: (values: CreateCategoryPayload | UpdateCategoryPayload) => void
   disableForm?: boolean
-  initialData?: CreateCategoryPayload
+  initialData?: UpdateCategoryPayload
   loading?: boolean
   errorMessage?: string
   show: boolean
