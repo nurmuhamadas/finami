@@ -22,12 +22,14 @@ const ModalAdjustment = ({
   const [crop, setCrop] = useState<PixelCrop>(null)
   const [imgProps, setImgProps] = useState<AdjustToolsResult>(null)
   const [cropError, setCropError] = useState(false)
+  const [imgWidth, setImgWidth] = useState(null)
 
   useEffect(() => {
     if (image && imageRef.current) {
       const width = imageRef.current.clientWidth
       const height = imageRef.current.clientHeight
       const dimensi = Math.min(width, height)
+      setImgWidth(width)
 
       setCrop({
         unit: 'px',
@@ -39,6 +41,7 @@ const ModalAdjustment = ({
     }
     setCropError(false)
   }, [imageRef.current, image])
+  console.log(imgWidth)
 
   const handleCrop = () => {
     if (crop?.height === 0 || crop?.width === 0) {
@@ -63,6 +66,9 @@ const ModalAdjustment = ({
     >
       <div className="flex flex-col gap-y-4">
         <ReactCrop
+          style={{
+            width: imageRef.current?.clientWidth || '100%',
+          }}
           crop={crop}
           aspect={
             adjusmentSetting.fixScale ? adjusmentSetting.scale : undefined
@@ -91,7 +97,7 @@ const ModalAdjustment = ({
           <img
             ref={imageRef}
             src={image as string}
-            className="!max-h-96 object-cover"
+            className="!max-h-96 object-fill"
             style={{
               transform: imgProps?.transform,
             }}
