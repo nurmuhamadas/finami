@@ -41,7 +41,7 @@ const ProviderContainer = ({ children }: ProviderProps) => {
     }
   }, [router.pathname, router.isReady, isVerifying])
 
-  if (isLoading || isVerifying) {
+  if (router.pathname?.includes('/app/') && (isLoading || isVerifying)) {
     return <VerifyLoading />
   }
 

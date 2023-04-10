@@ -3,6 +3,8 @@ import React, { Fragment } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { animated } from '@react-spring/web'
+
 import MainLayout from 'components/MainLayout'
 import { useAuth } from 'contexts/AuthContext'
 import { PAGES_URL } from 'utils/constants/pages'
@@ -18,9 +20,9 @@ const LandingPage = () => {
             <p className="small-text mb-2 leading-relaxed font-semibold text-lg">
               Let&apos;s join us
             </p>
-            <h1 className="title-font sm:text-5xl lg:text-6xl text-4xl mb-8 font-semibold sm:leading-tight !leading-tight">
+            <animated.h1 className="title-font sm:text-5xl lg:text-6xl text-4xl mb-8 font-semibold sm:leading-tight !leading-tight">
               Smart Financial Management for Your Family&apos;s Future
-            </h1>
+            </animated.h1>
             <div className="inline-block items-center mx-auto lg:mx-0 lg:flex justify-center lg:space-x-8 md:space-x-2 space-x-3">
               {!user && (
                 <Fragment>
