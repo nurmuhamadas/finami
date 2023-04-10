@@ -8,6 +8,7 @@ import BottomNav from 'components/BottomNav'
 import MySidebar from 'components/MySidebar'
 import { useAuth } from 'contexts/AuthContext'
 import { bottomMenu, parentOnlyUrl, sideMenu } from 'utils/constants/menu'
+import { getBEImageUrl } from 'utils/helpers/helper'
 import { getPageTitle } from 'utils/helpers/pages'
 
 import { type AppLayoutProps } from './types'
@@ -44,7 +45,10 @@ const AppLayout = ({ children, title, description }: AppLayoutProps) => {
         <div className="w-full sticky py-4 px-4 sm:px-8 z-10 left-0 top-0 bg-white flex justify-between">
           <div className="flex items-center gap-x-2">
             <Avatar
-              img={user?.imageUrl || '/static/images/default_pp.png'}
+              img={
+                getBEImageUrl(user?.image_url) ||
+                '/static/images/default_pp.png'
+              }
               rounded={true}
               className="lg:hidden"
             />

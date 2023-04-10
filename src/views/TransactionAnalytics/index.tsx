@@ -132,7 +132,6 @@ const TransactionAnalyticsPage = () => {
       })
     }
   }, [query])
-  console.log(isLoading)
 
   return (
     <AppLayout description="Analyze your transaction flow">

@@ -5,7 +5,7 @@ export type SorterTransactionType = 'amount' | 'date'
 export type CategoryGroupsType =
   | 'Required Expense'
   | 'Irregular Expense'
-  | 'Invensting and Debt Payment'
+  | 'Investing and Debt Payment'
   | 'Fun and Relax'
   | 'Income'
 export type DateFormatsType =
@@ -56,6 +56,7 @@ export interface TransactionDataResponse {
   user_fullname: string
   category_id: string
   category_name: string
+  category_icon: string
   wallet_id: string
   wallet_name: string
   is_owner: boolean
@@ -157,13 +158,14 @@ export interface GetCategoriesQuery {
 export interface CreateCategoryPayload {
   name: string
   transaction_type: TransactionTypesType
-  icon_url?: string
+  icon: File
   group: CategoryGroupsType
 }
 export interface UpdateCategoryPayload {
   name: string
   transaction_type: TransactionTypesType
-  icon_url?: string
+  icon_url: string
+  icon?: File
   group: CategoryGroupsType
 }
 
@@ -194,6 +196,7 @@ export interface UpdateUserPayload {
   email: string
   fullname: string
   image_url?: string
+  image?: File | 'delete'
 }
 export interface CreateMemberPayload {
   username: string
@@ -245,9 +248,7 @@ export interface PostSuccessResponse {
 
 export interface PutSuccessResponse {
   status: string
-  data: {
-    id: string
-  }
+  data: UserDataResponse
 }
 
 export interface DeleteSuccessResponse {

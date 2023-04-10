@@ -68,15 +68,19 @@ const AccountCategorySetting = () => {
   ) => {
     setErrorMessage(undefined)
     try {
+      const formData = new FormData()
+      formData.append('name', values.name)
+      formData.append('group', values.group)
+      if (values.icon) formData.append('icon', values.icon)
+      formData.append('transaction_type', values.transaction_type)
+
       if (selectedCategory) {
         await updateCategoryMutation.mutateAsync({
           id: selectedCategory.id,
-          payload: values as UpdateCategoryPayload,
+          payload: formData,
         })
       } else {
-        await createCategoryMutation.mutateAsync(
-          values as CreateCategoryPayload,
-        )
+        await createCategoryMutation.mutateAsync(formData)
       }
       await refetch()
 
@@ -145,12 +149,16 @@ const AccountCategorySetting = () => {
                   className="flex flex-wrap py-4 gap-4 items-center justify-between"
                 >
                   <div className="flex gap-3">
-                    <div className="rounded-full border-2 p-1 h-max">
+                    <div className="rounded-full border-2 p-1 h-max overflow-hidden">
                       <Image
                         alt={c.name}
                         width={32}
                         height={32}
-                        src={c.icon_url || '/static/images/default.png'}
+                        src={
+                          (c.icon_url?.includes('images/')
+                            ? `${process.env.BE_URL}/${c.icon_url}`
+                            : c.icon_url) || '/static/images/default.png'
+                        }
                       />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -204,7 +212,10 @@ const AccountCategorySetting = () => {
             setIsModalOpen(false)
           }}
           onSubmit={handleRegister}
-          initialData={selectedCategory}
+          initialData={{
+            ...selectedCategory,
+            icon: null,
+          }}
           errorMessage={errorMessage}
           loading={
             createCategoryMutation?.isLoading ||

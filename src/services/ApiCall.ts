@@ -2,7 +2,6 @@ import { type AxiosInstance } from 'axios'
 
 import {
   type CategoryDataResponse,
-  type CreateCategoryPayload,
   type CreateMemberPayload,
   type CreatePlanningPayload,
   type CreateSettingPayload,
@@ -26,11 +25,9 @@ import {
   type RefreshTokenSuccessResponse,
   type SettingDataResponse,
   type TransactionDataResponse,
-  type UpdateCategoryPayload,
   type UpdatePlanningPayload,
   type UpdateSettingPayload,
   type UpdateTransactionPayload,
-  type UpdateUserPayload,
   type UpdateWalletPayload,
   type UserDataResponse,
   type WalletDataResponse,
@@ -66,14 +63,12 @@ class BaseApiCall {
     ): Promise<Result<CategoryDataResponse>> => {
       return await this.api.get(`${API_ENDPOINT.categories}/${id}`)
     },
-    postCategory: async (
-      payload: CreateCategoryPayload,
-    ): Promise<PostSuccessResponse> => {
+    postCategory: async (payload: FormData): Promise<PostSuccessResponse> => {
       return await this.api.post(`${API_ENDPOINT.categories}`, payload)
     },
     putCategory: async (
       id: string,
-      payload: UpdateCategoryPayload,
+      payload: FormData,
     ): Promise<PutSuccessResponse> => {
       return await this.api.put(`${API_ENDPOINT.categories}/${id}`, payload)
     },
@@ -100,7 +95,7 @@ class BaseApiCall {
     },
     putUser: async (
       id: string,
-      payload: UpdateUserPayload,
+      payload: FormData,
     ): Promise<PutSuccessResponse> => {
       return await this.api.put(`${API_ENDPOINT.users}/${id}`, payload)
     },

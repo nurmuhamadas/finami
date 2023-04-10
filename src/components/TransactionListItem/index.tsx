@@ -6,7 +6,9 @@ import {
 
 import cn from 'classnames'
 
+import MyAvatar from 'components/MyAvatar'
 import { formatCurrency, formatDate } from 'utils/helpers/formatter'
+import { getBEImageUrl } from 'utils/helpers/helper'
 
 import { type TransactionListItemProps } from './types'
 
@@ -43,10 +45,21 @@ const TransactionListItem = ({
       }
     >
       <div className="flex flex-col space-y-2 overflow-hidden w-full">
-        <div className="flex w-full items-center justify-between">
-          <span className="fonsem">{data.category_name}</span>
+        <div className="flex flex-col sm:flex-row sm:items-center w-full gap-4">
+          <div className="flex items-center gap-4">
+            <MyAvatar
+              size={36}
+              src={
+                data.category_icon?.includes('images/')
+                  ? getBEImageUrl(data.category_icon)
+                  : data.category_icon
+              }
+              alt={data.category_name}
+            />
+            <span className="fonsem">{data.category_name}</span>
+          </div>
           <span
-            className={cn('text-sm font-semibold', {
+            className={cn('text-sm font-semibold ml-auto', {
               'text-finamiGreen': !disableAmountFormatting && isTransactionIn,
               'text-finamiRed': !disableAmountFormatting && isTransactionOut,
             })}

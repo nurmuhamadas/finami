@@ -5,16 +5,22 @@ import { type Option } from 'react-tailwindcss-select/dist/components/type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Alert } from 'flowbite-react'
 
-import { type CategoryGroupsType, type CreateCategoryPayload } from 'data/types'
+import {
+  type CategoryGroupsType,
+  type CreateCategoryPayload,
+  type UpdateCategoryPayload,
+} from 'data/types'
 
 import FormInput from 'components/Forms/FormInput'
 import FormSelect from 'components/Forms/FormSelect'
+import ImageUploader from 'components/ImageUploader'
 import MyAvatar from 'components/MyAvatar'
 import MyButton from 'components/MyButton'
 import MyModal from 'components/MyModal'
 import { CATEGORY_GROUP_OPT } from 'utils/constants/common'
+import { getBEImageUrl } from 'utils/helpers/helper'
 
-import { registerCategorySchema } from './schema'
+import { registerCategorySchema, updateCategorySchema } from './schema'
 import { type ModalRegisterCategoryProps } from './types'
 
 const ModalRegisterCategory = ({
@@ -31,21 +37,27 @@ const ModalRegisterCategory = ({
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateCategoryPayload>({
-    resolver: yupResolver(registerCategorySchema),
+  } = useForm<CreateCategoryPayload | UpdateCategoryPayload>({
+    resolver: yupResolver(
+      initialData?.icon_url ? updateCategorySchema : registerCategorySchema,
+    ),
+    shouldUnregister: false,
   })
 
   const [selectedOptions, setSelectedOptions] = useState({
     group: undefined,
   })
+  const [tempImageUrl, setTempImageUrl] = useState(null)
 
   useEffect(() => {
+    setTempImageUrl(null)
     if (initialData) {
       // FORM VALUES
       setValue('name', initialData.name)
       setValue('group', initialData.group)
       setValue('transaction_type', initialData.transaction_type)
       setValue('icon_url', initialData.icon_url || undefined)
+      setValue('icon', undefined)
 
       // OPTIONS
       const group = CATEGORY_GROUP_OPT.find(
@@ -54,6 +66,12 @@ const ModalRegisterCategory = ({
       setSelectedOptions({ group })
     }
   }, [initialData])
+
+  const handleUploadImage = (image: File) => {
+    setValue('icon', image)
+    const objectUrl = URL.createObjectURL(image)
+    setTempImageUrl(objectUrl)
+  }
 
   return (
     <MyModal
@@ -64,6 +82,7 @@ const ModalRegisterCategory = ({
         setValue('group', undefined)
         setValue('transaction_type', undefined)
         setValue('icon_url', undefined)
+        setValue('icon', undefined)
         onClose()
       }}
       header={<h3>{initialData ? 'Edit ' : `Register New `} Category</h3>}
@@ -119,19 +138,29 @@ const ModalRegisterCategory = ({
             options={CATEGORY_GROUP_OPT}
             errorMessage={errors.group?.message}
           />
-          <div className="sm:col-span-2 flex gap-2 items-center">
-            <MyAvatar
-              src={initialData?.icon_url || '/static/images/default_pp.png'}
-              alt={initialData?.name || 'avatar'}
-              size={64}
-            />
-            <MyButton
-              color="light"
-              className=""
-              disabled={disableForm || loading || true}
-            >
-              Upload
-            </MyButton>
+          <div className="sm:col-span-2">
+            <div className="flex gap-2 items-center">
+              <MyAvatar
+                src={tempImageUrl || getBEImageUrl(initialData?.icon_url)}
+                alt={initialData?.name || 'avatar'}
+                size={64}
+              />
+              <ImageUploader
+                onOk={handleUploadImage}
+                showFileName
+                adjusmentSetting={{
+                  scale: 1,
+                  radial: true,
+                  fixScale: true,
+                }}
+                maxFileSize={2 * 1024 ** 2}
+              />
+            </div>
+            {errors.icon && (
+              <span className="text-red-500 text-sm">
+                {errors.icon?.message}
+              </span>
+            )}
           </div>
           <div className="sm:col-span-2">
             <MyButton

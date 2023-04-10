@@ -11,7 +11,7 @@ import ProfileAvatar from 'components/ProfileAvatar'
 import { useAuth } from 'contexts/AuthContext'
 import { accountMenu, parentOnlyUrl } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
-import { debounce } from 'utils/helpers/helper'
+import { debounce, getBEImageUrl } from 'utils/helpers/helper'
 
 const AccountPage = () => {
   const router = useRouter()
@@ -48,7 +48,7 @@ const AccountPage = () => {
                   }}
                   data={{
                     name: user?.fullname,
-                    src: user?.imageUrl,
+                    src: getBEImageUrl(user?.image_url),
                   }}
                   buttonText="Change profile"
                 />

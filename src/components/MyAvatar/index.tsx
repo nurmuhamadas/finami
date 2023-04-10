@@ -18,7 +18,7 @@ const MyAvatar = ({
   return (
     <div
       className={cn(
-        'rounded-full w-max overflow-hidden relative',
+        'rounded-full w-max h-max overflow-hidden relative border',
         wrapperClassName,
       )}
     >
@@ -27,7 +27,7 @@ const MyAvatar = ({
         src={error ? '/static/images/default_pp.png' : src}
         width={size || 48}
         height={size || 48}
-        className={cn(className)}
+        className={cn('object-cover', className)}
         onError={setError}
       />
     </div>

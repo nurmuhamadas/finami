@@ -426,3 +426,7 @@ export function calculateRatio(base: number, comparation: number, rounded = 2) {
 
   return `${diff >= 0 ? '+' : ''}${ratio.toFixed(rounded)}%`
 }
+
+export function getBEImageUrl(path: string): string {
+  return path ? `${process.env.BE_URL}/${path}` : undefined
+}

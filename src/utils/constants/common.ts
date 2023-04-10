@@ -24,8 +24,8 @@ export const CATEGORY_GROUP_OPT: Array<{
     type: 'out',
   },
   {
-    value: 'Invensting and Debt Payment',
-    label: 'Invensting and Debt Payment',
+    value: 'Investing and Debt Payment',
+    label: 'Investing and Debt Payment',
     type: 'out',
   },
   {
