@@ -4,10 +4,12 @@ import {
   AiOutlineArrowLeft,
   AiOutlineArrowRight,
   AiOutlineArrowUp,
+  AiOutlineExpand,
   AiOutlineRotateLeft,
   AiOutlineRotateRight,
+  AiOutlineZoomIn,
+  AiOutlineZoomOut,
 } from 'react-icons/ai'
-import { BiCrop, BiZoomIn, BiZoomOut } from 'react-icons/Bi'
 import { TbFlipHorizontal, TbFlipVertical } from 'react-icons/tb'
 
 import MyButton from 'components/MyButton'
@@ -40,7 +42,7 @@ const AdjustTools = ({ onChange, onCrop }: AdjustToolsProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 flex-wrap">
         <MyButton color="light" onClick={onCrop}>
-          <BiCrop />
+          <AiOutlineExpand />
         </MyButton>
         <MyButton
           color="light"
@@ -80,7 +82,7 @@ const AdjustTools = ({ onChange, onCrop }: AdjustToolsProps) => {
             setScale(scale + 0.5)
           }}
         >
-          <BiZoomIn />
+          <AiOutlineZoomIn />
         </MyButton>
         <MyButton
           color="light"
@@ -88,7 +90,7 @@ const AdjustTools = ({ onChange, onCrop }: AdjustToolsProps) => {
             setScale(scale - 0.5)
           }}
         >
-          <BiZoomOut />
+          <AiOutlineZoomOut />
         </MyButton>
       </div>
       <div className="flex items-center gap-2 flex-wrap">
