@@ -16,6 +16,10 @@ export type ImageUploaderProps = {
   onOk: (image: File) => void
 }
 
+export type ImageUploaderRef = {
+  uploadFile: () => void
+}
+
 export type ModalAdjustmentProps = {
   image: string | ArrayBuffer
   adjusmentSetting: AdjusmentSettingType

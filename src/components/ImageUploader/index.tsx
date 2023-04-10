@@ -1,25 +1,36 @@
-import { type ChangeEventHandler, useState } from 'react'
+import {
+  type ChangeEventHandler,
+  forwardRef,
+  type Ref,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 
 import cn from 'classnames'
 
 import MyButton from 'components/MyButton'
 
 import ModalAdjustment from './ModalAdjustment'
-import { type ImageUploaderProps } from './types'
+import { type ImageUploaderProps, type ImageUploaderRef } from './types'
 
-const ImageUploader = ({
-  wrapperClassName,
-  inputClassName,
-  showFileName,
-  maxFileSize = 1024 * 1024 * 10,
-  direction = 'horizontal',
-  adjusmentSetting = {
-    scale: 1,
-    fixScale: false,
-    radial: false,
-  },
-  onOk,
-}: ImageUploaderProps) => {
+const ImageUploader = (
+  {
+    wrapperClassName,
+    inputClassName,
+    showFileName,
+    maxFileSize = 1024 * 1024 * 10,
+    direction = 'horizontal',
+    adjusmentSetting = {
+      scale: 1,
+      fixScale: false,
+      radial: false,
+    },
+    onOk,
+  }: ImageUploaderProps,
+  ref: Ref<ImageUploaderRef>,
+) => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const [image, setImage] = useState<string | ArrayBuffer>(null)
   const [fileName, setFileName] = useState('')
   const [error, setError] = useState(null)
@@ -42,6 +53,12 @@ const ImageUploader = ({
     fileReader.readAsDataURL(file)
   }
 
+  useImperativeHandle(ref, () => ({
+    uploadFile: () => {
+      inputRef.current?.click()
+    },
+  }))
+
   return (
     <div
       className={cn(
@@ -53,6 +70,7 @@ const ImageUploader = ({
       <div className="relative">
         <MyButton color="light">Upload</MyButton>
         <input
+          ref={inputRef}
           key={+new Date()}
           type="file"
           accept="image/*"
@@ -99,4 +117,4 @@ const ImageUploader = ({
   )
 }
 
-export default ImageUploader
+export default forwardRef(ImageUploader)

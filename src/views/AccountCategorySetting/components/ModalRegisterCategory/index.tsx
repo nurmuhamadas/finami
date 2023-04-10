@@ -18,6 +18,7 @@ import MyAvatar from 'components/MyAvatar'
 import MyButton from 'components/MyButton'
 import MyModal from 'components/MyModal'
 import { CATEGORY_GROUP_OPT } from 'utils/constants/common'
+import { getBEImageUrl } from 'utils/helpers/helper'
 
 import { registerCategorySchema, updateCategorySchema } from './schema'
 import { type ModalRegisterCategoryProps } from './types'
@@ -140,12 +141,7 @@ const ModalRegisterCategory = ({
           <div className="sm:col-span-2">
             <div className="flex gap-2 items-center">
               <MyAvatar
-                src={
-                  tempImageUrl ||
-                  (initialData?.icon_url
-                    ? `${process.env.BE_URL}/${initialData?.icon_url as string}`
-                    : '/static/images/default.png')
-                }
+                src={tempImageUrl || getBEImageUrl(initialData?.icon_url)}
                 alt={initialData?.name || 'avatar'}
                 size={64}
               />

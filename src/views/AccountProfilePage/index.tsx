@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
@@ -14,15 +14,18 @@ import { type UpdateUserPayload } from 'data/types'
 
 import AppLayout from 'components/AppLayout'
 import FormInput from 'components/Forms/FormInput'
+import ImageUploader from 'components/ImageUploader'
+import { type ImageUploaderRef } from 'components/ImageUploader/types'
 import MyButton from 'components/MyButton'
 import OverviewCard from 'components/OverviewCard'
 import ProfileAvatar from 'components/ProfileAvatar'
 import { useAuth } from 'contexts/AuthContext'
-import { saveAuthToLocal } from 'utils/helpers/helper'
+import { getBEImageUrl, saveAuthToLocal } from 'utils/helpers/helper'
 
 import { updateProfileSchema } from './schema'
 
 const AccountProfilePage = () => {
+  const uploaderRef = useRef<ImageUploaderRef>(null)
   const router = useRouter()
   const { user, setUser } = useAuth()
 
@@ -37,6 +40,7 @@ const AccountProfilePage = () => {
   })
   const [errorMessage, setErrorMessage] = useState(undefined)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [tempImageUrl, setTempImageUrl] = useState(null)
 
   const userMutation = putUserMutation()
 
@@ -53,13 +57,17 @@ const AccountProfilePage = () => {
       setIsSuccess(false)
       setErrorMessage(undefined)
 
-      await userMutation.mutateAsync({
+      const formData = new FormData()
+      formData.append('username', values.username)
+      formData.append('email', values.email)
+      formData.append('fullname', values.fullname)
+      if (values.image) formData.append('image', values.image)
+
+      const { data } = await userMutation.mutateAsync({
         id: user?.id,
-        payload: {
-          ...values,
-        },
+        payload: formData,
       })
-      setUser({ ...user, ...values })
+      setUser({ ...user, ...values, image_url: data.image_url })
       saveAuthToLocal({
         user: {
           id: user.id,
@@ -67,7 +75,7 @@ const AccountProfilePage = () => {
           username: user.username,
           parent_id: user.parent_id,
           fullname: values.fullname,
-          image_url: values.image_url,
+          image_url: data.image_url, // update data from success response
         },
       })
       await refetch()
@@ -78,9 +86,11 @@ const AccountProfilePage = () => {
     }
   }
 
-  const handleUpload = () => {
+  const handleUpload = (img: File) => {
     setErrorMessage(undefined)
-    setValue('image_url', 'https://i.ibb.co/rdqT4BG/food.pngg')
+    setValue('image', img)
+    const objectUrl = URL.createObjectURL(img)
+    setTempImageUrl(objectUrl)
   }
 
   useEffect(() => {
@@ -89,6 +99,7 @@ const AccountProfilePage = () => {
       setValue('fullname', data.fullname)
       setValue('email', data.email)
       setValue('image_url', data.image_url || undefined)
+      setValue('image', undefined)
     }
   }, [data])
 
@@ -115,15 +126,27 @@ const AccountProfilePage = () => {
                 showButton
                 showDelete
                 onDelete={() => {
-                  setValue('image_url', undefined)
+                  setTempImageUrl('/')
+                  setValue('image', 'delete')
                 }}
-                onButtonClick={handleUpload}
+                onButtonClick={() => {
+                  uploaderRef.current?.uploadFile()
+                }}
                 data={{
                   name: getValues('fullname'),
-                  src: getValues('image_url'),
+                  src: tempImageUrl || getBEImageUrl(data?.image_url),
                 }}
-                disableButton
-                disableDeleteButton
+              />
+              <ImageUploader
+                ref={uploaderRef}
+                onOk={handleUpload}
+                wrapperClassName="hidden"
+                adjusmentSetting={{
+                  scale: 1,
+                  radial: true,
+                  fixScale: true,
+                }}
+                maxFileSize={5 * 1024 ** 2}
               />
             </div>
 

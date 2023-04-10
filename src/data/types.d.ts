@@ -195,6 +195,7 @@ export interface UpdateUserPayload {
   email: string
   fullname: string
   image_url?: string
+  image?: File | 'delete'
 }
 export interface CreateMemberPayload {
   username: string
@@ -246,9 +247,7 @@ export interface PostSuccessResponse {
 
 export interface PutSuccessResponse {
   status: string
-  data: {
-    id: string
-  }
+  data: UserDataResponse
 }
 
 export interface DeleteSuccessResponse {

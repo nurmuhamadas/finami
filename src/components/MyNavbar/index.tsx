@@ -82,7 +82,7 @@ const MyNavbar = () => {
 
           {user && (
             <Link href={PAGES_URL.overview.url} passHref>
-              <MyAvatar src={user.imageUrl} alt={user.fullname} role="link" />
+              <MyAvatar src={user.image_url} alt={user.fullname} role="link" />
             </Link>
           )}
         </div>

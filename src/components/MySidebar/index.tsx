@@ -11,6 +11,7 @@ import { useAuth } from 'contexts/AuthContext'
 import { parentOnlyUrl } from 'utils/constants/menu'
 import { PAGES_URL } from 'utils/constants/pages'
 import { type MenuType } from 'utils/constants/types'
+import { getBEImageUrl } from 'utils/helpers/helper'
 
 import { type MySidebarProps } from './types'
 
@@ -94,7 +95,7 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
       child: m.child?.filter((c) => c.url !== PAGES_URL.account_profile.url),
     }))
 
-  // TODO:
+  console.log(user?.image_url)
 
   return (
     <Sidebar
@@ -118,7 +119,7 @@ const MySidebar = ({ menus, wrapperClassName }: MySidebarProps) => {
               buttonText="Edit profile"
               data={{
                 name: user?.fullname,
-                src: user?.imageUrl,
+                src: getBEImageUrl(user?.image_url),
               }}
               onButtonClick={async () => {
                 await push(PAGES_URL.account_profile.url)

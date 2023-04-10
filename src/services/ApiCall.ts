@@ -28,7 +28,6 @@ import {
   type UpdatePlanningPayload,
   type UpdateSettingPayload,
   type UpdateTransactionPayload,
-  type UpdateUserPayload,
   type UpdateWalletPayload,
   type UserDataResponse,
   type WalletDataResponse,
@@ -96,7 +95,7 @@ class BaseApiCall {
     },
     putUser: async (
       id: string,
-      payload: UpdateUserPayload,
+      payload: FormData,
     ): Promise<PutSuccessResponse> => {
       return await this.api.put(`${API_ENDPOINT.users}/${id}`, payload)
     },

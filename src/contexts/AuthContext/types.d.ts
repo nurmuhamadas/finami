@@ -10,7 +10,7 @@ export type UserContextType = {
   parent_id: string
   username?: string
   fullname?: string
-  imageUrl?: string
+  image_url?: string
 }
 
 export type AuthContextType = {

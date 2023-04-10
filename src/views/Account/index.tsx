@@ -48,7 +48,7 @@ const AccountPage = () => {
                   }}
                   data={{
                     name: user?.fullname,
-                    src: user?.imageUrl,
+                    src: user?.image_url,
                   }}
                   buttonText="Change profile"
                 />
