@@ -7,7 +7,7 @@ import cn from 'classnames'
 import { type MyAvatarProps } from './types'
 
 const MyAvatar = ({
-  size,
+  size = 48,
   wrapperClassName,
   className,
   src,
@@ -18,15 +18,16 @@ const MyAvatar = ({
   return (
     <div
       className={cn(
-        'rounded-full w-max h-max overflow-hidden relative border',
+        'rounded-full overflow-hidden relative border',
         wrapperClassName,
+        `w-[${size}px]`,
       )}
     >
       <Image
         {...imageProps}
-        src={error ? '/static/images/default_pp.png' : src}
-        width={size || 48}
-        height={size || 48}
+        src={error ? '/static/images/default_pp.webp' : src}
+        width={size}
+        height={size}
         className={cn('object-cover', className)}
         onError={setError}
       />

@@ -1,5 +1,3 @@
-import React, { Fragment } from 'react'
-
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -23,7 +21,7 @@ const LandingPage = () => {
             </h1>
             <div className="inline-block items-center mx-auto lg:mx-0 lg:flex justify-center lg:space-x-8 md:space-x-2 space-x-3">
               {!user && (
-                <Fragment>
+                <>
                   <Link href={PAGES_URL.signup.url} passHref>
                     <button className="bg-finamiBlue inline-flex font-semibold text-white text-base py-4 px-6 rounded-xl mb-4 lg:mb-0 md:mb-0 focus:outline-none hover:shadow-lg">
                       Try it free
@@ -34,7 +32,7 @@ const LandingPage = () => {
                       Learn More
                     </button>
                   </Link>
-                </Fragment>
+                </>
               )}
 
               {user && (
@@ -50,11 +48,12 @@ const LandingPage = () => {
           <div className="w-full lg:w-1/2 text-center justify-center flex pr-0">
             <Image
               id="hero"
-              src="/static/images/login.png"
+              src="/static/images/login.webp"
               alt="Finami Header"
               width={700}
               height={560}
               className="!h-max"
+              priority
             />
           </div>
         </div>
@@ -80,9 +79,9 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
+                  <h3 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
                     Organized Finances
-                  </h4>
+                  </h3>
                   <p className="leading-relaxed text-base text-center tracking-wide text-gray">
                     Keep track of the expenses and income in one place and stay
                     organized and avoid overspending, which is essential for
@@ -99,9 +98,9 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
+                  <h3 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
                     Real-Time Tracking
-                  </h4>
+                  </h3>
                   <p className="leading-relaxed text-base text-center tracking-wide text-gray">
                     Real-time tracking of expenses and savings, making it easier
                     for families to monitor their finances and adjust their
@@ -118,9 +117,9 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
+                  <h3 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
                     Budget Planning
-                  </h4>
+                  </h3>
                   <p className="leading-relaxed text-base text-center tracking-wide text-gray">
                     Set spending limits for various categories of expenses and
                     receive alerts when they are approaching their budget
@@ -139,14 +138,14 @@ const LandingPage = () => {
                 <div className="text-center mx-auto">
                   <div className="w-full relative flex justify-center items-center">
                     <a
+                      aria-label="Open Image Source"
                       className="absolute w-full h-full z-[2]"
                       href="https://www.freepik.com/free-vector/hand-drawn-credit-assessment-concept_20059320.htm#from_view=detail_serie"
                     ></a>
                     <Image
-                      src="/static/images/login.png"
+                      src="/static/images/login.webp"
                       alt="Login to Finami"
                       className="!w-[300px] !h-max !relative"
-                      priority
                       fill
                     />
                   </div>

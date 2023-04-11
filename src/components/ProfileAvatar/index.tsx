@@ -34,7 +34,7 @@ const ProfileAvatar = ({
       )}
       {!src && (
         <MyAvatar
-          src={'/static/images/default_pp.png'}
+          src={'/static/images/default_pp.webp'}
           aria-label={name}
           alt={name}
           size={128}

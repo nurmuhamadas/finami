@@ -157,7 +157,7 @@ const AccountCategorySetting = () => {
                         src={
                           (c.icon_url?.includes('images/')
                             ? `${process.env.BE_URL}/${c.icon_url}`
-                            : c.icon_url) || '/static/images/default.png'
+                            : c.icon_url) || '/static/images/default.webp'
                         }
                       />
                     </div>
