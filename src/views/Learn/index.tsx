@@ -48,7 +48,7 @@ const LearnPage = () => {
           </div>
 
           <div className="grid max-w-md grid-cols-1 mx-auto mt-12 lg:max-w-full lg:mt-16 lg:grid-cols-3 gap-x-16 gap-y-12">
-            {dummyBlogs.map((d) => (
+            {dummyBlogs.map((d, i) => (
               <div key={d.id}>
                 <a href="#" title="" className="block aspect-w-4 aspect-h-3">
                   <Image
@@ -57,7 +57,7 @@ const LearnPage = () => {
                     alt=""
                     width={300}
                     height={250}
-                    priority
+                    priority={i < 3}
                   />
                 </a>
                 <span className="inline-flex px-4 py-2 text-xs font-semibold tracking-widest uppercase rounded-full text-rose-500 bg-rose-100 mt-9">
