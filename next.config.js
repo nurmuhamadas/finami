@@ -18,7 +18,7 @@ module.exports = {
       },
       {
         protocol: 'https',
-        hostname: process.env.BE_URL,
+        hostname: process.env.BE_HOSTNAME,
       },
       {
         protocol: 'http',
