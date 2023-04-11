@@ -83,7 +83,7 @@ const SignupPage = () => {
             href="https://www.freepik.com/free-vector/hand-drawn-stock-market-concept-with-screen_20058506.htm#query=finance&position=3&from_view=search&track=sph"
           ></a>
           <Image
-            src="/static/images/login.png"
+            src="/static/images/login.webp"
             alt="Login to Finami"
             className="!w-3/4 !h-max !relative"
             priority

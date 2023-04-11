@@ -50,7 +50,7 @@ const LandingPage = () => {
           <div className="w-full lg:w-1/2 text-center justify-center flex pr-0">
             <Image
               id="hero"
-              src="/static/images/login.png"
+              src="/static/images/login.webp"
               alt="Finami Header"
               width={700}
               height={560}
@@ -145,7 +145,7 @@ const LandingPage = () => {
                       href="https://www.freepik.com/free-vector/hand-drawn-credit-assessment-concept_20059320.htm#from_view=detail_serie"
                     ></a>
                     <Image
-                      src="/static/images/login.png"
+                      src="/static/images/login.webp"
                       alt="Login to Finami"
                       className="!w-[300px] !h-max !relative"
                       fill
