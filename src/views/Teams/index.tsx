@@ -27,10 +27,10 @@ const TeamsPage = () => {
             </div>
 
             <div className="flex flex-col items-center mt-16 mb-8">
-              <h2 className="text-3xl font-bold leading-tight text-center text-black sm:text-4xl lg:text-5xl">
+              <h1 className="text-3xl font-bold leading-tight text-center text-black sm:text-4xl lg:text-5xl">
                 Hey 👋 I am <br className="block sm:hidden" />
                 Diqi
-              </h2>
+              </h1>
               <p className="max-w-3xl mt-3 text-center text-xl leading-relaxed text-gray-600 md:mt-8">
                 I am software engineer and long life student. I love learning
                 new things. I love seeing my web look great on all screen sizes.

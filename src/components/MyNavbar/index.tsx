@@ -21,8 +21,8 @@ const MyNavbar = () => {
   const [isShowMenu, setIsShowMenu] = useState(false)
 
   return (
-    <section className="z-10 h-full w-full border-box transition-all duration-500 linear bg-white lg:px-24 md:px-20 px-8 py-6 border-b-2 sticky top-0 left-0">
-      <div className="container mx-auto flex flex-wrap gap-2 flexRow items-center justify-between">
+    <section className="z-10 h-full w-full border-box transition-all duration-500 linear bg-white xl:px-24 lg:px-16 md:px-10 sm:px-8 px-8 py-6 border-b-2 sticky top-0 left-0">
+      <div className="w-full flex flex-wrap gap-2 flexRow items-center justify-between">
         <div className="flex gap-2">
           <Image
             src="/static/images/logo.png"
