@@ -50,7 +50,12 @@ const LearnPage = () => {
           <div className="grid max-w-md grid-cols-1 mx-auto mt-12 lg:max-w-full lg:mt-16 lg:grid-cols-3 gap-x-16 gap-y-12">
             {dummyBlogs.map((d, i) => (
               <div key={d.id}>
-                <a href="#" title="" className="block aspect-w-4 aspect-h-3">
+                <a
+                  href="#"
+                  title=""
+                  className="block aspect-w-4 aspect-h-3"
+                  aria-label="Open image source"
+                >
                   <Image
                     className="object-cover w-full h-full"
                     src="/static/images/blog-post-1.webp"
@@ -60,7 +65,7 @@ const LearnPage = () => {
                     priority={i < 3}
                   />
                 </a>
-                <span className="inline-flex px-4 py-2 text-xs font-semibold tracking-widest uppercase rounded-full text-rose-500 bg-rose-100 mt-9">
+                <span className="inline-flex px-4 py-2 text-xs font-semibold tracking-widest uppercase rounded-full text-rose-500 bg-rose-50 mt-9">
                   {d.category}
                 </span>
                 <p className="mt-6 text-xl font-semibold">
