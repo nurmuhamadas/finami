@@ -29,6 +29,7 @@ const MyNavbar = () => {
             alt="Finami"
             width={32}
             height={32}
+            priority
           />
           <span className="text-finamiBlue text-2xl font-bold">Finami</span>
         </div>
