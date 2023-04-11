@@ -20,7 +20,7 @@ const TeamsPage = () => {
               <MyAvatar
                 className=""
                 wrapperClassName="h-[225px] border-2"
-                src="/static/images/myphoto.png"
+                src="/static/images/myphoto.webp"
                 alt=""
                 size={225}
               />

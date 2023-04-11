@@ -47,7 +47,7 @@ const AppLayout = ({ children, title, description }: AppLayoutProps) => {
             <Avatar
               img={
                 getBEImageUrl(user?.image_url) ||
-                '/static/images/default_pp.png'
+                '/static/images/default_pp.webp'
               }
               rounded={true}
               className="lg:hidden"

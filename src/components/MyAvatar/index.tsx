@@ -25,7 +25,7 @@ const MyAvatar = ({
     >
       <Image
         {...imageProps}
-        src={error ? '/static/images/default_pp.png' : src}
+        src={error ? '/static/images/default_pp.webp' : src}
         width={size}
         height={size}
         className={cn('object-cover', className)}

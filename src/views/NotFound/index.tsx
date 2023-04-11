@@ -15,7 +15,7 @@ const NotFoundPage = () => {
         width={400}
         height={400}
         className="sm:w-auto w-5/6 sm:mb-16 mb-12 object-cover object-center"
-        src="/static/images/404.png"
+        src="/static/images/404.webp"
         alt="Not found image state"
       />
       <div className="text-center w-full">
