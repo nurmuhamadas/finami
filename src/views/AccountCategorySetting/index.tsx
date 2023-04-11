@@ -149,7 +149,7 @@ const AccountCategorySetting = () => {
                   className="flex flex-wrap py-4 gap-4 items-center justify-between"
                 >
                   <div className="flex gap-3">
-                    <div className="rounded-full border-2 p-1 h-max overflow-hidden w-[42px] h-[42px]">
+                    <div className="rounded-full border-2 overflow-hidden w-[42px] h-[42px]">
                       <Image
                         alt={c.name}
                         width={42}
