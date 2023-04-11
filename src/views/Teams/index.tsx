@@ -23,6 +23,7 @@ const TeamsPage = () => {
                 src="/static/images/myphoto.webp"
                 alt=""
                 size={225}
+                priority
               />
             </div>
 
