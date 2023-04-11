@@ -39,6 +39,7 @@ const MyNavbar = () => {
           onClick={() => {
             setIsShowMenu((s) => !s)
           }}
+          aria-label={isShowMenu ? 'Close Menu' : 'Open Menu'}
         >
           <AiOutlineMenu />
         </label>
@@ -56,6 +57,7 @@ const MyNavbar = () => {
                 className={cn('text-gray-600 hover:text-finamiBlue', {
                   'font-semibold !text-finamiBlue': m.url === router.pathname,
                 })}
+                aria-label={m.text}
               >
                 {m.text}
               </Link>

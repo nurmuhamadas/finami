@@ -55,6 +55,7 @@ const LandingPage = () => {
               width={700}
               height={560}
               className="!h-max"
+              priority
             />
           </div>
         </div>
@@ -80,9 +81,9 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
+                  <h3 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
                     Organized Finances
-                  </h4>
+                  </h3>
                   <p className="leading-relaxed text-base text-center tracking-wide text-gray">
                     Keep track of the expenses and income in one place and stay
                     organized and avoid overspending, which is essential for
@@ -99,9 +100,9 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
+                  <h3 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
                     Real-Time Tracking
-                  </h4>
+                  </h3>
                   <p className="leading-relaxed text-base text-center tracking-wide text-gray">
                     Real-time tracking of expenses and savings, making it easier
                     for families to monitor their finances and adjust their
@@ -118,9 +119,9 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
+                  <h3 className="font-medium text-center text-2xl mb-2.5 text-medium-black">
                     Budget Planning
-                  </h4>
+                  </h3>
                   <p className="leading-relaxed text-base text-center tracking-wide text-gray">
                     Set spending limits for various categories of expenses and
                     receive alerts when they are approaching their budget
@@ -139,6 +140,7 @@ const LandingPage = () => {
                 <div className="text-center mx-auto">
                   <div className="w-full relative flex justify-center items-center">
                     <a
+                      aria-label="Open Image Source"
                       className="absolute w-full h-full z-[2]"
                       href="https://www.freepik.com/free-vector/hand-drawn-credit-assessment-concept_20059320.htm#from_view=detail_serie"
                     ></a>
@@ -146,7 +148,6 @@ const LandingPage = () => {
                       src="/static/images/login.png"
                       alt="Login to Finami"
                       className="!w-[300px] !h-max !relative"
-                      priority
                       fill
                     />
                   </div>
