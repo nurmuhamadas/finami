@@ -149,11 +149,11 @@ const AccountCategorySetting = () => {
                   className="flex flex-wrap py-4 gap-4 items-center justify-between"
                 >
                   <div className="flex gap-3">
-                    <div className="rounded-full border-2 p-1 h-max overflow-hidden">
+                    <div className="rounded-full border-2 p-1 h-max overflow-hidden w-[42px] h-[42px]">
                       <Image
                         alt={c.name}
-                        width={32}
-                        height={32}
+                        width={42}
+                        height={42}
                         src={
                           (c.icon_url?.includes('images/')
                             ? `${process.env.BE_URL}/${c.icon_url}`
