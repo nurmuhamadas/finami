@@ -1,27 +1,34 @@
-# Next.js + Tailwind CSS Example
+# FINAMI APP - Frontend Side
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+## Description
+Finami is a financial management app for family based on web app. Finami provide features to record income and
+expense of every family member. The data will be presented analytically with chart so users can use it to analyze their
+plan in the next month.
 
-## Deploy your own
+Another feature of Finami is a main account that can create new accounts as members of the main account. All existing
+data will be integrated between family members making it easier to carry out financial control for all family members in
+one application that belongs to the main account.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+## USED TECHNOLOGIES AND LIBRARIES
+1. Next JS
+2. Typescript
+3. Tailwind CSS
+4. Flowbite
+5. React Google Chart
+6. React Hook Form
+7. Yup
+8. Axios
+9. React Query
+10. Day JS
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+### Tools
+1. Visual Studio Code
+2. Eslint
+3. Prettier
+4. Git
 
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## DEMO
+This app can access here: [https://finami-nurmuhamadas.vercel.app](https://finami-nurmuhamadas.vercel.app)
+Create account easily or using this credential to access example account:
+Username: nurmuhamadas
+Password: Nur12345
